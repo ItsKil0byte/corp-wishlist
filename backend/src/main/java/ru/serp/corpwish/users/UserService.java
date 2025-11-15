@@ -28,7 +28,9 @@ public class UserService {
 
         user.setLogin(update.getLogin());
         user.setPassword(update.getPassword());
-        user.setFullName(update.getFullName());
+        user.setFirstName(update.getFirstName());
+        user.setLastName(update.getLastName());
+        user.setMiddleName(update.getMiddleName());
 
         return userRepository.save(user);
     }
