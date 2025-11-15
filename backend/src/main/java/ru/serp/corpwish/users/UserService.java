@@ -1,7 +1,9 @@
 package ru.serp.corpwish.users;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,7 +18,16 @@ public class UserService {
     }
 
     public User get(Long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(
+                /*
+                TODO: Возможно в будущем, с появлением новых исключений стоит это
+                 всё перенести в отдельный глобальный котроллер
+                 */
+
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User " + id + " not found"
+                )
+        );
     }
 
     public User create(User user) {
