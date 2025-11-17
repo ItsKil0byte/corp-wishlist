@@ -3,9 +3,9 @@ spring:
         name: corp-wishlist
 
     datasource:
-        url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:wishlist}
-        username: ${DB_USER:postgres}
-        password: ${DB_PASSWORD:pass}
+        url: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+        username: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
 
     jpa:
         hibernate:
