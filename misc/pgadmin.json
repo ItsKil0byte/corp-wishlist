@@ -3,7 +3,7 @@
         "1": {
             "Name": "corp-wish",
             "Group": "Servers",
-            "Host": "database",
+            "Host": "postgres",
             "Port": 5432,
             "Username": "postgres",
             "SSLMode": "prefer",
