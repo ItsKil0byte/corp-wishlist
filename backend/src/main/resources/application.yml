@@ -1,11 +1,6 @@
 spring:
-  application:
-    name: corp-whislist
-  datasource:
-    url: jdbc:postgresql://localhost:5432/wishlist
-    username: postgres
-    password: pass
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    application:
+        name: corp-wishlist
+
+    profiles:
+        default: dev
