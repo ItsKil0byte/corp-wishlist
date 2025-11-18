@@ -2,13 +2,5 @@ spring:
     application:
         name: corp-wishlist
 
-    datasource:
-        url: jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}
-        username: ${POSTGRES_USER}
-        password: ${POSTGRES_PASSWORD}
-
-    jpa:
-        hibernate:
-            ddl-auto: update
-        show-sql: true
-        format-sql: true
+    profiles:
+        default: dev
