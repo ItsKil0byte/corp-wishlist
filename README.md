@@ -39,8 +39,8 @@ docker-compose down
 
 ### Доступ
 
-- Приложение будет доступно по адресу: [http://localhost:8080](http://localhost:8080]
-- Панель pgAdmin будет доступна по адресу: [http://localhost:5050](http://localhost:5050]
+- Приложение будет доступно по адресу: [http://localhost:8080](http://localhost:8080)
+- Панель pgAdmin будет доступна по адресу: [http://localhost:5050](http://localhost:5050)
 
 ## Локальный запуск
 
