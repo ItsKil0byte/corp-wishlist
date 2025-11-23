@@ -1,6 +1,5 @@
 package ru.serp.corpwish.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,21 +17,21 @@ import ru.serp.corpwish.dto.RegistrationDTO;
 import ru.serp.corpwish.service.JWTService;
 import ru.serp.corpwish.users.User;
 import ru.serp.corpwish.users.UserRepository;
-import ru.serp.corpwish.users.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final UserService userService;
+    // private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder,
+    public AuthController(//UserService userService,
+                          PasswordEncoder passwordEncoder,
                           UserRepository userRepository, AuthenticationManager authenticationManager,
                           JWTService jwtService) {
-        this.userService = userService;
+        // this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -52,7 +51,7 @@ public class AuthController {
         user.setLastName(request.getLastName());
         // user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        userService.create(user);
+        // userService.create(user);
 
         return ResponseEntity.ok("Регистрация успешна");
     }
