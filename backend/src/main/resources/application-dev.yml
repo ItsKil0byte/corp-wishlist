@@ -13,3 +13,6 @@ spring:
             enabled: true
 jwt:
     secret: "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=" #Тестовый ключ, TODO() заменить в дальнейшем на нормальный
+
+telegram:
+    bot_token: "There Must Be Our Bot Token" #TODO() Добавить токен бота
