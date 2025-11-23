@@ -1,4 +1,4 @@
-package ru.serp.corpwish.users;
+package ru.serp.corpwish.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

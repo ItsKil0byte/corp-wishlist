@@ -1,4 +1,4 @@
-package ru.serp.corpwish.dto;
+package ru.serp.corpwish.DTO;
 
 import lombok.*;
 

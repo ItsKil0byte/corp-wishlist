@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.serp.corpwish.dto.RegistrationDTO;
-import ru.serp.corpwish.users.AuthService;
+import ru.serp.corpwish.DTO.RegistrationDTO;
+import ru.serp.corpwish.service.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -1,4 +1,4 @@
-package ru.serp.corpwish.users;
+package ru.serp.corpwish.entity;
 
 import jakarta.persistence.*;
 import java.util.Collection;

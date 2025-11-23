@@ -1,9 +1,10 @@
-package ru.serp.corpwish.users;
+package ru.serp.corpwish.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.serp.corpwish.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

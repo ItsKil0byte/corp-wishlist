@@ -1,4 +1,4 @@
-package ru.serp.corpwish.config;
+package ru.serp.corpwish.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
