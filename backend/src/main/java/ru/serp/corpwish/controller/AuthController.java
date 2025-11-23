@@ -1,77 +1,27 @@
 package ru.serp.corpwish.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.serp.corpwish.dto.LoginDTO;
-import ru.serp.corpwish.dto.RegistrationDTO;
-import ru.serp.corpwish.service.JWTService;
-import ru.serp.corpwish.users.User;
-import ru.serp.corpwish.users.UserRepository;
-import ru.serp.corpwish.users.UserService;
+import ru.serp.corpwish.DTO.RegistrationDTO;
+import ru.serp.corpwish.service.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final AuthenticationManager authenticationManager;
-    private final JWTService jwtService;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder,
-                          UserRepository userRepository, AuthenticationManager authenticationManager,
-                          JWTService jwtService) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-    }
+    private final AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register (@RequestBody RegistrationDTO request){
-        if(userRepository.existsByLogin(request.getLogin())){
-            return ResponseEntity.badRequest().body("Логин уже используется");
-        }
+    @PostMapping
+    public ResponseEntity<?> authenticate(@RequestBody RegistrationDTO request) {
+        // TODO: Возвращать токен
 
-        User user = new User();
-        user.setLogin(request.getLogin());
-        user.setFirstName(request.getFirstName());
-        user.setMiddleName(request.getMiddleName());
-        user.setLastName(request.getLastName());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        var token = authService.authenticate();
 
-        userService.create(user);
-
-        return ResponseEntity.ok("Регистрация успешна");
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody LoginDTO request){
-        try{
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getLogin(),
-                            request.getPassword()
-                    )
-            );
-            String jwt = jwtService.generateToken((UserDetails) auth.getPrincipal());
-
-            return ResponseEntity.ok("Логин успешен"); //TODO JWTResponse, реализация JWTFilter
-        }
-        catch (BadCredentialsException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверные учетные данные");
-        }
+        return ResponseEntity.ok("Авторизация через Telegram прошла успешно.");
     }
 }
