@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.serp.corpwish.DTO.RegistrationDTO;
+import ru.serp.corpwish.DTO.TelegramAuthRequest;
 import ru.serp.corpwish.service.AuthService;
 
 @RestController
@@ -17,7 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<?> authenticate(@RequestBody RegistrationDTO request) {
+    public ResponseEntity<?> authenticate(@RequestBody TelegramAuthRequest request) {
         // TODO: Возвращать токен
 
         var token = authService.authenticate();
