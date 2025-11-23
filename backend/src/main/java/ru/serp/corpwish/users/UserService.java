@@ -37,11 +37,11 @@ public class UserService {
     public User update(Long id, User update) {
         User user = get(id);
 
-        user.setLogin(update.getLogin());
-        user.setPassword(update.getPassword());
+        // user.setLogin(update.getLogin());
+        // user.setPassword(update.getPassword());
         user.setFirstName(update.getFirstName());
         user.setLastName(update.getLastName());
-        user.setMiddleName(update.getMiddleName());
+        // user.setMiddleName(update.getMiddleName());
 
         return userRepository.save(user);
     }

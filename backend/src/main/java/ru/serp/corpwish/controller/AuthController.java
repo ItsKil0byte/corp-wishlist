@@ -41,16 +41,16 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register (@RequestBody RegistrationDTO request){
-        if(userRepository.existsByLogin(request.getLogin())){
-            return ResponseEntity.badRequest().body("Логин уже используется");
-        }
+//        if(userRepository.existsByLogin(request.getLogin())){
+//            return ResponseEntity.badRequest().body("Логин уже используется");
+//        }
 
         User user = new User();
-        user.setLogin(request.getLogin());
+        // user.setLogin(request.getLogin());
         user.setFirstName(request.getFirstName());
-        user.setMiddleName(request.getMiddleName());
+        // user.setMiddleName(request.getMiddleName());
         user.setLastName(request.getLastName());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        // user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userService.create(user);
 
