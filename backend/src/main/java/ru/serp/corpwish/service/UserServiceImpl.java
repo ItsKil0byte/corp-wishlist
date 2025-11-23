@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
 
 @Service
@@ -13,8 +14,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем " + username + " не найден."));
+    public UserDetails loadUserByUsername(String telegramIDStr) throws UsernameNotFoundException {
+        Long telegramID = Long.parseLong(telegramIDStr);
+        User user = userRepository.findByTelegramID(telegramID)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + telegramIDStr + " не найден."));
+
+        //Возможно добавление AccountExpired() и подобных в будущем
+        return org.springframework.security.core.userdetails.User
+                .withUsername(telegramIDStr)
+                .password("")
+                .authorities(user.getAuthorities())
+                .build();
     }
 }

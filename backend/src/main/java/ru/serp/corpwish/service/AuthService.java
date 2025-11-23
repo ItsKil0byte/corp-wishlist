@@ -18,9 +18,9 @@ public class AuthService {
 
         // TODO: Валидировать запрос
 
-        var user = userRepository.findById(1L).orElseGet(this::createNewUser);
+        Long userID = userRepository.findById(1L).orElseGet(this::createNewUser).getTelegramId();
 
-        return jwtService.generateToken(user);
+        return jwtService.generateToken(userID);
     }
 
     // TODO: Должен принимать распарсенные данные от валидатора
