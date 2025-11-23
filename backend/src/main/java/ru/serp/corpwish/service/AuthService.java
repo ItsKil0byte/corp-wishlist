@@ -2,35 +2,41 @@ package ru.serp.corpwish.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.serp.corpwish.DTO.TelegramAuthRequest;
+import ru.serp.corpwish.DTO.TelegramUser;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
+import ru.serp.corpwish.validator.TelegramValidator;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-    // TODO: Добавить валидатор
+    private final TelegramValidator validator;
     private final UserRepository userRepository;
     private final JWTService jwtService;
 
-    // TODO: Должен принимать initData, желательно через DTO
-    public String authenticate() {
+    public String authenticate(TelegramAuthRequest user) throws NoSuchAlgorithmException, InvalidKeyException {
 
-        // TODO: Валидировать запрос
+        TelegramUser telegramUser = validator.validate(user.getInitData());
 
-        Long userID = userRepository.findById(1L).orElseGet(this::createNewUser).getTelegramId();
+        Long userID = userRepository.findById(telegramUser.getTelegramId())
+                .orElseGet(() -> createNewUser(telegramUser))
+                .getTelegramId();
 
         return jwtService.generateToken(userID);
     }
 
-    // TODO: Должен принимать распарсенные данные от валидатора
-    private User createNewUser() {
+    private User createNewUser(TelegramUser user) {
         User newUser = new User();
 
-        newUser.setTelegramId(1L);
-        newUser.setUsername("todo");
-        newUser.setFirstName("todo");
-        newUser.setLastName("todo");
+        newUser.setTelegramId(user.getTelegramId());
+        newUser.setUsername(user.getUsername());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
 
         return userRepository.save(newUser);
     }
