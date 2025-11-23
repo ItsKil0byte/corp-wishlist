@@ -6,6 +6,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,12 +29,22 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest().authenticated()
-                );
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .headers(headers ->
+                headers.frameOptions(
+                    HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                )
+            )
+            .authorizeHttpRequests(authorize ->
+                authorize
+                    .requestMatchers("/api/auth/**", "/h2-console/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            );
         return http.build();
     }
 
