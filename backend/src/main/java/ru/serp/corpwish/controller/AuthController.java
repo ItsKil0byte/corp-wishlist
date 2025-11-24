@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.serp.corpwish.DTO.RegistrationDTO;
+import ru.serp.corpwish.DTO.TelegramAuthRequest;
 import ru.serp.corpwish.service.AuthService;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,11 +20,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<?> authenticate(@RequestBody RegistrationDTO request) {
-        // TODO: Возвращать токен
+    public ResponseEntity<?> authenticate(@RequestBody TelegramAuthRequest request)
+            throws NoSuchAlgorithmException, InvalidKeyException {
 
-        var token = authService.authenticate();
+        String token = authService.authenticate(request);
 
-        return ResponseEntity.ok("Авторизация через Telegram прошла успешно.");
+        return ResponseEntity.ok(token);
     }
 }
