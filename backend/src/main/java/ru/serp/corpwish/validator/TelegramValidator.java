@@ -1,6 +1,7 @@
 package ru.serp.corpwish.validator;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import ru.serp.corpwish.DTO.TelegramUser;
 
 import javax.crypto.Mac;
@@ -12,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class TelegramValidator {
 
     @Value("${telegram.bot_token}")

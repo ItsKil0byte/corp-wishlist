@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Telegram Auth Test</title>
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <style>
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                padding: 20px;
+                text-align: center;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            .user-data {
+                background: #f5f5f5;
+                padding: 15px;
+                border-radius: 10px;
+                margin: 20px 0;
+                text-align: left;
+                word-break: break-all;
+            }
+            button {
+                background: #0088cc;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Тест авторизации Telegram</h1>
+            <div id="authSection" class="hidden">
+                <button id="authButton">Проверить авторизацию</button>
+            </div>
+            <div id="userData" class="user-data hidden"></div>
+            <div id="result" class="hidden"></div>
+        </div>
+
+        <script>
+            const tg = window.Telegram.WebApp;
+
+            // Инициализация
+            tg.expand();
+            tg.ready();
+
+            const authSection = document.getElementById("authSection");
+            const authButton = document.getElementById("authButton");
+            const userData = document.getElementById("userData");
+            const result = document.getElementById("result");
+
+            // Показываем интерфейс после инициализации
+            authSection.classList.remove("hidden");
+
+            authButton.addEventListener("click", async () => {
+                try {
+                    // Получаем данные пользователя
+                    const user = tg.initDataUnsafe.user;
+
+                    if (!user) {
+                        throw new Error(
+                            "Пользователь не найден в данных инициализации",
+                        );
+                    }
+
+                    // Отображаем данные пользователя
+                    userData.innerHTML = `
+                <h3>Данные пользователя:</h3>
+                <p>ID: ${user.id}</p>
+                <p>Имя: ${user.first_name}</p>
+                <p>Фамилия: ${user.last_name || "Не указана"}</p>
+                <p>Username: @${user.username || "Не указан"}</p>
+                <p>Язык: ${user.language_code || "Не указан"}</p>
+            `;
+                    userData.classList.remove("hidden");
+
+                    // Отправляем данные на сервер
+                    const response = await fetch("/api/auth", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            initData: tg.initData
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        result.innerHTML = `<p style="color: green;">✅ Авторизация успешна</p>`;
+                        result.innerHTML += `<p>Сервер подтвердил вашу личность как: ${user.first_name}</p>`;
+                    } else {
+                        throw new Error(data.error || "Ошибка сервера");
+                    }
+                } catch (error) {
+                    result.innerHTML = `<p style="color: red;">❌ Ошибка: ${error.message}</p>`;
+                } finally {
+                    result.classList.remove("hidden");
+                }
+            });
+        </script>
+    </body>
+</html>
