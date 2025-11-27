@@ -8,9 +8,6 @@ import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
 import ru.serp.corpwish.validator.TelegramValidator;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -19,11 +16,10 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JWTService jwtService;
 
-    public String authenticate(TelegramAuthRequest user) throws NoSuchAlgorithmException, InvalidKeyException {
-
+    public String authenticate(TelegramAuthRequest user){
         TelegramUser telegramUser = validator.validate(user.getInitData());
 
-        Long userID = userRepository.findById(telegramUser.getTelegramId())
+        Long userID = userRepository.findById(telegramUser.getId())
                 .orElseGet(() -> createNewUser(telegramUser))
                 .getTelegramId();
 
@@ -33,7 +29,7 @@ public class AuthService {
     private User createNewUser(TelegramUser user) {
         User newUser = new User();
 
-        newUser.setTelegramId(user.getTelegramId());
+        newUser.setTelegramId(user.getId());
         newUser.setUsername(user.getUsername());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());

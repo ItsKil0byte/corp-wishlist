@@ -97,8 +97,6 @@
                         }),
                     });
 
-                    const data = await response.json();
-
                     if (response.ok) {
                         result.innerHTML = `<p style="color: green;">✅ Авторизация успешна</p>`;
                         result.innerHTML += `<p>Сервер подтвердил вашу личность как: ${user.first_name}</p>`;

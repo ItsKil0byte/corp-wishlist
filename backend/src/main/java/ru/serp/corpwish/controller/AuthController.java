@@ -1,5 +1,6 @@
 package ru.serp.corpwish.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<?> authenticate(
         @RequestBody TelegramAuthRequest request
-    ) throws NoSuchAlgorithmException, InvalidKeyException {
+    ){
         String token = authService.authenticate(request);
 
         return ResponseEntity.ok(token);
