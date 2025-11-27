@@ -57,12 +57,12 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .headers(headers ->
                 headers.frameOptions(
-                    HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                    HeadersConfigurer.FrameOptionsConfig::disable
                 )
             )
             .authorizeHttpRequests(authorize ->
                 authorize
-                    .requestMatchers("/api/auth/**", "/h2-console/**")
+                    .requestMatchers("/api/auth/**", "/h2-console/**", "/swagger-ui/**", "/v3/api-docs*/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

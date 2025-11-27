@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String telegramIDStr) throws UsernameNotFoundException {
         Long telegramID = Long.parseLong(telegramIDStr);
-        User user = userRepository.findByTelegramID(telegramID)
+        User user = userRepository.findByTelegramId(telegramID)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + telegramIDStr + " не найден."));
 
         //Возможно добавление AccountExpired() и подобных в будущем
