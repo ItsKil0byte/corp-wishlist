@@ -87,14 +87,13 @@
                     userData.classList.remove("hidden");
 
                     // Отправляем данные на сервер
-                    const response = await fetch("/auth/telegram", {
+                    const response = await fetch("/api/auth", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            initData: tg.initData,
-                            user: user,
+                            initData: tg.initData
                         }),
                     });
 
