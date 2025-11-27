@@ -21,7 +21,7 @@ public class AuthController {
     // NOTE: Использовать только для тестов, на проде убрать
     @GetMapping
     public ResponseEntity<Resource> getAuthScript() {
-        Resource resource = new ClassPathResource("auth.html");
+        Resource resource = new ClassPathResource("static/auth.html");
         var headers = new HttpHeaders();
         headers.add(
             HttpHeaders.CONTENT_DISPOSITION,
