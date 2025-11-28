@@ -1,17 +1,20 @@
 package ru.serp.corpwish.validator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.serp.corpwish.DTO.TelegramUser;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class TelegramValidator {
@@ -19,69 +22,77 @@ public class TelegramValidator {
     @Value("${telegram.bot_token}")
     private String bot_token;
 
-    public TelegramUser validate(String rawInitData) throws NoSuchAlgorithmException, InvalidKeyException {
-        Map<String, String> params = parseQuery(rawInitData);
+    private final ObjectMapper objectMapper;
 
-        String hash = params.get("hash");
-        params.remove("hash");
+    public TelegramValidator() {
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+    }
 
-        String dataCheckString = createDataCheckString(params);
-
+    public TelegramUser validate(String rawInitData){
         try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] key = digest.digest(bot_token.getBytes(StandardCharsets.UTF_8));
+            Map<String, String> params = parseQueryString(rawInitData);
 
-            Mac hmac = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKeySpec = new SecretKeySpec(key, "HmacSHA256");
-            hmac.init(secretKeySpec);
+            String hash = params.get("hash");
+            String userBody = params.get("user");
 
-            byte[] hmacBytes = hmac.doFinal(dataCheckString.getBytes(StandardCharsets.UTF_8));
-            StringBuilder validateHash = new StringBuilder();
 
-            for(byte b : hmacBytes){
-                validateHash.append(String.format("%02x", b));
+            if(validateTelegramAuth(params, hash)){
+                return objectMapper.readValue(userBody, TelegramUser.class);
             }
-
-            if(hash.contentEquals(validateHash)){
-                TelegramUser user = new TelegramUser(
-                        Long.parseLong(params.get("id")),
-                        params.get("username"),
-                        params.get("first_name"),
-                        params.get("last_name")
-                );
-                return user;
-            }
-            else {
-                throw new IllegalArgumentException("Failed to validate initdata");
+            else{
+                return null;
             }
         }catch (Exception e){
             return null;
         }
     }
 
-    private Map<String, String> parseQuery(String query) {
-        Map<String, String> params = new HashMap<>();
-        String[] pairs = query.split("&");
-        for (String pair : pairs) {
-            int idx = pair.indexOf("=");
-            if (idx > 0) {
-                String key = pair.substring(0, idx);
-                String value = pair.substring(idx + 1);
-                try {
-                    value = java.net.URLDecoder.decode(value, StandardCharsets.UTF_8);
-                } catch (Exception ignored) {}
-                params.put(key, value);
-            }
-        }
-        return params;
+    private boolean validateTelegramAuth(Map<String, String> paramMap, String receivedHash) throws Exception {
+        String dataString = paramMap.entrySet().stream()
+                .filter(e -> !"hash".equals(e.getKey()))
+                .sorted(Map.Entry.comparingByKey())
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining("\n"));
+
+        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(getSecretHashByInitData(), "HmacSHA256");
+        sha256HMAC.init(secretKeySpec);
+
+        byte[] hash2 = sha256HMAC.doFinal(dataString.getBytes());
+
+        String calculatedHash = bytesToHex(hash2);
+
+        return calculatedHash.equals(receivedHash);
     }
 
-    private String createDataCheckString(Map<String, String> telegramData) {
-        var sb = new StringBuilder();
-        telegramData.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> sb.append(entry.getKey()).append("=").append(entry.getValue()).append("\n"));
-        sb.deleteCharAt(sb.length() - 1);
+    private byte[] getSecretHashByInitData() throws InvalidKeyException, NoSuchAlgorithmException {
+        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKeySpec = new SecretKeySpec("WebAppData".getBytes(), "HmacSHA256");
+        sha256HMAC.init(secretKeySpec);
+
+        return sha256HMAC.doFinal(bot_token.getBytes());
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
         return sb.toString();
+    }
+
+    private Map<String, String> parseQueryString(String queryString){
+        Map<String, String> result = new HashMap<>();
+        String[] pairs = queryString.split("&");
+
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=", 2);
+            String key = URLDecoder.decode(keyValue[0], StandardCharsets.UTF_8);
+            String value = URLDecoder.decode(keyValue.length > 1 ? keyValue[1] : "", StandardCharsets.UTF_8);
+            result.put(key, value);
+        }
+
+        return result;
     }
 }
