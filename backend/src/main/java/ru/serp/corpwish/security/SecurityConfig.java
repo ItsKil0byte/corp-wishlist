@@ -32,7 +32,7 @@ public class SecurityConfig {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://corp-wish-dev.loca.lt"));
 
         // Реальный список будем сужать по ходу разработки
         configuration.setAllowCredentials(true);

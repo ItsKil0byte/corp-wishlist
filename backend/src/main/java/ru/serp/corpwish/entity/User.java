@@ -2,6 +2,7 @@ package ru.serp.corpwish.entity;
 
 import jakarta.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.*;
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = Set.of("USER");
+    private Set<String> roles = new HashSet<>(Set.of("USER"));
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
