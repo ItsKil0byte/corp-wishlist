@@ -8,7 +8,7 @@ function WishlistsNotEmpty({ wishlist }) {
 	}
 
 	return (
-		<div className="grid grid-cols-2 min-[700px]:grid-cols-3 gap-2 place-items-center">
+		<div className="grid grid-cols-1 min-[360px]:grid-cols-2 min-[700px]:grid-cols-3 gap-2 place-items-center">
 			{
 				Object.keys(wishlist).map((name, index) => {
 					return (
