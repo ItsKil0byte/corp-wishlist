@@ -32,7 +32,7 @@ public class WishlistServiceImpl implements WishlistService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Wishlist wishlist = new Wishlist();
-        wishlist.setName(request.getTitle());
+        wishlist.setName(request.getName());
         wishlist.setOwner(owner);
 
         return convertToDto(wishlist);
@@ -47,7 +47,7 @@ public class WishlistServiceImpl implements WishlistService {
             throw new RuntimeException("Only owner can update wishlist");
         }
 
-        wishlist.setName(request.getTitle());
+        wishlist.setName(request.getName());
 
         return convertToDto(wishlist);
     }

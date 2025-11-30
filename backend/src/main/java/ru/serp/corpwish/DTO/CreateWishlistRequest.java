@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CreateWishlistRequest {
-    private String title;
+    private String name;
 }
