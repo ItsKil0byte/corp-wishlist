@@ -35,6 +35,7 @@ public class WishlistServiceImpl implements WishlistService {
         wishlist.setName(request.getName());
         wishlist.setOwner(owner);
 
+        wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
     }
 
@@ -49,6 +50,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         wishlist.setName(request.getName());
 
+        wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
     }
 
