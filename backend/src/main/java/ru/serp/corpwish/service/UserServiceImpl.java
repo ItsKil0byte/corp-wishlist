@@ -20,10 +20,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + telegramIDStr + " не найден."));
 
         //Возможно добавление AccountExpired() и подобных в будущем
-        return org.springframework.security.core.userdetails.User
-                .withUsername(telegramIDStr)
-                .password("")
-                .authorities(user.getAuthorities())
-                .build();
+        return user;
     }
 }

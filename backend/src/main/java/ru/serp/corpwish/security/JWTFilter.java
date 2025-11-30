@@ -30,7 +30,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader == null || authHeader.startsWith("Bearer")){
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -56,8 +56,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     );
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             filterChain.doFilter(request, response);
         }
 
