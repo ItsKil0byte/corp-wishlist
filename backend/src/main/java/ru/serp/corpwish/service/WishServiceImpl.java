@@ -26,7 +26,7 @@ public class WishServiceImpl implements WishService{
     }
 
     @Override
-    public WishDto getWish(Long wishlistId, Long wishId) {
+    public WishDto getWish(Long requesterId, Long wishId) {
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new RuntimeException("Can not get wish - Wish not found"));
 
@@ -66,7 +66,7 @@ public class WishServiceImpl implements WishService{
     }
 
     @Override
-    public void deleteWish(Long ownerId, Long wishId, CreateWishRequest wishRequest) {
+    public void deleteWish(Long ownerId, Long wishId) {
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new RuntimeException("Can not delete wish - no such wish"));
 

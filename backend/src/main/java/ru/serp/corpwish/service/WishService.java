@@ -10,11 +10,11 @@ public interface WishService {
 
     List<WishDto> getWishes(Long wishlistId, Long cursor, Pageable pageable);
 
-    WishDto getWish(Long wishlistId, Long wishId);
+    WishDto getWish(Long requesterId, Long wishId);
 
     WishDto createWish(Long wishlistId, CreateWishRequest wishRequest);
 
     WishDto updateWish(Long ownerId, Long wishId, CreateWishRequest wishRequest);
 
-    void deleteWish(Long ownerId, Long wishId, CreateWishRequest wishRequest);
+    void deleteWish(Long ownerId, Long wishId);
 }
