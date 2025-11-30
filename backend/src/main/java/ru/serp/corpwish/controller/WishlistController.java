@@ -1,6 +1,7 @@
 package ru.serp.corpwish.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,12 +11,30 @@ import ru.serp.corpwish.DTO.WishlistDto;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.WishlistService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/wishlists")
 @RequiredArgsConstructor
 public class WishlistController {
 
     private final WishlistService wishlistService;
+
+    @GetMapping
+    public ResponseEntity<List<WishlistDto>> getWishlists(
+            @AuthenticationPrincipal User owner,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "25") int limit
+    ) {
+        List<WishlistDto> wishlistsDto = wishlistService
+                .getWishlists(
+                        owner.getTelegramId(),
+                        cursor,
+                        PageRequest.of(0, limit)
+                );
+
+        return ResponseEntity.ok(wishlistsDto);
+    }
 
     @GetMapping("/{wishlistId}")
     public ResponseEntity<WishlistDto> getWishlist(
