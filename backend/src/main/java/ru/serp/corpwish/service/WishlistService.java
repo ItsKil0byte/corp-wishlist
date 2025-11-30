@@ -1,9 +1,14 @@
 package ru.serp.corpwish.service;
 
+import org.springframework.data.domain.Pageable;
 import ru.serp.corpwish.DTO.CreateWishlistRequest;
 import ru.serp.corpwish.DTO.WishlistDto;
 
+import java.util.List;
+
 public interface WishlistService {
+
+    List<WishlistDto> getWishlists(Long ownerId, Long cursor, Pageable pageable);
 
     // Requester - то есть тот, кто запрашивает. Если мы будем в будущем
     // настраивать приватность, то сможем по нему понять, разрешён ли ему доступ

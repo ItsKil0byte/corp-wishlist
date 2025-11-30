@@ -1,6 +1,7 @@
 package ru.serp.corpwish.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.CreateWishlistRequest;
 import ru.serp.corpwish.DTO.WishlistDto;
@@ -8,6 +9,8 @@ import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.entity.Wishlist;
 import ru.serp.corpwish.repository.UserRepository;
 import ru.serp.corpwish.repository.WishlistRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,13 @@ public class WishlistServiceImpl implements WishlistService {
 
     private final WishlistRepository wishlistRepository;
     private final UserRepository userRepository;
+
+    @Override
+    public List<WishlistDto> getWishlists(Long ownerId, Long cursor, Pageable pageable) {
+        List<Wishlist> wishlists = wishlistRepository.findNextWishlists(ownerId, cursor, pageable);
+
+        return wishlists.stream().map(this::convertToDto).toList();
+    }
 
     @Override
     public WishlistDto getWishlist(Long requesterId, Long wishlistId) {
