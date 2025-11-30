@@ -26,6 +26,6 @@ public class Wishlist {
     @JoinColumn(name = "owner_id", referencedColumnName = "telegramId")
     private User owner;
 
-//    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<String> wishes = new ArrayList<>(); // TODO: Заменить String на Wish
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Wish> wishes = new ArrayList<>();
 }
