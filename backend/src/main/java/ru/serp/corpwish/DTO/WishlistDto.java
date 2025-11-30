@@ -9,5 +9,5 @@ public class WishlistDto {
     private Long id;
     private String name;
     private Long ownerId;
-//    private List<String> wishes; // TODO: Поменять на WishDto
+    private List<WishDto> wishes;
 }
