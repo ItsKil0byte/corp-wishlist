@@ -15,13 +15,13 @@ function Test() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: isTelegramApiAvailable ? WebApp.initDataUnsafe : mockInitData
+				body: JSON.stringify(isTelegramApiAvailable ? WebApp.initData: mockInitData)
 			})
 	
 			setResponse(JSON.stringify({
 				status: res.status,
 				statusText: res.statusText,
-				response: res.json,
+				response: res.body,
 				url: res.url
 			}, null, 4))
 		} catch (e) {
@@ -32,7 +32,7 @@ function Test() {
 	return (
 		<div className="flex flex-col gap-y-16">
 			<pre className="grow">{response}</pre>
-			<pre className="grow">{JSON.stringify(isTelegramApiAvailable ? WebApp.initDataUnsafe : mockInitData, null, 2)}</pre>
+			<pre className="grow">{JSON.stringify(isTelegramApiAvailable ? WebApp.initData : mockInitData, null, 2)}</pre>
 			<div className="flex justify-around">
 				<NavLink
 					to="/"
