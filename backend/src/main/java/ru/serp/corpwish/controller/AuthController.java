@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.serp.corpwish.DTO.TelegramAuthRequest;
+import ru.serp.corpwish.DTO.TelegramAuthResponse;
 import ru.serp.corpwish.service.AuthService;
 
 @RestController
@@ -29,11 +30,11 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<?> authenticate(
+    public ResponseEntity<TelegramAuthResponse> authenticate(
         @RequestBody TelegramAuthRequest request
     ){
         String token = authService.authenticate(request);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new TelegramAuthResponse(token));
     }
 }
