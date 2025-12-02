@@ -1,39 +1,62 @@
 import WishlistsEmpty from "./WishlistsEmpty";
-import WishlistsNotEmpty from "./WishlistsNotEmpty";
-import wishlists from "../../mocks/wishlists.json"
 import Header from "../../components/Header/Header";
 import HeaderButton from "../../components/Header/HeaderButton";
 import { useEffect, useState } from "react";
 import { Navigate, NavLink, useSearchParams } from "react-router-dom";
+import WishlistService from "../../services/WishlistService.js";
+import Wishlist from "../wishlist/Wishlist.jsx";
+import WebApp from "@twa-dev/sdk";
+import Storage from "../../store/Storage.js";
+import Loading from "../loading/Loading.jsx";
 
 function Wishlists() {
 	const [searchParams, _] = useSearchParams()
 	const nameFromUrl = searchParams.get("name")
-	const [currentWishlist, setCurrentWishlist] = useState(nameFromUrl || null)
 
+	const [wishlists, setWishlists] = useState(null)
+	const [currentWishlistName, setCurrentWishlistName] = useState(nameFromUrl || null)
+
+	const [isLoadind, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		const handleWishlistChange = (name) => {
-			setCurrentWishlist(name)
+		const fetch = async () => {
+			try {
+				const list = await WishlistService.getWishlists()
+				setWishlists(list)
+
+				if (list && list.length > 0 && !currentWishlistName) {
+					setCurrentWishlistName(list[0].name)
+				}
+			} catch (e) {
+				console.error(e)
+			} finally {
+				setIsLoading(false)
+			}
+
 		}
 
+		fetch()
+	}, [])
+
+	useEffect(() => {
 		if (nameFromUrl) {
-			handleWishlistChange(nameFromUrl)
+			setCurrentWishlistName(nameFromUrl)
 		}
 	}, [nameFromUrl])
 
-	const render = () => {
-		if (wishlists && Object.keys(wishlists).length > 0) {
-			return (
-				<WishlistsNotEmpty wishlist={currentWishlist && wishlists[currentWishlist]} />
-			)
-		} else if (wishlists && Object.keys(wishlists).length === 0) {
-			return (<Navigate to={"empty"} />)
-		}
-		else {
-			return (<WishlistsEmpty />)
-		}
+	if (isLoadind) {
+		return (
+			<div className="h-full flex justify-center items-center">
+				<Loading message={"Подготавливаю ваши вишлисты"}/>
+			</div>
+		)
 	}
+
+	if (!wishlists || wishlists.length === 0) {
+		return <WishlistsEmpty />
+	}
+
+	const activeWishlist = wishlists.find(wishlist => wishlist.name === currentWishlistName);
 
 	return (
 		<div className="h-full flex flex-col">
@@ -43,17 +66,19 @@ function Wishlists() {
 					to="/wishlists/create">
 					создать вишлист
 				</NavLink>
-
-				{Object.keys(wishlists).map((el) => {
-					return (
-						<HeaderButton isDark={el === currentWishlist}>
-							{el}
-						</HeaderButton>
-					)
-				})}
+				{
+					wishlists.map((el) => {
+						const name = el.name
+						return (
+							<HeaderButton isDark={name === currentWishlistName}>
+								{name}
+							</HeaderButton>
+						)
+					})
+				}
 			</Header>
 			<div className="flex-1 overflow-y-scroll mx-4 no-scrollbar">
-				{render()}
+				<Wishlist wishlist={activeWishlist} />
 			</div>
 		</div>
 	);

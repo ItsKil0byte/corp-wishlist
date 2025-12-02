@@ -6,6 +6,8 @@ import Wishlists from './pages/wishlists/Wishlists'
 import Test from './components/Test'
 import CreateWishlist from './pages/wishlists/CreateWishlist'
 import WishlistsEmpty from './pages/wishlists/WishlistsEmpty'
+import WishlistEmpty from './pages/wishlist/WishlistEmpty'
+import CreateWish from './pages/wishlist/CreateWish'
 
 function App() {
 	return (
@@ -14,7 +16,8 @@ function App() {
 				<Route index element={<Navigate to="/wishlists" replace />} />
 				<Route path="wishlists" element={<Wishlists />} />
 				<Route path="wishlists/empty" element={<WishlistsEmpty />} />
-				<Route path='wishlists/create' element={<CreateWishlist/>}/>
+				<Route path='wishlists/create' element={<CreateWishlist/>} />
+				<Route path='wishlists/wish/create' element={<CreateWish/>} />
 				<Route path="groups" element={<Groups />} />
 				<Route path="profile" element={<Profile />} />
 			</Route>

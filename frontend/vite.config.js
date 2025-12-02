@@ -10,12 +10,6 @@ export default defineConfig({
 	],
 	server: {
 		port: 3000,
-		allowedHosts: ['.ngrok-free.dev'],
-		proxy: {
-			'api': {
-				target: 'http://localhost:8080',
-				changeOrigin: true,
-			}
-		}
-	}
+		allowedHosts: ['.ngrok-free.dev', '.loca.lt', '.cloudpub.ru'],
+	},
 })
