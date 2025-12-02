@@ -12,16 +12,17 @@ function CreateWishlist({ children }) {
 
 		try {
 			const res = await WishlistService.addWishlist(wishlistName)
+			console.log(res.status)
 
-			if (res.status === '201') {
+			if (res.status === 201) {
 				alert(`Вишлист "${wishlistName}" успешно создан`)
 				navigate(`/wishlists?name=${wishlistName}`)
 			} else {
 				alert(`Вишлист "${wishlistName}" не был создан. Попробуйте снова.\nОшибка: ${res.statusText}`)
+				setAlreadyClicked(false)
 			}
 		} catch (e) {
 			alert(`Произошла ошибка ${e.message}`)
-		} finally {
 			setAlreadyClicked(false)
 		}
 	}

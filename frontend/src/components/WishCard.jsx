@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function WishCard({name, description}) {
+function WishCard({id, wishlistName, name, description }) {
 	const [color, setColor] = useState()
+	const navigate = useNavigate()
 	const colors = ["bg-gift-one-lite", "bg-gift-two-lite", "bg-gift-profile-lite"]
 
 	useEffect(() => {
@@ -14,9 +16,9 @@ function WishCard({name, description}) {
 	}, [])
 
 	return (
-		<div className={`${color} w-full h-40 flex flex-col px-4 rounded-lg`}>
-			<span className="text-center text-[20px] font-semibold my-2 line-clamp-1">{name}</span>
-			<span className="text-start text-[15px] font-semibold text-main-theme-primary line-clamp-4 mb-3">{description}</span>
+		<div className={`${color} w-full h-40 flex flex-col px-4 rounded-lg`} onClick={() => navigate(`/wishlists/wish/view?wishlistName=${wishlistName}&wishName=${name}&wishDescription=${description}&color=${color}`)}>
+			<span className="text-center text-[20px] font-semibold my-2 line-clamp-1 wrap-break-word">{name}</span>
+			<span className="text-center text-[15px] font-semibold text-main-theme-primary line-clamp-4 mb-3 text-pretty wrap-anywhere">{description}</span>
 		</div>
 	);
 }

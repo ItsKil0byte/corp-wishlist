@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-const WishlistEmpty = () => {
+const WishlistEmpty = ({ wishlistName, wishlistId }) => {
 	const navigate = useNavigate()
+
+	console.log(wishlistId, wishlistName)
 
 	return (
 		<div className="w-full h-full relative flex-col justify-center items-center overflow-y-hidden">
@@ -13,8 +15,8 @@ const WishlistEmpty = () => {
 				его желаниями
 			</h2>
 			<button
-				onClick={() => navigate("wish/create")}
-				className="bg-main-theme size-20 rounded-[50%] flex justify-center items-center absolute bottom-4 right-0 animate-bounce">
+				onClick={() => navigate(`wish/create?wishlistName=${wishlistName}&wishlistId=${wishlistId}`)}
+				className="bg-main-theme size-20 rounded-[50%] flex justify-center items-center absolute bottom-4 right-4 animate-bounce">
 				<svg
 					version="1.1"
 					xmlns="http://www.w3.org/2000/svg"

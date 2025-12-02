@@ -8,6 +8,7 @@ import CreateWishlist from './pages/wishlists/CreateWishlist'
 import WishlistsEmpty from './pages/wishlists/WishlistsEmpty'
 import WishlistEmpty from './pages/wishlist/WishlistEmpty'
 import CreateWish from './pages/wishlist/CreateWish'
+import Wish from './pages/wish/wish'
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				<Route path="wishlists/empty" element={<WishlistsEmpty />} />
 				<Route path='wishlists/create' element={<CreateWishlist/>} />
 				<Route path='wishlists/wish/create' element={<CreateWish/>} />
+				<Route path='wishlists/wish/view' element={<Wish/>} />
 				<Route path="groups" element={<Groups />} />
 				<Route path="profile" element={<Profile />} />
 			</Route>

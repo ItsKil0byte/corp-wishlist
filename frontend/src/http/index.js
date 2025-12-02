@@ -30,7 +30,7 @@ const auth = async () => {
 
 $api.interceptors.request.use(async config => {
 	console.log("Запрос попал в interceptor")
-	console.log(`Запрос на url: ${config.url}`)
+	console.log(`Запрос на url:${config.method} ${config.url}`)
 	if (config.url.includes('/auth')) {
 		return config
 	}
