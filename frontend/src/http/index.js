@@ -15,12 +15,8 @@ const auth = async () => {
 	console.log(initData)
 
 	const { data } = await axios.post(
-		'/auth',
-		{ initData: initData },
-		{
-			headers: { 'Content-Type': 'application/json' },
-			withCredentials: true
-		}
+		`${API_URL}/auth`,
+		{ initData: initData }
 	)
 
 	console.log(data)
