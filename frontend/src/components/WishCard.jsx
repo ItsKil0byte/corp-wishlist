@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line no-unused-vars
 function WishCard({id, wishlistName, name, description }) {
 	const [color, setColor] = useState()
 	const navigate = useNavigate()
