@@ -57,5 +57,21 @@ services:
             - ./misc/pgadmin.json:/pgadmin4/servers.json
         restart: unless-stopped
 
+    cloudpub:
+      image: cloudpub/cloudpub:latest
+      network_mode: host
+      environment:
+        TOKEN: пупупу
+        HTTP: 8080, 3000
+      command: run
+      restart: unless-stopped
+      volumes:
+        - cloudpub-config:/home/cloudpub
+      depends_on:
+        - frontend
+        - backend
+
+
 volumes:
     data:
+    cloudpub-config:
