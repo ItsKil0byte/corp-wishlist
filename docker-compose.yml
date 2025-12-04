@@ -63,7 +63,7 @@ services:
       image: cloudpub/cloudpub:latest
       network_mode: host
       environment:
-        TOKEN: пупупу
+        TOKEN: ${CLOUDPUB_TOKEN}
         HTTP: 8080, 3000
       command: run
       restart: unless-stopped
