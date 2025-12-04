@@ -2,7 +2,7 @@ import axios from 'axios'
 import WebApp from "@twa-dev/sdk";
 import Storage from "../store/Storage.js";
 
-export const API_URL = 'https://squarely-compatible-lungfish.cloudpub.ru/api'
+export const API_URL = import.meta.env.VITE_API_URL || 'https://squarely-compatible-lungfish.cloudpub.ru/api'
 
 const $api = axios.create({
 	withCredentials: true,
