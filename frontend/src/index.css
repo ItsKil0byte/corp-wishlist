@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@tailwind/preflight;
+@tailwind utilities;
+
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}
+
+@theme {
+	--color-main-theme: #927091;
+	--color-main-theme-lite: #eadce9;
+	--color-main-theme-primary: #595959;
+	--color-gift-one-lite: #FFE5E4;
+	--color-gift-two-lite: #B7C2B2;
+	--color-gift-profile-lite:#B695AA;
+}
