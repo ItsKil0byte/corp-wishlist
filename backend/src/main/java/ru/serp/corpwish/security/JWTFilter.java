@@ -37,8 +37,15 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
 
+        if(jwtService.isTokenExpired(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT token is expired");
+            return;
+        }
+
         if (!jwtService.isTokenValid(token)) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT token");
             return;
         }
 
@@ -57,7 +64,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } catch (Exception e) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT token is invalid or expired");
+            return;
         }
 
         filterChain.doFilter(request, response);
