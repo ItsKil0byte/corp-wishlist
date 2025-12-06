@@ -1,9 +1,8 @@
 package ru.serp.corpwish.entity;
 
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +27,9 @@ public class User implements UserDetails {
 
     @Column(name = "lastName")
     private String lastName;
+
+    @ManyToMany(mappedBy = "members")
+    private List<Group> groups = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>(Set.of("USER"));
