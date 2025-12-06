@@ -1,5 +1,7 @@
 package ru.serp.corpwish.service;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -62,7 +64,17 @@ public class JWTService {
         }
     }
 
-    private boolean isTokenExpired(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+    public boolean isTokenExpired(String token) {
+        try {
+            return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+        }
+        catch(ExpiredJwtException e){
+            //Для понимания смотрящего этот код. Этот catch для истекиших токенов
+            return true;
+        }
+        catch (JwtException e){
+            //А этот для любых других исключений, которые дальше обработаются в фильтре
+            return false;
+        }
     }
 }
