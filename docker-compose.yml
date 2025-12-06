@@ -20,6 +20,16 @@ services:
             retries: 5
         restart: unless-stopped
 
+    frontend:
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile
+        args:
+          VITE_API_URL: ${API_URL}
+      ports:
+        - "3000:80"
+      restart: unless-stopped
+
     backend:
         build:
             context: ./backend
@@ -49,5 +59,21 @@ services:
             - ./misc/pgadmin.json:/pgadmin4/servers.json
         restart: unless-stopped
 
+    cloudpub:
+      image: cloudpub/cloudpub:latest
+      network_mode: host
+      environment:
+        TOKEN: ${CLOUDPUB_TOKEN}
+        HTTP: 8080, 3000
+      command: run
+      restart: unless-stopped
+      volumes:
+        - cloudpub-config:/home/cloudpub
+      depends_on:
+        - frontend
+        - backend
+
+
 volumes:
     data:
+    cloudpub-config:

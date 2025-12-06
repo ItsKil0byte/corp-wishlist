@@ -1,6 +1,7 @@
 package ru.serp.corpwish.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +29,14 @@ public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
 
+    @Value("${URL}")
+    private String url;
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://corp-wish-dev.loca.lt"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", url));
 
         // Реальный список будем сужать по ходу разработки
         configuration.setAllowCredentials(true);

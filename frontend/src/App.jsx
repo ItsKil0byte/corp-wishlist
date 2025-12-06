@@ -8,7 +8,7 @@ import CreateWishlist from './pages/wishlists/CreateWishlist'
 import WishlistsEmpty from './pages/wishlists/WishlistsEmpty'
 import WishlistEmpty from './pages/wishlist/WishlistEmpty'
 import CreateWish from './pages/wishlist/CreateWish'
-import Wish from './pages/wish/wish'
+import Wish from './pages/wish/Wish'
 import WishlistShare from './pages/wishlist/WishlistShare'
 
 function App() {
