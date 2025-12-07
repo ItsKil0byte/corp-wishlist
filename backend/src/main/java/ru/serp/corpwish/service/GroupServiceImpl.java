@@ -34,7 +34,7 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
-    public GroupDto updateGroup(Long groupId, Long userId, GroupDto newGroupData) {
+    public GroupDto updateGroup(Long groupId, Long userId, CreateGroupRequest newGroupData) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not update group - group not found"));
 
@@ -96,6 +96,51 @@ public class GroupServiceImpl implements GroupService{
         }
 
         groupRepository.delete(group);
+    }
+
+    @Override
+    public GroupDto leaveGroup(Long groupId, Long userId, Long requesterId) {
+        User user = userRepository.findByTelegramId(userId)
+                .orElseThrow(() -> new RuntimeException("Can not leave group - user not found"));
+
+        if(!user.getTelegramId().equals(requesterId)){
+            throw new RuntimeException("Can not join group - User is not a requester");
+        }
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Can not leave group - group not found"));
+
+        if(group.getOwner().getTelegramId().equals(userId)){
+            throw new RuntimeException("Owner can not leave his group"); //Пока так, пусть он может только удалять
+        }
+
+        group.getMembers().removeIf(member -> member.getTelegramId().equals(userId));
+
+        groupRepository.save(group);
+
+        return convertToDto(group);
+    }
+
+    @Override
+    public GroupDto joinGroup(Long groupId, Long userId, Long requesterId) {
+        User user = userRepository.findByTelegramId(userId)
+                .orElseThrow(() -> new RuntimeException("Can not join group - user not found"));
+
+        if(!user.getTelegramId().equals(requesterId)){
+            throw new RuntimeException("Can not join group - User is not a requester");
+        }
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Can not join group - group not found"));
+
+        if(group.getMembers().stream().anyMatch(member -> member.getTelegramId().equals(userId))){
+            throw new RuntimeException("Can nor join group - this user already in this group");
+        }
+
+        group.getMembers().add(user);
+        groupRepository.save(group);
+
+        return convertToDto(group);
     }
 
     private GroupDto convertToDto(Group group){
