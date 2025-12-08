@@ -53,8 +53,11 @@ public class LinkServiceImpl implements LinkService {
     public GroupDto joinGroup(String token, User user) {
         Link link = linksRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Link not found"));
 
-        if (!link.isActive() || link.getType() != LinkType.GROUP_INVITE) {
-            throw new RuntimeException("Invalid or inactive link");
+        if (!link.isActive()) {
+            throw new RuntimeException("Link is not active");
+        }
+        if (link.getType() != LinkType.GROUP_INVITE) {
+            throw new RuntimeException("Link is not a group invitation link");
         }
         if (link.getExpireAt() != null && link.getExpireAt().isBefore(Instant.now())) {
             throw new RuntimeException("Link expired");
@@ -70,8 +73,11 @@ public class LinkServiceImpl implements LinkService {
     public PublicLinkDto getPreview(String token) {
         Link link = linksRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Link not found"));
 
-        if (!link.isActive() || (link.getExpireAt() != null && link.getExpireAt().isBefore(Instant.now()))) {
-            throw new RuntimeException("Link expired or inactive");
+        if (!link.isActive()) {
+            throw new RuntimeException("Link is not active");
+        }
+        if (link.getExpireAt() != null && link.getExpireAt().isBefore(Instant.now())) {
+            throw new RuntimeException("Link has expired");
         }
 
         return switch (link.getType()) {
