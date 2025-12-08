@@ -23,8 +23,9 @@ public class Link {
     @Column(unique = true, nullable = false, length = 64)
     private String token;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
+    private LinkType type;
 
     @Column(nullable = false)
     private Long entityId;
