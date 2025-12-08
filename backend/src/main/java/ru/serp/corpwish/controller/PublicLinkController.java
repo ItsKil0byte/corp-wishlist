@@ -2,11 +2,11 @@ package ru.serp.corpwish.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import ru.serp.corpwish.DTO.GroupDto;
 import ru.serp.corpwish.DTO.PublicLinkDto;
+import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.LinkService;
 
 @RestController
@@ -19,6 +19,15 @@ public class PublicLinkController {
     @GetMapping("/{token}")
     public ResponseEntity<PublicLinkDto> preview(@PathVariable String token) {
         PublicLinkDto dto = linkService.getPreview(token);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/{token}/join")
+    public ResponseEntity<GroupDto> joinGroupByToken(
+            @PathVariable String token,
+            @AuthenticationPrincipal User user
+    ) {
+        GroupDto dto = linkService.joinGroup(token, user);
         return ResponseEntity.ok(dto);
     }
 }
