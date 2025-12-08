@@ -18,5 +18,5 @@ public class PublicLinkDto {
     private String title;
     private String description;
     private List<TelegramUser> users;
-    private List<WishlistDto> wishes;
+    private List<WishDto> wishes;
 }
