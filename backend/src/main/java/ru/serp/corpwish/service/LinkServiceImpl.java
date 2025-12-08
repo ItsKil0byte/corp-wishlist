@@ -8,7 +8,9 @@ import ru.serp.corpwish.repository.GroupRepository;
 import ru.serp.corpwish.repository.LinksRepository;
 import ru.serp.corpwish.repository.WishlistRepository;
 
+import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +26,7 @@ public class LinkServiceImpl implements LinkService {
             User owner, LinkType type, Long entityId, Instant expiresAt, String baseUrl
     ) {
         Link inviteLink = Link.builder()
-                .token("TODO")
+                .token(generateToken())
                 .type(type)
                 .entityId(entityId)
                 .owner(owner)
@@ -37,7 +39,7 @@ public class LinkServiceImpl implements LinkService {
         String url = baseUrl + "/public/link/" + savedInviteLink.getToken();
 
         return InviteLinkDto.builder()
-                .token("TODO")
+                .token(savedInviteLink.getToken())
                 .url(url)
                 .type(savedInviteLink.getType())
                 .entityId(savedInviteLink.getEntityId())
@@ -110,6 +112,13 @@ public class LinkServiceImpl implements LinkService {
                             ).toList())
                     .build();
         }
+    }
+
+    @Override
+    public String generateToken() {
+        byte[] bytes = new byte[18];
+        new SecureRandom().nextBytes(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     // TODO: Вынести подобную логику в отдельный класс

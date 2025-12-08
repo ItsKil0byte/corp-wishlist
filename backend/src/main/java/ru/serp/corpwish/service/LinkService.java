@@ -16,4 +16,5 @@ public interface LinkService {
                               String baseUrl);
     GroupDto joinGroup(String token, User user);
     PublicLinkDto getPreview(String token);
+    String generateToken();
 }
