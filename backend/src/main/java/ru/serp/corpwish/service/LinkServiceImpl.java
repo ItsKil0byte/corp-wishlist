@@ -81,42 +81,8 @@ public class LinkServiceImpl implements LinkService {
         }
 
         return switch (link.getType()) {
-            case WISHLIST_SHARE -> {
-                Wishlist wishlist = wishlistRepository.findById(link.getEntityId())
-                        .orElseThrow(() -> new RuntimeException("Wishlist not found"));
-
-                yield PublicLinkDto.builder()
-                        .type(LinkType.WISHLIST_SHARE.name())
-                        .entityId(wishlist.getId())
-                        .title(wishlist.getName())
-                        .wishes(wishlist.getWishes().stream()
-                                .map(wish -> new WishDto(
-                                        wish.getId(),
-                                        wish.getTitle(),
-                                        wish.getDescription(),
-                                        wishlist.getId()
-                                ))
-                                .toList())
-                        .build();
-            }
-            case GROUP_INVITE -> {
-                Group group = groupRepository.findById(link.getEntityId())
-                        .orElseThrow(() -> new RuntimeException("Group not found"));
-
-                yield PublicLinkDto.builder()
-                        .type(LinkType.GROUP_INVITE.name())
-                        .entityId(group.getId())
-                        .title(group.getName())
-                        .users(group.getMembers().stream()
-                                .map(user -> new TelegramUser(
-                                        user.getTelegramId(),
-                                        user.getUsername(),
-                                        user.getFirstName(),
-                                        user.getLastName()
-                                ))
-                                .toList())
-                        .build();
-            }
+            case WISHLIST_SHARE -> buildWishlistPublicLinkDto(link);
+            case GROUP_INVITE -> buildGroupPublicLinkDto(link);
             default -> throw new IllegalArgumentException("Unsupported link type: " + link.getType());
         };
     }
@@ -126,5 +92,43 @@ public class LinkServiceImpl implements LinkService {
         byte[] bytes = new byte[18];
         new SecureRandom().nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    private PublicLinkDto buildWishlistPublicLinkDto(Link link) {
+        Wishlist wishlist = wishlistRepository.findById(link.getEntityId())
+                .orElseThrow(() -> new RuntimeException("Wishlist not found"));
+
+        return PublicLinkDto.builder()
+                .type(LinkType.WISHLIST_SHARE.name())
+                .entityId(wishlist.getId())
+                .title(wishlist.getName())
+                .wishes(wishlist.getWishes().stream()
+                        .map(wish -> new WishDto(
+                                wish.getId(),
+                                wish.getTitle(),
+                                wish.getDescription(),
+                                wishlist.getId()
+                        ))
+                        .toList())
+                .build();
+    }
+
+    private PublicLinkDto buildGroupPublicLinkDto(Link link) {
+        Group group = groupRepository.findById(link.getEntityId())
+                .orElseThrow(() -> new RuntimeException("Group not found"));
+
+        return PublicLinkDto.builder()
+                .type(LinkType.GROUP_INVITE.name())
+                .entityId(group.getId())
+                .title(group.getName())
+                .users(group.getMembers().stream()
+                        .map(user -> new TelegramUser(
+                                user.getTelegramId(),
+                                user.getUsername(),
+                                user.getFirstName(),
+                                user.getLastName()
+                        ))
+                        .toList())
+                .build();
     }
 }
