@@ -23,7 +23,7 @@ public class LinkController {
             @RequestBody CreateLinkRequest request,
             @RequestHeader(value = "X-Base-Url", required = false) String baseUrl
     ) {
-        String url = (baseUrl != null) ? baseUrl : "todo";
+        String url = (baseUrl != null) ? baseUrl : "localhost:8080";
 
         InviteLinkDto dto = linkService.createLink(
                 user,
