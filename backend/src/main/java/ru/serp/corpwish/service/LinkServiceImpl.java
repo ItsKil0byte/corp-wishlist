@@ -18,8 +18,9 @@ import java.util.stream.Collectors;
 public class LinkServiceImpl implements LinkService {
 
     private final LinksRepository linksRepository;
-    private final GroupRepository groupRepository;
     private final WishlistRepository wishlistRepository;
+    private final GroupService groupService;
+    private final GroupRepository groupRepository;
 
     @Override
     public InviteLinkDto createLink(
@@ -63,15 +64,7 @@ public class LinkServiceImpl implements LinkService {
             throw new RuntimeException("No user provided to join");
         }
 
-        Group group = groupRepository.findById(link.getEntityId())
-                .orElseThrow(() -> new RuntimeException("Group not found"));
-
-        if (group.getMembers().stream().noneMatch(u -> u.equals(user))) {
-            group.getMembers().add(user);
-            groupRepository.save(group);
-        }
-
-        return convertGroupToDto(group);
+        return groupService.joinGroup(link.getEntityId(), user.getTelegramId(), user.getTelegramId());
     }
 
     @Override
@@ -119,31 +112,5 @@ public class LinkServiceImpl implements LinkService {
         byte[] bytes = new byte[18];
         new SecureRandom().nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-    }
-
-    // TODO: Вынести подобную логику в отдельный класс
-    private GroupDto convertGroupToDto(Group group){
-        GroupDto groupDto = new GroupDto();
-
-        groupDto.setId(group.getId());
-        groupDto.setName(group.getName());
-        groupDto.setMembers(
-                group.getMembers().stream()
-                        .map(this::convertToTelegramUser)
-                        .collect(Collectors.toList())
-        );
-
-        return groupDto;
-    }
-
-    private TelegramUser convertToTelegramUser(User user){
-        TelegramUser telegramUser = new TelegramUser();
-
-        telegramUser.setId(user.getTelegramId());
-        telegramUser.setUsername(user.getUsername());
-        telegramUser.setFirstName(user.getFirstName());
-        telegramUser.setLastName(user.getLastName());
-
-        return telegramUser;
     }
 }
