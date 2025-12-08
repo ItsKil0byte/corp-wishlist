@@ -16,7 +16,6 @@ public class PublicLinkDto {
     private String type;
     private Long entityId;
     private String title;
-    private String description;
     private List<TelegramUser> users;
     private List<WishDto> wishes;
 }

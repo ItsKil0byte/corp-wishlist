@@ -11,7 +11,6 @@ import ru.serp.corpwish.repository.WishlistRepository;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +81,6 @@ public class LinkServiceImpl implements LinkService {
             return PublicLinkDto.builder()
                     .type(LinkType.WISHLIST_SHARE.name())
                     .entityId(wishlist.getId()).title(wishlist.getName())
-                    .description(null)
                     .wishes(wishlist.getWishes().stream()
                             .map(wish -> new WishDto(
                                     wish.getId(), wish.getTitle(), wish.getDescription(), wishlist.getId()
@@ -98,7 +96,6 @@ public class LinkServiceImpl implements LinkService {
                     .type(LinkType.GROUP_INVITE.name())
                     .entityId(group.getId())
                     .title(group.getName())
-                    .description(null)
                     .users(group.getMembers().stream()
                             .map(user -> new TelegramUser(
                                     user.getTelegramId(), user.getUsername(), user.getFirstName(), user.getLastName())
