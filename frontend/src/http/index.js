@@ -20,8 +20,7 @@ const auth = async () => {
 	)
 
 	console.log(data)
-
-	return data.token
+	await Storage.setItem('token', data.token)
 }
 
 $api.interceptors.request.use(async config => {
@@ -37,8 +36,7 @@ $api.interceptors.request.use(async config => {
 
 	if (!token) {
 		try {
-			token = await auth()
-			await Storage.setItem('token', token)
+			await auth()
 		} catch (e) {
 			return Promise.reject(e)
 		}
@@ -51,5 +49,27 @@ $api.interceptors.request.use(async config => {
 
 	return config
 })
+
+$api.interceptors.response.use(
+	(config) => {
+		return config;
+	}, async (error) => {
+		const originReq = error.config;
+
+		if (error.response && error.response.status === 401 && originReq && !originReq._isRetry) {
+			originReq._isRetry = true;
+
+			try {
+				await auth();
+				const token = await Storage.getItem("token")
+				
+				originReq.headers['Authorization'] = `Bearer ${token}`
+				return $api.request(originReq);
+			} catch (e) {
+				console.log("Попытка обновить токен не удалась: ", e)
+			}
+		}
+	}
+)
 
 export default $api
