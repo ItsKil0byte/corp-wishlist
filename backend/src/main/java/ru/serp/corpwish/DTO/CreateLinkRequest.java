@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Data
 public class CreateLinkRequest {
-    private LinkType type;
+    private String type;
     private Long entityId;
     private Instant expiresAt;
 }

@@ -15,7 +15,7 @@ import java.time.Instant;
 public class InviteLinkDto {
     private String token;
     private String url; // Полная URL для пользователя
-    private LinkType type;
+    private String type;
     private Long entityId;
     private Instant createdAt;
     private Instant expiresAt;

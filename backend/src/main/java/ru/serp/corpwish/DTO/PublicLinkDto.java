@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PublicLinkDto {
-    private LinkType type;
+    private String type;
     private Long entityId;
     private String title;
     private String description;

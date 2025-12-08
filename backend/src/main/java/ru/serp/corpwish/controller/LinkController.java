@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.serp.corpwish.DTO.CreateLinkRequest;
 import ru.serp.corpwish.DTO.InviteLinkDto;
+import ru.serp.corpwish.entity.LinkType;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.LinkService;
 
@@ -26,7 +27,7 @@ public class LinkController {
 
         InviteLinkDto dto = linkService.createLink(
                 user,
-                request.getType(),
+                LinkType.valueOf(request.getType()),
                 request.getEntityId(),
                 request.getExpiresAt(),
                 url

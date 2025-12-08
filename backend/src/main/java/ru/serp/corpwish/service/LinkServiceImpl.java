@@ -41,7 +41,7 @@ public class LinkServiceImpl implements LinkService {
         return InviteLinkDto.builder()
                 .token(savedInviteLink.getToken())
                 .url(url)
-                .type(savedInviteLink.getType())
+                .type(savedInviteLink.getType().name())
                 .entityId(savedInviteLink.getEntityId())
                 .createdAt(savedInviteLink.getCreatedAt())
                 .expiresAt(savedInviteLink.getExpireAt())
@@ -87,7 +87,7 @@ public class LinkServiceImpl implements LinkService {
                     .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
             return PublicLinkDto.builder()
-                    .type(LinkType.WISHLIST_SHARE)
+                    .type(LinkType.WISHLIST_SHARE.name())
                     .entityId(wishlist.getId()).title(wishlist.getName())
                     .description(null)
                     .wishes(wishlist.getWishes().stream()
@@ -102,7 +102,7 @@ public class LinkServiceImpl implements LinkService {
                     .orElseThrow(() -> new RuntimeException("Group not found"));
 
             return PublicLinkDto.builder()
-                    .type(LinkType.GROUP_INVITE)
+                    .type(LinkType.GROUP_INVITE.name())
                     .entityId(group.getId())
                     .title(group.getName())
                     .description(null)
