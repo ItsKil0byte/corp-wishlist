@@ -74,34 +74,45 @@ public class LinkServiceImpl implements LinkService {
             throw new RuntimeException("Link expired or inactive");
         }
 
-        if (link.getType() == LinkType.WISHLIST_SHARE) {
-            Wishlist wishlist = wishlistRepository.findById(link.getEntityId())
-                    .orElseThrow(() -> new RuntimeException("Wishlist not found"));
+        return switch (link.getType()) {
+            case WISHLIST_SHARE -> {
+                Wishlist wishlist = wishlistRepository.findById(link.getEntityId())
+                        .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
-            return PublicLinkDto.builder()
-                    .type(LinkType.WISHLIST_SHARE.name())
-                    .entityId(wishlist.getId()).title(wishlist.getName())
-                    .wishes(wishlist.getWishes().stream()
-                            .map(wish -> new WishDto(
-                                    wish.getId(), wish.getTitle(), wish.getDescription(), wishlist.getId()
-                            ))
-                            .toList())
-                    .build();
-        }
-        else {
-            Group group = groupRepository.findById(link.getEntityId())
-                    .orElseThrow(() -> new RuntimeException("Group not found"));
+                yield PublicLinkDto.builder()
+                        .type(LinkType.WISHLIST_SHARE.name())
+                        .entityId(wishlist.getId())
+                        .title(wishlist.getName())
+                        .wishes(wishlist.getWishes().stream()
+                                .map(wish -> new WishDto(
+                                        wish.getId(),
+                                        wish.getTitle(),
+                                        wish.getDescription(),
+                                        wishlist.getId()
+                                ))
+                                .toList())
+                        .build();
+            }
+            case GROUP_INVITE -> {
+                Group group = groupRepository.findById(link.getEntityId())
+                        .orElseThrow(() -> new RuntimeException("Group not found"));
 
-            return PublicLinkDto.builder()
-                    .type(LinkType.GROUP_INVITE.name())
-                    .entityId(group.getId())
-                    .title(group.getName())
-                    .users(group.getMembers().stream()
-                            .map(user -> new TelegramUser(
-                                    user.getTelegramId(), user.getUsername(), user.getFirstName(), user.getLastName())
-                            ).toList())
-                    .build();
-        }
+                yield PublicLinkDto.builder()
+                        .type(LinkType.GROUP_INVITE.name())
+                        .entityId(group.getId())
+                        .title(group.getName())
+                        .users(group.getMembers().stream()
+                                .map(user -> new TelegramUser(
+                                        user.getTelegramId(),
+                                        user.getUsername(),
+                                        user.getFirstName(),
+                                        user.getLastName()
+                                ))
+                                .toList())
+                        .build();
+            }
+            default -> throw new IllegalArgumentException("Unsupported link type: " + link.getType());
+        };
     }
 
     @Override
