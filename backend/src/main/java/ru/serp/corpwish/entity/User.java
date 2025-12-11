@@ -28,6 +28,12 @@ public class User implements UserDetails {
     @Column(name = "lastName")
     private String lastName;
 
+    @Column(name = "hobbies")
+    private String hobbies;
+
+    @Column(name = "interests")
+    private String interests;
+
     @ManyToMany(mappedBy = "members")
     private List<Group> groups = new ArrayList<>();
 
