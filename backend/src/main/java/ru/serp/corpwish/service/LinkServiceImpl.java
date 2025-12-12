@@ -126,7 +126,9 @@ public class LinkServiceImpl implements LinkService {
                                 user.getTelegramId(),
                                 user.getUsername(),
                                 user.getFirstName(),
-                                user.getLastName()
+                                user.getLastName(),
+                                user.getHobbies(),
+                                user.getInterests()
                         ))
                         .toList())
                 .build();
