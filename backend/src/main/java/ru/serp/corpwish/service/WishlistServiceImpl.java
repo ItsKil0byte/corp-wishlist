@@ -92,7 +92,7 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistDto.setWishes(
                 wishlist.getWishes().stream()
                         .map(wish -> new WishDto(
-                                wish.getId(), wish.getTitle(), wish.getDescription(), wishlist.getId()
+                                wish.getId(), wish.getTitle(), wish.getDescription(), wish.getColor(), wishlist.getId()
                         )).toList()
         );
 
