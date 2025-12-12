@@ -11,5 +11,6 @@ public class WishDto {
     private Long id;
     private String title;
     private String description;
+    private String color;
     private Long wishlistId;
 }

@@ -8,6 +8,8 @@ import java.util.List;
 public class WishlistDto {
     private Long id;
     private String name;
+    private String color;
+    private String icon;
     private Long ownerId;
     private List<WishDto> wishes;
 }

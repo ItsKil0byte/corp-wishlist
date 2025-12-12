@@ -41,6 +41,7 @@ public class WishServiceImpl implements WishService{
         Wish wish = new Wish();
         wish.setTitle(wishRequest.getTitle());
         wish.setDescription(wishRequest.getDescription());
+        wish.setColor(wishRequest.getColor());
         wish.setWishlist(wishlist);
 
         wishRepository.save(wish);
@@ -59,6 +60,7 @@ public class WishServiceImpl implements WishService{
 
         wish.setTitle(wishRequest.getTitle());
         wish.setDescription(wishRequest.getDescription());
+        wish.setColor(wishRequest.getColor());
 
         wishRepository.save(wish);
 
@@ -83,6 +85,7 @@ public class WishServiceImpl implements WishService{
         wishDto.setId(wish.getId());
         wishDto.setTitle(wish.getTitle());
         wishDto.setDescription(wish.getDescription());
+        wishDto.setColor(wish.getColor());
         wishDto.setWishlistId(wish.getWishlist().getId());
 
         return wishDto;
