@@ -45,6 +45,8 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = new Wishlist();
         wishlist.setName(request.getName());
         wishlist.setOwner(owner);
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -60,6 +62,8 @@ public class WishlistServiceImpl implements WishlistService {
         }
 
         wishlist.setName(request.getName());
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -83,6 +87,8 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
         wishlistDto.setOwnerId(wishlist.getOwner().getTelegramId());
+        wishlistDto.setColor(wishlist.getColor());
+        wishlistDto.setIcon(wishlist.getIcon());
         wishlistDto.setWishes(
                 wishlist.getWishes().stream()
                         .map(wish -> new WishDto(

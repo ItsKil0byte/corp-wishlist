@@ -22,6 +22,12 @@ public class Wishlist {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "icon")
+    private String icon;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", referencedColumnName = "telegramId")
     private User owner;
