@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.CreateWishlistRequest;
+import ru.serp.corpwish.DTO.WishDto;
 import ru.serp.corpwish.DTO.WishlistDto;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.entity.Wishlist;
@@ -44,6 +45,8 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = new Wishlist();
         wishlist.setName(request.getName());
         wishlist.setOwner(owner);
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -59,6 +62,8 @@ public class WishlistServiceImpl implements WishlistService {
         }
 
         wishlist.setName(request.getName());
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -82,6 +87,14 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
         wishlistDto.setOwnerId(wishlist.getOwner().getTelegramId());
+        wishlistDto.setColor(wishlist.getColor());
+        wishlistDto.setIcon(wishlist.getIcon());
+        wishlistDto.setWishes(
+                wishlist.getWishes().stream()
+                        .map(wish -> new WishDto(
+                                wish.getId(), wish.getTitle(), wish.getDescription(), wish.getColor(), wishlist.getId()
+                        )).toList()
+        );
 
         return wishlistDto;
     }

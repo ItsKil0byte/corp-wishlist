@@ -22,4 +22,10 @@ public class TelegramUser {
 
     @JsonProperty("last_name")
     private String lastName;
+
+    @JsonProperty("hobbies")
+    private String hobbies;
+
+    @JsonProperty("interests")
+    private String interests;
 }

@@ -6,4 +6,5 @@ import lombok.Data;
 public class CreateWishRequest {
     private String title;
     private String description;
+    private String color;
 }
