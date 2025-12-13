@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Shell from './Shell'
-import Groups from './pages/Groups'
+import Groups from './pages/groups/Groups.jsx'
 import Profile from './pages/Profile'
 import Wishlists from './pages/wishlists/Wishlists'
 import Test from './components/Test'
@@ -10,6 +10,7 @@ import WishlistEmpty from './pages/wishlist/WishlistEmpty'
 import CreateWish from './pages/wishlist/CreateWish'
 import Wish from './pages/wish/Wish'
 import WishlistShare from './pages/wishlist/WishlistShare'
+import CreateGroup from "./pages/groups/CreateGroup.jsx";
 
 function App() {
 	return (
@@ -23,6 +24,7 @@ function App() {
 				<Route path='wishlists/wish/create' element={<CreateWish/>} />
 				<Route path='wishlists/wish/view' element={<Wish/>} />
 				<Route path="groups" element={<Groups />} />
+                <Route path="groups/create" element={<CreateGroup/>} />
 				<Route path="profile" element={<Profile />} />
 			</Route>
 			<Route path='/test' element={<Test />} />

@@ -2,11 +2,13 @@ import $api from "../http/index.js";
 
 export default class GroupService {
     static async getAllGroups () {
-        return await $api.get("/groups");
+        const { data } = await $api.get("/groups");
+        return data;
     }
 
     static async getGroup (groupId) {
-        return await $api.get(`/groups/${groupId}`);
+        const { data } = await $api.get(`/groups/${groupId}`);
+        return data;
     }
 
     static async addGroup (group_name) {
