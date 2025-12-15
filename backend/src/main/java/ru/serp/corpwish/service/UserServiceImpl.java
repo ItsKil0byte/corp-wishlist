@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
 
         telegramUser.setId(user.getTelegramId());
         telegramUser.setUsername(user.getUsername());
+        telegramUser.setPhoto_url(user.getPhoto_url());
         telegramUser.setFirstName(user.getFirstName());
         telegramUser.setLastName(user.getLastName());
         telegramUser.setInterests(user.getInterests());
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
 
         user.setTelegramId(telegramUser.getId());
         user.setUsername(telegramUser.getUsername());
+        user.setPhoto_url(telegramUser.getPhoto_url());
         user.setFirstName(telegramUser.getFirstName());
         user.setLastName(telegramUser.getLastName());
         user.setHobbies(telegramUser.getHobbies());

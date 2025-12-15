@@ -17,6 +17,9 @@ public class TelegramUser {
     @JsonProperty("username")
     private String username;
 
+    @JsonProperty("photo_url")
+    private String photo_url;
+
     @JsonProperty("first_name")
     private String firstName;
 

@@ -126,6 +126,7 @@ public class LinkServiceImpl implements LinkService {
                         .map(user -> new TelegramUser(
                                 user.getTelegramId(),
                                 user.getUsername(),
+                                user.getPhoto_url(),
                                 user.getFirstName(),
                                 user.getLastName(),
                                 user.getHobbies(),
