@@ -164,6 +164,7 @@ public class GroupServiceImpl implements GroupService{
         TelegramUser telegramUser = new TelegramUser();
 
         telegramUser.setId(user.getTelegramId());
+        telegramUser.setPhoto_url(user.getPhoto_url());
         telegramUser.setUsername(user.getUsername());
         telegramUser.setFirstName(user.getFirstName());
         telegramUser.setLastName(user.getLastName());

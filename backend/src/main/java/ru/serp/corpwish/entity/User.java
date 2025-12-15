@@ -22,6 +22,9 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "picture")
+    private String photo_url;
+
     @Column(name = "firstName")
     private String firstName;
 
