@@ -11,8 +11,8 @@ export default class GroupService {
         return data;
     }
 
-    static async addGroup (group_name) {
-        return await $api.post("/groups", { name: group_name });
+    static async addGroup (group_name, group_icon) {
+        return await $api.post("/groups", { name: group_name, icon: group_icon });
     }
 
     static async deleteGroup (group_id) {

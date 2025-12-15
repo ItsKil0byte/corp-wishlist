@@ -21,3 +21,11 @@
 	--color-gift-two-lite: #FFD70033;
 	--color-gift-profile-lite:#04C9A826;
 }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Убирает горизонтальный скролл */
+}

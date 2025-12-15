@@ -3,6 +3,9 @@ import FlatList from "../../components/lists/FlatList.jsx";
 import GroupService from "../../services/GroupService.js";
 import Loading from "../loading/Loading.jsx";
 import {useNavigate} from "react-router-dom";
+import PlusButton from "../../components/PlusButton.jsx";
+import Storage from "../../store/Storage.js";
+import getNumeralEnding from "../../utils/getNumeralEnding.js";
 
 function Groups() {
     const [groups, setGroups] = useState([]);
@@ -11,23 +14,25 @@ function Groups() {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (localStorage.getItem("groups") === null) {
+            const localGroups = sessionStorage.getItem("groups");
+
+            if (localGroups === null) {
                 let data = await GroupService.getAllGroups();
 
                 if (data && data.length === 0) {
-                    const canCreatePlaceholderGroup = localStorage.getItem("canCreatePlaceholderGroup");
+                    const canCreatePlaceholderGroup = await Storage.getItem("canCreatePlaceholderGroup");
 
                     if (canCreatePlaceholderGroup === null) {
-                        await GroupService.addGroup("Одногруппники")
+                        await GroupService.addGroup("Одногруппники", "🥳")
                         data = await GroupService.getAllGroups();
-                        localStorage.setItem("canCreatePlaceholderGroup", "false");
+                        await Storage.setItem("canCreatePlaceholderGroup", "false");
                     }
                 }
 
-                localStorage.setItem("groups", JSON.stringify(data));
+                sessionStorage.setItem("groups", JSON.stringify(data));
                 setGroups(data);
             } else {
-                setGroups(JSON.parse(localStorage.getItem("groups")));
+                setGroups(JSON.parse(sessionStorage.getItem("groups")));
             }
 
             setLoading(false);
@@ -40,17 +45,17 @@ function Groups() {
         return (
             <li className="w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 bg-main-theme-lite rounded-[0.625rem] list-none list-image-none"
                 key={index}
-                onClick={() => {}}
+                onClick={() => {navigate(`/groups/group/view?id=${item.id}`)}}
             >
                 <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
-                    {item.emoji}
+                    {item.icon}
                 </div>
-                <div className="flex-col">
-                    <div className="flex justify-start items-center text-[1.1875rem]">
+                <div className="flex flex-col flex-1 min-w-0">
+                    <div className="text-[1.1875rem] truncate">
                         {item.name}
                     </div>
-                    <div className="flex justify-start items-center text-[0.9375rem]">
-                        {item.members.length} участник(ов)
+                    <div className="text-[0.9375rem] truncate">
+                        {item.members.length} {`участник${getNumeralEnding(item.members.length)}`}
                     </div>
                 </div>
             </li>
@@ -62,14 +67,10 @@ function Groups() {
     }
 
 	return (
-        <div className="w-full h-full flex p-8 overflow-hidden relative">
+        <div className="w-full h-full flex px-8 pt-8 overflow-hidden relative">
             <FlatList items={groups} render={renderGroup} className={"w-full h-full"}></FlatList>
-            <button
-                onClick={() => navigate("/groups/create")}
-                className="bg-main-theme size-20 rounded-[50%] flex justify-center items-center absolute bottom-4 right-4"
-            >
-                +
-            </button>
+            <PlusButton className={"absolute right-5 bottom-5"}
+                onClick={() => navigate("/groups/create")}/>
         </div>
     );
 }
