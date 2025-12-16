@@ -24,6 +24,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public List<WishlistDto> getWishlists(Long ownerId, Long cursor, Pageable pageable) {
+        // TODO: Реализовать перегрузку метода для запроса чужих вишлистов
+
         List<Wishlist> wishlists = wishlistRepository.findNextWishlists(ownerId, cursor, pageable);
 
         return wishlists.stream().map(this::convertToDto).toList();
