@@ -7,12 +7,13 @@ import AcceptButton from "../../components/AcceptButton.jsx";
 import DismissButton from "../../components/DismissButton.jsx";
 import GroupService from "../../services/GroupService.js";
 import toast from "react-hot-toast";
+import emojiSets from "../../data/emoji_sets.json"
 
 const CreateGroup = () => {
     const navigate = useNavigate();
     const [emoji, setEmoji] = useState(null)
     const [groupName, setGroupName] = useState("")
-    const emojiSet = ["😄", "🥳", "🎮", "☕", "🎨", "🎵", "✨"]
+    const emojiSet = emojiSets.group;
     const [creating, setCreating] = useState(false);
 
     const onEmojiPicked = (pickedEmoji) => {

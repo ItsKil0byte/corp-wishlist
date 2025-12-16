@@ -17,14 +17,14 @@ function Groups() {
             const localGroups = sessionStorage.getItem("groups");
 
             if (localGroups === null) {
-                let data = await GroupService.getAllGroups();
+                let data = await GroupService.getGroups();
 
                 if (data && data.length === 0) {
                     const canCreatePlaceholderGroup = await Storage.getItem("canCreatePlaceholderGroup");
 
                     if (canCreatePlaceholderGroup === null) {
                         await GroupService.addGroup("Одногруппники", "🥳")
-                        data = await GroupService.getAllGroups();
+                        data = await GroupService.getGroups();
                         await Storage.setItem("canCreatePlaceholderGroup", "false");
                     }
                 }

@@ -12,11 +12,15 @@ const ViewGroup = () => {
         sessionStorage.getItem("groups")).find(group => group.id === Number(searchParams.get("id"))
     )
 
-    const renderItem = (item, index) => {
+    const renderUserProfile = (item, index) => {
         return (
             <div key={index}
-                 className={`w-full h-full flex flex-col justify-center items-center mb-6`}>
-                <div className={`w-[6.25rem] h-[6.25rem] flex-col justify-center items-center mb-2 bg-gray-300 rounded-[50%]`} />
+                 className={`w-full h-full flex flex-col justify-center items-center mb-6`}
+                 onClick={() => {navigate(`/profile/others?id=${item.id}&from=${group.id}`)}}
+            >
+                <div className={`w-[6.25rem] h-[6.25rem] flex-col justify-center items-center overflow-clip mb-2 bg-gray-300 rounded-[50%]`}>
+                    <img className={"w-full h-full"} alt={"аватар"} src={item.photo_url} />
+                </div>
                 <span>{`${item.first_name} ${item.last_name}`}</span>
             </div>
         )
@@ -26,27 +30,14 @@ const ViewGroup = () => {
         if (!group) return;
 
         const inviteLink = `https://t.me/crybaby_idk_bot/cdcdcd?startapp=joingroup_${group.id}`;
-        const messageText = `Вступай в мою группу "${group.name || 'Название'}"!`;
+        const messageText = `Вступай в мою группу!`;
 
-        const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(messageText)}`;
+        const link = `${messageText}\n${inviteLink}`;
 
         try {
-            if (navigator.share) {
-                await navigator.share({
-                    title: "Приглашение в группу",
-                    text: messageText,
-                    url: inviteLink
-                });
-            } else {
-                WebApp.openTelegramLink(telegramShareUrl);
-            }
+            await navigator.clipboard.writeText(link);
         } catch {
-            try {
-                await navigator.clipboard.writeText(inviteLink);
-                toast.success("Ссылка скопирована");
-            } catch {
-                toast.error("Не удалось поделиться");
-            }
+            toast.error("Не удалось поделиться");
         }
     }
 
@@ -58,9 +49,10 @@ const ViewGroup = () => {
                     hasShareButton={true}
                     onBack={() => navigate("/groups")}
                     text={group.icon ? `${group.icon} ${group.name}` : group.name}
-                    onShare={() => onShare()}/>
+                    onShare={() => onShare()}
+                    onEdit={() => navigate(`/groups/group/edit?id=${searchParams.get("id")}`)}/>
             <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll"}>
-                <TileList items={group.members} render={renderItem} className={"w-full max-w-[31.5rem] grid-cols-2 min-[24.375rem]:grid-cols-3"} />
+                <TileList items={group.members} render={renderUserProfile} className={"w-full max-w-[31.5rem] grid-cols-2 min-[24.375rem]:grid-cols-3"} />
             </div>
         </>
     );

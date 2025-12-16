@@ -12,6 +12,8 @@ import Wish from './pages/wish/Wish'
 import WishlistShare from './pages/wishlist/WishlistShare'
 import CreateGroup from "./pages/groups/CreateGroup.jsx";
 import ViewGroup from "./pages/groups/ViewGroup.jsx";
+import EditGroup from "./pages/groups/EditGroup.jsx";
+import OthersProfile from "./pages/profile/OthersProfile.jsx";
 
 function App() {
 	return (
@@ -27,7 +29,9 @@ function App() {
 				<Route path="groups" element={<Groups />} />
                 <Route path="groups/create" element={<CreateGroup/>} />
                 <Route path="groups/group/view" element={<ViewGroup/>} />
-				<Route path="profile" element={<Profile />} />
+                <Route path="/groups/group/edit" element={<EditGroup/>} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="profile/others" element={<OthersProfile />} />
 			</Route>
 			<Route path='/test' element={<Test />} />
 		</Routes>

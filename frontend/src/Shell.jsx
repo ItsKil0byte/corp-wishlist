@@ -2,12 +2,15 @@ import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
 import FooterNav from "./components/FooterNav";
 import WebApp from "@twa-dev/sdk";
 import toast, {Toaster} from "react-hot-toast";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import GroupService from "./services/GroupService.js";
+import Loading from "./pages/loading/Loading.jsx";
 
 function Shell() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
     const pathsWithFooter = ["/wishlists", "/groups", "/profile"];
 
     useEffect(() => {
@@ -15,20 +18,35 @@ function Shell() {
             const startParam = WebApp.initDataUnsafe.start_param
             const userId = WebApp.initDataUnsafe.user.id
 
-            if(startParam) {
+            if(startParam && !loading && startParam !== sessionStorage.getItem("prev_start_param")) {
+                setLoading(true);
+
                 const [paramName, paramValue] = startParam.split("_")
 
                 if (paramName === "joingroup") {
-                    await GroupService.putMember(paramValue, userId)
-                    WebApp.initDataUnsafe.start_param = ""
-                    toast.success("Вы были добавлены в группу!")
-                    navigate('/groups')
+                    try {
+                        setMessage("Присоединение к группе...")
+                        await GroupService.addMember(paramValue, userId)
+                        toast.success("Вы были добавлены в группу!")
+                        setLoading(false);
+                        sessionStorage.setItem("prev_start_param", startParam);
+                        navigate('/groups')
+                    } catch {
+                        toast.error("Не удалось присоединиться")
+                        setLoading(false);
+                        sessionStorage.setItem("prev_start_param", startParam);
+                        navigate('/')
+                    }
                 }
             }
         }
 
         effect();
     }, []);
+
+    if (loading) {
+        return <Loading message={message} />;
+    }
 
 	return (
 		<div className="w-screen h-screen flex flex-col bg-white">

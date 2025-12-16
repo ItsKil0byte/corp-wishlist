@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
-const EmojiPicker = ({ title, emojiSet, onEmojiPicked }) => {
-    const [pickedEmoji, setPickedEmoji] = useState(null)
+const EmojiPicker = ({ title, emojiSet, initialEmoji = null, onEmojiPicked }) => {
+    const [pickedEmoji, setPickedEmoji] = useState(emojiSet.includes(initialEmoji) ? initialEmoji : null)
 
     useEffect(() => {
         onEmojiPicked(pickedEmoji)
