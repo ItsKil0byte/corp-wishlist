@@ -68,16 +68,10 @@ export default class WishlistService {
      * @returns {Promise<Wishlist>}
      * **/
     static async addWishlist(name, color, icon) {
-        const wishlists = await this.getWishlists()
-
-        if(wishlists.find(wishlist => wishlist.name === name)) {
-            throw new Error(`${name} уже существует`)
-        }
-
         const { data } = await $api.post('/wishlists', {
             name: name,
             color: color,
-            icon: icon,
+            icon: icon
         })
 
         return data
