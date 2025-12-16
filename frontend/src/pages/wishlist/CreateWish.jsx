@@ -37,13 +37,7 @@ function CreateWish() {
 
 	return (
 		<div className="min-h-full w-full flex flex-col">
-			<Header>
-				<div className="w-full h-full flex-col items-start">
-					<NavLink
-						className="flex items-center justify-center text-lg font-semibold w-25 h-10 px-4 whitespace-nowrap rounded-4xl bg-main-theme-lite text-main-theme-primary"
-						to="/">отмена</NavLink>
-				</div>
-			</Header>
+			<Header text={"Создать желание"} onBack={() => navigate("/")} />
 			<main className="flex flex-col grow gap-8">
 				<input
 					placeholder="Введите заголовок пожелания"

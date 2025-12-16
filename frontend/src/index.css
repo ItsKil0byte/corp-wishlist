@@ -14,10 +14,18 @@
 }
 
 @theme {
-	--color-main-theme: #927091;
-	--color-main-theme-lite: #eadce9;
+	--color-main-theme: #04C9A8;
+	--color-main-theme-lite: #DEFAF5;
 	--color-main-theme-primary: #595959;
-	--color-gift-one-lite: #FFE5E4;
-	--color-gift-two-lite: #B7C2B2;
-	--color-gift-profile-lite:#B695AA;
+	--color-gift-one-lite: #FF493826;
+	--color-gift-two-lite: #FFD70033;
+	--color-gift-profile-lite:#04C9A826;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* Убирает горизонтальный скролл */
 }
