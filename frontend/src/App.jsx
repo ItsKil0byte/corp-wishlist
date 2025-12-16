@@ -5,31 +5,36 @@ import Profile from './pages/Profile'
 import Wishlists from './pages/wishlists/Wishlists'
 import Test from './components/Test'
 import CreateWishlist from './pages/wishlists/CreateWishlist'
-import WishlistsEmpty from './pages/wishlists/WishlistsEmpty'
-import WishlistEmpty from './pages/wishlist/WishlistEmpty'
 import CreateWish from './pages/wishlist/CreateWish'
-import Wish from './pages/wish/Wish'
-import WishlistShare from './pages/wishlist/WishlistShare'
+import ViewWish from './pages/wish/ViewWish.jsx'
 import CreateGroup from "./pages/groups/CreateGroup.jsx";
 import ViewGroup from "./pages/groups/ViewGroup.jsx";
 import EditGroup from "./pages/groups/EditGroup.jsx";
 import OthersProfile from "./pages/profile/OthersProfile.jsx";
+import ViewWishlist from "./pages/wishlists/ViewWishlist.jsx";
+import EditWishlist from "./pages/wishlists/EditWishlist.jsx";
+import EditWish from "./pages/wish/EditWish.jsx";
 
 function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<Shell />}>
-				<Route index element={<Navigate to="/wishlists" replace />} />
+                <Route index element={<Navigate to="/wishlists" />} />
 				<Route path="wishlists" element={<Wishlists />} />
-				<Route path="wishlists/empty" element={<WishlistsEmpty/>} />
-				<Route path='wishlists/create' element={<CreateWishlist/>} />
-				<Route path='wishlists/share' element={<WishlistShare/>} />
+
+				<Route path='wishlists/wishlist/create' element={<CreateWishlist/>} />
+                <Route path="wishlists/wishlist/view" element={<ViewWishlist />} />
+                <Route path="wishlists/wishlist/edit" element={<EditWishlist />} />
+
 				<Route path='wishlists/wish/create' element={<CreateWish/>} />
-				<Route path='wishlists/wish/view' element={<Wish/>} />
+                <Route path='wishlists/wish/view' element={<ViewWish/>} />
+                <Route path='wishlists/wish/edit' element={<EditWish/>} />
+
 				<Route path="groups" element={<Groups />} />
                 <Route path="groups/create" element={<CreateGroup/>} />
                 <Route path="groups/group/view" element={<ViewGroup/>} />
-                <Route path="/groups/group/edit" element={<EditGroup/>} />
+                <Route path="groups/group/edit" element={<EditGroup/>} />
+
                 <Route path="profile" element={<Profile />} />
                 <Route path="profile/others" element={<OthersProfile />} />
 			</Route>

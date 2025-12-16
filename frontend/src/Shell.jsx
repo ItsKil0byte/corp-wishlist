@@ -1,4 +1,4 @@
-import {NavLink, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import FooterNav from "./components/FooterNav";
 import WebApp from "@twa-dev/sdk";
 import toast, {Toaster} from "react-hot-toast";

@@ -1,63 +1,55 @@
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import HeaderButton from "../../components/Header/HeaderButton";
-import { useState } from "react";
+import React, { useState } from "react";
 import WishService from "../../services/WishService";
+import getRandomItemFromArray from "../../utils/getRandomItemFromArray.js";
+import toast from "react-hot-toast";
+import Input from "../../components/Input.jsx";
+import DismissButton from "../../components/DismissButton.jsx";
+import AcceptButton from "../../components/AcceptButton.jsx";
+import WishlistService from "../../services/WishlistService.js";
 
 function CreateWish() {
 	const [searchParams, _] = useSearchParams()
-	const wishlistName = searchParams.get("wishlistName")
-	const wishlistId = searchParams.get("wishlistId")
+	const wishlistId = searchParams.get("id")
+    console.log("АЙДИ ВИШ" + wishlistId)
 
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
-	const [alreadyClicked, setAlreadyClicked] = useState(false)
+    const colors = ["gift-one-lite", "gift-two-lite", "gift-profile-lite"]
 
 	const navigate = useNavigate()
 
 	const handleCreate = async () => {
-		setAlreadyClicked(true)
 		try {
-			const res = await WishService.addWish(title, description, wishlistId)
+			const wishlist = await WishService.addWish(wishlistId, title, description, getRandomItemFromArray(colors))
+            const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
 
-			console.log(res.status)
+            const updatedWishlists = await WishlistService.getWishlists()
 
-			if(res.status === 201 || res.status === 200) {
-				alert(`Желание "${title}" было успешно добавлено`)
-				navigate(`/wishlists?name=${wishlistName}`)
-			} else {
-				alert(`Вишлист "${wishlistName}" не был создан. Попробуйте снова.\nОшибка: ${res.statusText}`)
-				setAlreadyClicked(false)
-			}
-		} catch (e) {
-			alert(`Произошла ошибка ${e.message}`)
-			setAlreadyClicked(false)
+            sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlists));
+            toast.success(`Желание добавлено`)
+            navigate(`/wishlists/wishlist/view?id=${wishlistId}`)
+		} catch {
+			toast.error(`Произошла ошибка`)
+            navigate(`/wishlists/wishlist/view?id=${wishlistId}`)
 		}
 	}
 
 	return (
-		<div className="min-h-full w-full flex flex-col">
-			<Header text={"Создать желание"} onBack={() => navigate("/")} />
-			<main className="flex flex-col grow gap-8">
-				<input
-					placeholder="Введите заголовок пожелания"
-					className="h-12 mx-3 px-2 mt-8 border-solid border-2 rounded-[14px] border-main-theme focus:outline-none"
-					value={title}
-					onChange={(e) => setTitle(e.target.value)} />
-
-				<textarea
-					placeholder="Введите описание пожелания"
-					className="h-36 mx-3 px-2 pt-2 border-solid border-2 rounded-[14px] border-main-theme focus:outline-none"
-					value={description}
-					onChange={(e) => setDescription(e.target.value)} />
-
-				<button className={`h-13 w-33 bg-main-theme ${(alreadyClicked || title.length < 1 || description < 1) && "opacity-35"} rounded-3xl text-white font-bold text-2xl self-center`}
-					disabled={alreadyClicked || title.length < 1 || description < 1}
-					onClick={handleCreate}>
-					создать
-				</button>
-			</main>
-		</div>
+        <>
+            <Header hasBackButton={true} onBack={() => navigate("/wishlists")}/>
+            <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll"}>
+                <div className={"w-full px-9 my-4 grow flex flex-col gap-y-8 max-w-[31.5rem]"}>
+                    <Input className={"w-full h-12"} title={"Заголовок"} placeholder={"Наушники"} value={title} onChange={e => setTitle(e.target.value)}/>
+                    <Input className={"w-full h-12"} title={"Описание"} placeholder={"Беспроводные, синего цвета"} value={description} onChange={e => setDescription(e.target.value)}/>
+                    <div className={"w-full flex justify-around mt-auto mb-6"}>
+                        <DismissButton text={"Отменить"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${wishlistId}`)}} />
+                        <AcceptButton text={"Создать"} onClick={handleCreate} />
+                    </div>
+                </div>
+            </div>
+        </>
 	);
 }
 
