@@ -76,4 +76,13 @@ export default class WishlistService {
 
         return data
     }
+
+    /**
+     * Возвращает список вишлистов пользователя по его id
+     * @returns {Promise<Wishlist[]>}
+     * **/
+    static async getWishlistsByUserId(userId) {
+        const { data } = await $api.get(`/wishlists/user/${userId}`);
+        return data;
+    }
 }
