@@ -8,6 +8,7 @@ const TileList = ({ items, render, className }) => {
                     render(item, index)
                 ))
             }
+            <div className={"bg-transparent h-64"} />
         </div>
     );
 };

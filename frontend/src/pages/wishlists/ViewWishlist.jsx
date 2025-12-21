@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header.jsx";
 import TileList from "../../components/lists/TileList.jsx";
 import WishCard from "../../components/WishCard.jsx";
 import PlusButton from "../../components/PlusButton.jsx";
+import LinkService from "../../services/LinkService.js";
 
 const ViewWishlist = () => {
     const navigate = useNavigate();
@@ -17,13 +18,18 @@ const ViewWishlist = () => {
                  className={`w-full h-full flex flex-col justify-center items-center`}
                  onClick={() => {navigate(`/wishlists/wish/view?id=${item.id}&from=${Number(searchParams.get("id"))}`)}}
             >
-                <WishCard id={index} name={item.title} description={item.description}/>
+                <WishCard id={index} name={item.title} description={item.description} color={item.color}/>
             </div>
         )
     }
 
     const onShare = async () => {
+        const linkInfo = await LinkService.getLinkInfo("WISHLIST_SHARE", searchParams.get("id"));
 
+        const link = `https://t.me/RADpoDARky_bot/raddar?startapp=wishlist_${linkInfo.token}`;
+        console.dir(link);
+
+        await navigator.clipboard.writeText(link);
     }
 
     return (

@@ -45,7 +45,7 @@ export default function Wishlist({ wishlist }) {
 					{
 						wishes.map(wish => {
 							return (
-								<WishCard key={wish.id} id={wish.id} wishlistName={wishlist.name} name={wish.title} description={wish.description} />
+								<WishCard key={wish.id} id={wish.id} wishlistName={wishlist.name} name={wish.title} description={wish.description} color={wish.color}/>
 							)
 						})
 					}

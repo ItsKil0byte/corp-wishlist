@@ -29,7 +29,7 @@ const ViewGroup = () => {
     const onShare = async () => {
         if (!group) return;
 
-        const inviteLink = `https://t.me/crybaby_idk_bot/cdcdcd?startapp=joingroup_${group.id}`;
+        const inviteLink = `https://t.me/RADpoDARky_bot/raddar?startapp=joingroup_${group.id}`;
         const messageText = `Вступай в мою группу!`;
 
         const link = `${messageText}\n${inviteLink}`;

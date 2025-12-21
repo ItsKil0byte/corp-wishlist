@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import UserInfoService from "../../services/UserInfoService.js";
 import Loading from "../loading/Loading.jsx";
-import toast from "react-hot-toast";
 import Header from "../../components/Header/Header.jsx";
 import InfoSection from "../../components/InfoSection.jsx";
 

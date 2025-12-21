@@ -5,6 +5,7 @@ import toast, {Toaster} from "react-hot-toast";
 import {useEffect, useState} from "react";
 import GroupService from "./services/GroupService.js";
 import Loading from "./pages/loading/Loading.jsx";
+import LinkService from "./services/LinkService.js";
 
 function Shell() {
     const location = useLocation();
@@ -37,6 +38,11 @@ function Shell() {
                         sessionStorage.setItem("prev_start_param", startParam);
                         navigate('/')
                     }
+                } else if (paramName === "wishlist") {
+                    const wishlist = await LinkService.getEntity(paramValue)
+                    localStorage.setItem("others_wishlist", JSON.stringify(wishlist));
+                    setLoading(false);
+                    navigate(`/wishlists/wish/view/others`)
                 }
             }
         }
