@@ -48,8 +48,21 @@ const Profile = () => {
                         </span>
                     </div>
                 </section>
-                <InfoSection title={"Хобби"} info={userInfo.hobbies} placeholder={"Не указано"}/>
-                <InfoSection title={"Интересы"} info={userInfo.interests} placeholder={"Не указано"}/>
+                <InfoSection title={"Хобби"}
+                             info={userInfo.hobbies}
+                             placeholder={"Не указано"}
+                             canBeEdited={true}
+                             userInfo={userInfo}
+                             setUserInfo={setUserInfo}
+                             type={'hobbies'}/>
+
+                <InfoSection title={"Интересы"}
+                             info={userInfo.interests}
+                             placeholder={"Не указано"}
+                             canBeEdited={true}
+                             userInfo={userInfo}
+                             setUserInfo={setUserInfo}
+                             type={'interests'}/>
             </div>
         </div>
     );

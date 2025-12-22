@@ -40,9 +40,9 @@ function Shell() {
                     }
                 } else if (paramName === "wishlist") {
                     const wishlist = await LinkService.getEntity(paramValue)
-                    localStorage.setItem("others_wishlist", JSON.stringify(wishlist));
+                    sessionStorage.setItem("shared_wishlist", JSON.stringify(wishlist));
                     setLoading(false);
-                    navigate(`/wishlists/wish/view/others`)
+                    navigate(`/wishlists/wishlist/view/shared`)
                 }
             }
         }

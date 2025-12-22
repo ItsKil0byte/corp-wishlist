@@ -36,6 +36,7 @@ const ViewGroup = () => {
 
         try {
             await navigator.clipboard.writeText(link);
+            toast.success('Ссылка скопирована')
         } catch {
             toast.error("Не удалось поделиться");
         }

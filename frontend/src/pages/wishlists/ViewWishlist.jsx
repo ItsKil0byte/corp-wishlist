@@ -5,6 +5,7 @@ import TileList from "../../components/lists/TileList.jsx";
 import WishCard from "../../components/WishCard.jsx";
 import PlusButton from "../../components/PlusButton.jsx";
 import LinkService from "../../services/LinkService.js";
+import toast from "react-hot-toast";
 
 const ViewWishlist = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const ViewWishlist = () => {
         console.dir(link);
 
         await navigator.clipboard.writeText(link);
+        toast.success("Ссылка скопирована");
     }
 
     return (

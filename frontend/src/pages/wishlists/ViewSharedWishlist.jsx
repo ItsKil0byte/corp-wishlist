@@ -1,19 +1,12 @@
 import React from 'react';
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import WishCard from "../../components/WishCard.jsx";
 import Header from "../../components/Header/Header.jsx";
 import TileList from "../../components/lists/TileList.jsx";
-import WishCard from "../../components/WishCard.jsx";
 
-const ViewOthersWishlist = () => {
+const ViewSharedWishlist = () => {
     const navigate = useNavigate();
-    const [searchParams, _] = useSearchParams();
-    const wishlistId = searchParams.get("id");
-    const groupId = searchParams.get("from");
-    const userId = searchParams.get("user");
-
-    const wishlist = JSON.parse(sessionStorage.getItem("others_wishlists")).find(w => w.id === Number(wishlistId));
-    console.log(`ВИШЛИСТ ${wishlistId}`);
-    console.log(wishlist);
+    const wishlist = JSON.parse(sessionStorage.getItem("shared_wishlist"))
 
     const renderWish = (item, index) => {
         return (
@@ -24,7 +17,7 @@ const ViewOthersWishlist = () => {
                           name={item.title}
                           description={item.description}
                           color={item.color}
-                          onClick={() => navigate(`/wishlists/wish/view/others?id=${item.id}&from=${wishlistId}&groupId=${groupId}&user=${userId}`)} />
+                          onClick={() => navigate(`/wishlists/wish/view/shared?id=${item.id}`)} />
             </div>
         )
     }
@@ -34,7 +27,7 @@ const ViewOthersWishlist = () => {
             <>
                 <Header hasBackButton={true}
                         onBack={() => {
-                            navigate("/groups")
+                            navigate("/wishlists")
                         }} />
                 <div className={"w-full grow flex flex-col items-center justify-center overflow-y-scroll relative px-2"}>
                     <span className={"text-4xl font-semibold"}>Не удалось загрузить вишлист...</span>
@@ -48,10 +41,10 @@ const ViewOthersWishlist = () => {
             <Header hasBackButton={true}
                     hasText={true}
                     onBack={() => {
-                        sessionStorage.removeItem("others_wishlist");
-                        navigate(`/profile/others?id=${userId}&from=${groupId}`);
+                        sessionStorage.removeItem("shared_wishlist");
+                        navigate(`/wishlists`, {});
                     }}
-                    text={wishlist.icon ? `${wishlist.icon} ${wishlist.name}` : wishlist.name}/>
+                    text={wishlist.icon ? `${wishlist.icon} ${wishlist.title}` : wishlist.title}/>
             <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll relative px-2"}>
                 <TileList items={wishlist.wishes} render={renderWish} className={"w-full max-w-[31.5rem] grid-cols-2 min-[24.375rem]:grid-cols-3 gap-2"} />
             </div>
@@ -59,4 +52,4 @@ const ViewOthersWishlist = () => {
     );
 };
 
-export default ViewOthersWishlist;
+export default ViewSharedWishlist;
