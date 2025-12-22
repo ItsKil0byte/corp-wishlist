@@ -35,11 +35,13 @@ const EditWish = () => {
     return (
         <div className="h-full w-full flex flex-col justify-between">
             <Header hasBackButton={true}
+                    hasText={true}
+                    text={"Редактирование"}
                     onBack={() => {navigate(`/wishlists/wishlist/view?id=${Number(searchParams.get("from"))}`)}}
                     hasDeleteButton={true}
                     onDelete={onDelete}/>
             <div className={`mx-4 bg-transparent flex flex-col justify-center`}>
-                <input className={`py-2 px-3 w-full h-fit ${color} text-center wrap-break-word font-semibold text-2xl rounded-2xl mb-4`}
+                <input className={`py-2 px-3 w-full h-fit ${color} text-center wrap-break-word font-semibold text-2xl rounded-2xl mb-4 outline-none`}
                        value={title}
                        onChange={e => setTitle(e.target.value)}/>
                 <textarea className={`p-2 w-full h-[9rem] ${color} wrap-break-word font-semibold text-main-theme-primary text-center outline-none rounded-2xl`}

@@ -33,9 +33,22 @@ const EditWishlist = () => {
         navigate(`/wishlists/wishlist/view?id=${searchParams.get("id")}`)
     }
 
+    const onDeleteWishlist = async () => {
+        await WishlistService.deleteWishlist(wishlistId);
+        const updatedWishlist = await WishlistService.getWishlists();
+        sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlist));
+        toast.success("Вишлист удален");
+        navigate(`/wishlists`)
+    }
+
     return (
         <>
-            <Header hasBackButton={true} onBack={() => navigate(`/wishlists/wishlist/view?id=${searchParams.get("id")}`)}/>
+            <Header hasBackButton={true}
+                    hasText={true}
+                    text={"Редактирование"}
+                    hasDeleteButton={true}
+                    onBack={() => navigate(`/wishlists/wishlist/view?id=${searchParams.get("id")}`)}
+                    onDelete={onDeleteWishlist}/>
             <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll"}>
                 <div className={"w-full px-9 my-4 grow flex flex-col gap-y-8 max-w-[31.5rem]"}>
                     <Input className={"w-full h-12"} title={"Название"} placeholder={"На новый год"} value={wishlistName} onChange={e => setWishlistName(e.target.value)}/>
