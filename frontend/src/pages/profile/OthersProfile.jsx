@@ -4,12 +4,15 @@ import UserInfoService from "../../services/UserInfoService.js";
 import Loading from "../loading/Loading.jsx";
 import Header from "../../components/Header/Header.jsx";
 import InfoSection from "../../components/InfoSection.jsx";
+import FlatList from "../../components/lists/FlatList.jsx";
+import WishlistService from "../../services/WishlistService.js";
 
 const OthersProfile = () => {
     const [searchParams, _] = useSearchParams();
     const navigate = useNavigate();
     const userId = searchParams.get("id");
     const groupId = searchParams.get("from");
+    const [wishlists, setWishlists] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
 
@@ -17,7 +20,11 @@ const OthersProfile = () => {
         const fetchData = async () => {
             if(loading) {
                 const loadedUser = await UserInfoService.getInfo(Number(userId));
+                const userWishlist = await WishlistService.getWishlistsByUserId(userId);
+                console.log(userWishlist);
                 setUserInfo(loadedUser);
+                setWishlists(userWishlist);
+                sessionStorage.setItem("others_wishlists", JSON.stringify(userWishlist));
                 setLoading(false);
             }
         }
@@ -27,6 +34,27 @@ const OthersProfile = () => {
 
     if (loading) {
         return <Loading message={"Загружаю профиль..."}/>;
+    }
+
+    const renderWishlist = (item, index) => {
+        return (
+            <li className={`w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 ${"bg-" + item.color} rounded-[0.625rem] list-none list-image-none`}
+                key={index}
+                onClick={() => {navigate(`/wishlists/wishlist/view/others?id=${item.id}&from=${groupId}&user=${userId}`)}}
+            >
+                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
+                    {item.icon}
+                </div>
+                <div className="flex flex-col flex-1 min-w-0">
+                    <div className="text-[1.1875rem] truncate">
+                        {item.name}
+                    </div>
+                    <div className="text-[0.9375rem] truncate">
+                        {item.wishes.length} {`желаний`}
+                    </div>
+                </div>
+            </li>
+        )
     }
 
     return (
@@ -56,6 +84,10 @@ const OthersProfile = () => {
                     </section>
                     <InfoSection title={"Хобби"} info={userInfo.hobbies} placeholder={"Не указано"}/>
                     <InfoSection title={"Интересы"} info={userInfo.interests} placeholder={"Не указано"}/>
+                    <span className={"w-full text-start text-[1.25rem] font-semibold mb-8"}>Вишлисты</span>
+                    <div className={"w-full h-77 flex flex-col items-center mb-8"}>
+                        <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"} overscroll={false}/>
+                    </div>
                 </div>
             </div>
         </>

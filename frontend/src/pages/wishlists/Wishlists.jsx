@@ -63,7 +63,7 @@ function Wishlists() {
 
 	return (
         <div className="w-full h-full flex px-8 pt-8 overflow-hidden relative">
-            <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"}></FlatList>
+            <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"} />
             <PlusButton className={"absolute right-5 bottom-5"}
                         onClick={() => navigate("/wishlists/wishlist/create")}/>
         </div>

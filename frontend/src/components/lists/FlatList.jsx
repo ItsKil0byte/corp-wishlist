@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FlatList = ({ items, render, className }) => {
+const FlatList = ({ items, render, className, overscroll = true }) => {
     return (
         <ol className={`flex-col justify-center items-center overflow-y-scroll ${className}`}>
             {
@@ -8,7 +8,9 @@ const FlatList = ({ items, render, className }) => {
                     render(item, index)
                 ))
             }
-            <div className={"bg-transparent h-64"} />
+            {
+                overscroll && <div className={"bg-transparent h-64"} />
+            }
         </ol>
     );
 };

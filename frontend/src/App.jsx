@@ -15,6 +15,7 @@ import ViewWishlist from "./pages/wishlists/ViewWishlist.jsx";
 import EditWishlist from "./pages/wishlists/EditWishlist.jsx";
 import EditWish from "./pages/wish/EditWish.jsx";
 import ViewOthersWishlist from "./pages/wishlists/ViewOthersWishlist.jsx";
+import ViewOthersWish from "./pages/wish/ViewOthersWish.jsx";
 
 function App() {
 	return (
@@ -25,11 +26,12 @@ function App() {
 
 				<Route path='wishlists/wishlist/create' element={<CreateWishlist/>} />
                 <Route path="wishlists/wishlist/view" element={<ViewWishlist />} />
+                <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist />} />
                 <Route path="wishlists/wishlist/edit" element={<EditWishlist />} />
 
 				<Route path='wishlists/wish/create' element={<CreateWish/>} />
                 <Route path='wishlists/wish/view' element={<ViewWish/>} />
-                <Route path='wishlists/wish/view/others' element={<ViewOthersWishlist/>} />
+                <Route path='wishlists/wish/view/others' element={<ViewOthersWish/>} />
                 <Route path='wishlists/wish/edit' element={<EditWish/>} />
 
 				<Route path="groups" element={<Groups />} />
