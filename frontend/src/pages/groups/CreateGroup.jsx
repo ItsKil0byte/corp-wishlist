@@ -38,7 +38,7 @@ const CreateGroup = () => {
                     <Input className={"w-full h-12"} title={"Название"} placeholder={"Одногруппники"} value={groupName} onChange={e => setGroupName(e.target.value)}/>
                     <EmojiPicker title={"Иконка группы"} emojiSet={emojiSet} onEmojiPicked={onEmojiPicked} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отменить"} onClick={() => {navigate("/groups")}} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate("/groups")}} />
                         <AcceptButton  text={"Создать"} onClick={onCreateGroup} />
                     </div>
                 </div>

@@ -46,7 +46,7 @@ const ViewSharedWishlist = () => {
                     }}
                     text={wishlist.icon ? `${wishlist.icon} ${wishlist.title}` : wishlist.title}/>
             <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll relative px-2"}>
-                <TileList items={wishlist.wishes} render={renderWish} className={"w-full max-w-[31.5rem] grid-cols-2 min-[24.375rem]:grid-cols-3 gap-2"} />
+                <TileList items={wishlist.wishes} render={renderWish} className={"w-full grid-cols-2 min-[30rem]:grid-cols-3 gap-2"} />
             </div>
         </>
     );

@@ -38,7 +38,7 @@ function CreateWishlist() {
                     <Input className={"w-full h-12"} title={"Название"} placeholder={"На новый год"} value={wishlistName} onChange={e => setWishlistName(e.target.value)}/>
                     <EmojiPicker title={"Иконка вишлиста"} emojiSet={emojiSet} onEmojiPicked={onEmojiPicked} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отменить"} onClick={() => {navigate("/wishlists")}} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate("/wishlists")}} />
                         <AcceptButton text={"Создать"} onClick={onCreateWishlist} />
                     </div>
                 </div>

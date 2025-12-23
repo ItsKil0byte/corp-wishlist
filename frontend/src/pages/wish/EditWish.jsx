@@ -52,8 +52,8 @@ const EditWish = () => {
                 </textarea>
             </div>
             <div className={"w-full flex justify-around mt-auto mb-6"}>
-                <DismissButton text={"Отменить"} onClick={() => {navigate(`/wishlists/wish/view?id=${Number(searchParams.get("id"))}&from=${Number(searchParams.get("from"))}`)}} />
-                <AcceptButton  text={"Изменить"} onClick={onEditWish} />
+                <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wish/view?id=${Number(searchParams.get("id"))}&from=${Number(searchParams.get("from"))}`)}} />
+                <AcceptButton  text={"Сохранить"} onClick={onEditWish} />
             </div>
         </div>
     );

@@ -54,7 +54,7 @@ const EditWishlist = () => {
                     <Input className={"w-full h-12"} title={"Название"} placeholder={"На новый год"} value={wishlistName} onChange={e => setWishlistName(e.target.value)}/>
                     <EmojiPicker title={"Иконка вишлиста"} emojiSet={emojiSet} initialEmoji={wishlist.icon} onEmojiPicked={onEmojiPicked} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отменить"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${searchParams.get("id")}`)}} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${searchParams.get("id")}`)}} />
                         <AcceptButton text={"Сохранить"} onClick={onEditWishlist} />
                     </div>
                 </div>

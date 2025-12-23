@@ -44,7 +44,7 @@ function CreateWish() {
                     <Input className={"w-full h-12"} title={"Заголовок"} placeholder={"Наушники"} value={title} onChange={e => setTitle(e.target.value)}/>
                     <Input className={"w-full h-12"} title={"Описание"} placeholder={"Беспроводные, синего цвета"} value={description} onChange={e => setDescription(e.target.value)}/>
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отменить"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${wishlistId}`)}} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${wishlistId}`)}} />
                         <AcceptButton text={"Создать"} onClick={handleCreate} />
                     </div>
                 </div>

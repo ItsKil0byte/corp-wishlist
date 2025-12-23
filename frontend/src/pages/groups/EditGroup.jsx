@@ -40,7 +40,7 @@ const EditGroup = () => {
             const status = await GroupService.deleteGroup(Number(searchParams.get("id")));
             const currentGroups = JSON.parse(sessionStorage.getItem("groups"));
 
-            const updatedGroups = currentGroups.filter(group => group.id === Number(searchParams.get("id")));
+            const updatedGroups = currentGroups.filter(group => group.id !== Number(searchParams.get("id")));
             sessionStorage.setItem("groups", JSON.stringify(updatedGroups));
 
             if (status.toString().startsWith("2")) {
@@ -62,8 +62,8 @@ const EditGroup = () => {
                     <Input className={"w-full h-12"} title={"Название"} placeholder={"Одногруппники"} value={groupName} onChange={e => setGroupName(e.target.value)}/>
                     <EmojiPicker title={"Иконка группы"} emojiSet={emojiSet} initialEmoji={emoji} onEmojiPicked={setEmoji} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отменить"} onClick={() => {navigate(`/groups/group/view?id=${Number(searchParams.get("id"))}`)}} />
-                        <AcceptButton  text={"Изменить"} onClick={onEditGroup} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate(`/groups/group/view?id=${Number(searchParams.get("id"))}`)}} />
+                        <AcceptButton  text={"Сохранить"} onClick={onEditGroup} />
                     </div>
                 </div>
             </div>
