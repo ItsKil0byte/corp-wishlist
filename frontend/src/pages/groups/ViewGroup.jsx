@@ -4,6 +4,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import TileList from "../../components/lists/TileList.jsx";
 import toast from "react-hot-toast";
 import WebApp from "@twa-dev/sdk";
+import LinkService from "../../services/LinkService.js";
 
 const ViewGroup = () => {
     const navigate = useNavigate();
@@ -31,17 +32,13 @@ const ViewGroup = () => {
     const onShare = async () => {
         if (!group) return;
 
-        const inviteLink = `https://t.me/RADpoDARky_bot/raddar?startapp=joingroup_${group.id}`;
-        const messageText = `Вступай в мою группу!`;
+        const linkInfo = await LinkService.getLinkInfo("GROUP_INVITE", group.id);
 
-        const link = `${messageText}\n${inviteLink}`;
+        const link = `https://t.me/RADpoDARky_bot/raddar?startapp=${linkInfo.token}`;
+        console.dir(link);
 
-        try {
-            await navigator.clipboard.writeText(link);
-            toast.success('Ссылка скопирована')
-        } catch {
-            toast.error("Не удалось поделиться");
-        }
+        await navigator.clipboard.writeText(link);
+        toast.success("Ссылка скопирована");
     }
 
     return (

@@ -16,42 +16,55 @@ function Shell() {
 
     useEffect(() => {
         const effect = async () => {
-            const startParam = WebApp.initDataUnsafe.start_param
-            const userId = WebApp.initDataUnsafe.user.id
+            try {
 
-            if(startParam && !loading && !sessionStorage.getItem("paramIsUsed")) {
-                setLoading(true);
+                const startParam = WebApp.initDataUnsafe.start_param
+                const userId = WebApp.initDataUnsafe.user.id
 
-                const [paramName, paramValue] = startParam.split("_")
+                if(startParam && !loading && !sessionStorage.getItem("paramIsUsed")) {
+                    setLoading(true);
 
-                if (paramName === "jg") {
-                    try {
-                        setMessage("Присоединение к группе...")
-                        await GroupService.addMember(paramValue, userId)
-                        toast.success("Вы были добавлены в группу!")
-                        setLoading(false);
-                        navigate('/groups')
-                    } catch {
-                        toast.error("Не удалось присоединиться")
-                        setLoading(false);
-                        navigate('/')
-                    } finally {
-                        sessionStorage.setItem("paramIsUsed", startParam);
-                    }
-                } else if (paramName === "wl") {
-                    try {
-                        const wishlist = await LinkService.getEntity(paramValue)
-                        sessionStorage.setItem("shared_wishlist", JSON.stringify(wishlist));
-                        setLoading(false);
-                        navigate(`/wishlists/wishlist/view/shared`)
-                    } catch {
-                        toast.error("Не удалось загрузить вишлист")
-                        setLoading(false);
-                        navigate('/')
-                    } finally {
-                        sessionStorage.setItem("paramIsUsed", startParam);
+                    const entity = await LinkService.getEntity(startParam);
+
+                    switch(entity.type) {
+                        case 'GROUP_INVITE':
+                            try {
+                                setMessage("Присоединение к группе...")
+                                await GroupService.addMember(entity.entityId, userId);
+                                toast.success("Вы были добавлены в группу!")
+                                setLoading(false);
+                                navigate('/groups')
+                            } catch (e) {
+                                toast.error("Не удалось присоединиться")
+                                console.error(e)
+                                setLoading(false);
+                                navigate('/')
+                            } finally {
+                                sessionStorage.setItem("paramIsUsed", startParam);
+                            }
+                            break;
+                        case 'WISHLIST_SHARE':
+                            try {
+                                setMessage("Загружаю вишлист...")
+                                sessionStorage.setItem("shared_wishlist", JSON.stringify(entity));
+                                setLoading(false);
+                                navigate(`/wishlists/wishlist/view/shared`)
+                            } catch (e) {
+                                toast.error("Не удалось загрузить вишлист")
+                                console.error(e)
+                                setLoading(false);
+                                navigate('/')
+                            } finally {
+                                sessionStorage.setItem("paramIsUsed", startParam);
+                            }
+                            break;
+
                     }
                 }
+            } catch (e) {
+                console.log(e)
+                toast.error("Ошибка")
+                setLoading(false);
             }
         }
 

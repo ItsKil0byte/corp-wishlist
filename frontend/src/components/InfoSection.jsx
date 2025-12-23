@@ -45,10 +45,6 @@ const InfoSection = ({ title, info, placeholder, userInfo, setUserInfo, type, ca
 
         const updInfo = await UserInfoService.updateInfo(newInfo)
 
-        console.log("ИНФО");
-        console.dir(newInfo);
-        console.dir(updInfo);
-
         setUserInfo(updInfo)
         setIsEditing(false);
         toast.success(`${title} обновлены`)

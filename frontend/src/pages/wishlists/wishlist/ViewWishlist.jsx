@@ -28,7 +28,7 @@ const ViewWishlist = () => {
     const onShare = async () => {
         const linkInfo = await LinkService.getLinkInfo("WISHLIST_SHARE", searchParams.get("id"));
 
-        const link = `https://t.me/RADpoDARky_bot/raddar?startapp=wishlist_${linkInfo.token}`;
+        const link = `https://t.me/RADpoDARky_bot/raddar?startapp=${linkInfo.token}`;
         console.dir(link);
 
         await navigator.clipboard.writeText(link);
