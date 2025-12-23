@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import FlatList from "../../components/lists/FlatList.jsx";
 import GroupService from "../../services/GroupService.js";
-import Loading from "../loading/Loading.jsx";
+import Loading from "../Loading.jsx";
 import {useNavigate} from "react-router-dom";
-import PlusButton from "../../components/PlusButton.jsx";
+import PlusButton from "../../components/buttons/PlusButton.jsx";
 import Storage from "../../store/Storage.js";
 import getNumeralEnding from "../../utils/getNumeralEnding.js";
 

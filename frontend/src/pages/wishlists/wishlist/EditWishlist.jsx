@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
-import emojiSets from "../../data/emoji_sets.json";
-import WishlistService from "../../services/WishlistService.js";
+import emojiSets from "../../../data/emoji_sets.json";
+import WishlistService from "../../../services/WishlistService.js";
 import toast from "react-hot-toast";
-import Header from "../../components/Header/Header.jsx";
-import Input from "../../components/Input.jsx";
-import EmojiPicker from "../../components/EmojiPicker.jsx";
-import DismissButton from "../../components/DismissButton.jsx";
-import AcceptButton from "../../components/AcceptButton.jsx";
+import Header from "../../../components/navigation/Header.jsx";
+import Input from "../../../components/inputs/Input.jsx";
+import EmojiPicker from "../../../components/inputs/EmojiPicker.jsx";
+import DismissButton from "../../../components/buttons/DismissButton.jsx";
+import AcceptButton from "../../../components/buttons/AcceptButton.jsx";
 
 const EditWishlist = () => {
     const navigate = useNavigate();

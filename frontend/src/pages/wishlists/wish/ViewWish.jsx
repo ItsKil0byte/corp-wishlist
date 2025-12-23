@@ -1,5 +1,5 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import Header from "../../components/Header/Header";
+import Header from "../../../components/navigation/Header.jsx";
 
 function ViewWish() {
 	const [searchParams, _] = useSearchParams()

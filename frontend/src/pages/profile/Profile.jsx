@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import InfoSection from "../../components/InfoSection.jsx";
 import WebApp from "@twa-dev/sdk";
 import UserInfoService from "../../services/UserInfoService.js";
-import Loading from "../loading/Loading.jsx";
+import Loading from "../Loading.jsx";
 
 const Profile = () => {
     const userInfoFromTg = WebApp.initDataUnsafe.user

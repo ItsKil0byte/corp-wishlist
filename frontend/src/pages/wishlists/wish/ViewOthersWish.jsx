@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
-import Header from "../../components/Header/Header.jsx";
+import Header from "../../../components/navigation/Header.jsx";
 
 const ViewOthersWish = () => {
     const navigate = useNavigate();

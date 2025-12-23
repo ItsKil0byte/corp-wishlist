@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import Header from "../../components/Header/Header.jsx";
+import Header from "../../../components/navigation/Header.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import WishService from "../../services/WishService.js";
+import WishService from "../../../services/WishService.js";
 import toast from "react-hot-toast";
-import WishlistService from "../../services/WishlistService.js";
-import DismissButton from "../../components/DismissButton.jsx";
-import AcceptButton from "../../components/AcceptButton.jsx";
+import WishlistService from "../../../services/WishlistService.js";
+import DismissButton from "../../../components/buttons/DismissButton.jsx";
+import AcceptButton from "../../../components/buttons/AcceptButton.jsx";
 
 const EditWish = () => {
     const [searchParams, _] = useSearchParams()

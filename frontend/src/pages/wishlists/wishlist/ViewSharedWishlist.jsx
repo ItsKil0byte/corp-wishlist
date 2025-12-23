@@ -1,8 +1,8 @@
 import React from 'react';
 import {useNavigate} from "react-router-dom";
-import WishCard from "../../components/WishCard.jsx";
-import Header from "../../components/Header/Header.jsx";
-import TileList from "../../components/lists/TileList.jsx";
+import WishCard from "../../../components/WishCard.jsx";
+import Header from "../../../components/navigation/Header.jsx";
+import TileList from "../../../components/lists/TileList.jsx";
 
 const ViewSharedWishlist = () => {
     const navigate = useNavigate();

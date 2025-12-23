@@ -1,13 +1,13 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "../../components/Header/Header";
+import Header from "../../../components/navigation/Header.jsx";
 import React, { useState } from "react";
-import WishService from "../../services/WishService";
-import getRandomItemFromArray from "../../utils/getRandomItemFromArray.js";
+import WishService from "../../../services/WishService.js";
+import getRandomItemFromArray from "../../../utils/getRandomItemFromArray.js";
 import toast from "react-hot-toast";
-import Input from "../../components/Input.jsx";
-import DismissButton from "../../components/DismissButton.jsx";
-import AcceptButton from "../../components/AcceptButton.jsx";
-import WishlistService from "../../services/WishlistService.js";
+import Input from "../../../components/inputs/Input.jsx";
+import DismissButton from "../../../components/buttons/DismissButton.jsx";
+import AcceptButton from "../../../components/buttons/AcceptButton.jsx";
+import WishlistService from "../../../services/WishlistService.js";
 
 function CreateWish() {
 	const [searchParams, _] = useSearchParams()

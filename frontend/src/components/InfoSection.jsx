@@ -3,6 +3,7 @@ import {GoPencil} from "react-icons/go";
 import {IoCheckmark} from "react-icons/io5";
 import UserInfoService from "../services/UserInfoService.js";
 import toast from "react-hot-toast";
+import {TfiArrowsCorner} from "react-icons/tfi";
 
 const InfoSection = ({ title, info, placeholder, userInfo, setUserInfo, type, canBeEdited = false }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -10,11 +11,15 @@ const InfoSection = ({ title, info, placeholder, userInfo, setUserInfo, type, ca
 
     const renderForm = () => {
         return isEditing ? (
-            <textarea rows={2}
-                      className={"w-full h-full text-main-theme-primary text-start mb-2 outline-[]"}
-                      value={value?.toString()}
-                      placeholder={placeholder}
-                      onChange={e => setValue(e.target.value)}/>
+            <div className="w-full h-full relative">
+                <textarea rows={2}
+                          className={"w-full h-full text-main-theme-primary text-start p-2 outline-main-theme rounded-2xl resize-y"}
+                          value={value?.toString()}
+                          placeholder={placeholder}
+                          onChange={e => setValue(e.target.value)}/>
+
+                <TfiArrowsCorner className={"h-4 w-4 absolute -bottom-1 -right-1 pointer-events-none fill-main-theme-primary bg-main-theme-lite"}/>
+            </div>
         ) : (
             <span className={"w-full h-full text-main-theme-primary text-start mb-2"}>
                 {info ? info : placeholder}

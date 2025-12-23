@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import EmojiPicker from "../../components/EmojiPicker.jsx";
-import Header from "../../components/Header/Header.jsx";
+import EmojiPicker from "../../components/inputs/EmojiPicker.jsx";
+import Header from "../../components/navigation/Header.jsx";
 import {useNavigate} from "react-router-dom";
-import Input from "../../components/Input.jsx";
-import AcceptButton from "../../components/AcceptButton.jsx";
-import DismissButton from "../../components/DismissButton.jsx";
+import Input from "../../components/inputs/Input.jsx";
+import AcceptButton from "../../components/buttons/AcceptButton.jsx";
+import DismissButton from "../../components/buttons/DismissButton.jsx";
 import GroupService from "../../services/GroupService.js";
 import toast from "react-hot-toast";
 import emojiSets from "../../data/emoji_sets.json"

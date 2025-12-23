@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import UserInfoService from "../../services/UserInfoService.js";
-import Loading from "../loading/Loading.jsx";
-import Header from "../../components/Header/Header.jsx";
+import Loading from "../Loading.jsx";
+import Header from "../../components/navigation/Header.jsx";
 import InfoSection from "../../components/InfoSection.jsx";
 import FlatList from "../../components/lists/FlatList.jsx";
 import WishlistService from "../../services/WishlistService.js";

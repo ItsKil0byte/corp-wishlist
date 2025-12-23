@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
 import WishlistService from "../../services/WishlistService.js";
-import Loading from "../loading/Loading.jsx";
+import Loading from "../Loading.jsx";
 import FlatList from "../../components/lists/FlatList.jsx";
-import PlusButton from "../../components/PlusButton.jsx";
+import PlusButton from "../../components/buttons/PlusButton.jsx";
 
 function Wishlists() {
 	const [wishlists, setWishlists] = useState([]);

@@ -1,10 +1,10 @@
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import FooterNav from "./components/FooterNav";
+import FooterNav from "./components/navigation/FooterNav.jsx";
 import WebApp from "@twa-dev/sdk";
 import toast, {Toaster} from "react-hot-toast";
 import {useEffect, useState} from "react";
 import GroupService from "./services/GroupService.js";
-import Loading from "./pages/loading/Loading.jsx";
+import Loading from "./pages/Loading.jsx";
 import LinkService from "./services/LinkService.js";
 
 function Shell() {
@@ -19,30 +19,38 @@ function Shell() {
             const startParam = WebApp.initDataUnsafe.start_param
             const userId = WebApp.initDataUnsafe.user.id
 
-            if(startParam && !loading && startParam !== sessionStorage.getItem("prev_start_param")) {
+            if(startParam && !loading && !sessionStorage.getItem("paramIsUsed")) {
                 setLoading(true);
 
                 const [paramName, paramValue] = startParam.split("_")
 
-                if (paramName === "joingroup") {
+                if (paramName === "jg") {
                     try {
                         setMessage("Присоединение к группе...")
                         await GroupService.addMember(paramValue, userId)
                         toast.success("Вы были добавлены в группу!")
                         setLoading(false);
-                        sessionStorage.setItem("prev_start_param", startParam);
                         navigate('/groups')
                     } catch {
                         toast.error("Не удалось присоединиться")
                         setLoading(false);
-                        sessionStorage.setItem("prev_start_param", startParam);
                         navigate('/')
+                    } finally {
+                        sessionStorage.setItem("paramIsUsed", startParam);
                     }
-                } else if (paramName === "wishlist") {
-                    const wishlist = await LinkService.getEntity(paramValue)
-                    sessionStorage.setItem("shared_wishlist", JSON.stringify(wishlist));
-                    setLoading(false);
-                    navigate(`/wishlists/wishlist/view/shared`)
+                } else if (paramName === "wl") {
+                    try {
+                        const wishlist = await LinkService.getEntity(paramValue)
+                        sessionStorage.setItem("shared_wishlist", JSON.stringify(wishlist));
+                        setLoading(false);
+                        navigate(`/wishlists/wishlist/view/shared`)
+                    } catch {
+                        toast.error("Не удалось загрузить вишлист")
+                        setLoading(false);
+                        navigate('/')
+                    } finally {
+                        sessionStorage.setItem("paramIsUsed", startParam);
+                    }
                 }
             }
         }

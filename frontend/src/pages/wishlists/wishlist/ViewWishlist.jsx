@@ -1,10 +1,10 @@
 import React from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
-import Header from "../../components/Header/Header.jsx";
-import TileList from "../../components/lists/TileList.jsx";
-import WishCard from "../../components/WishCard.jsx";
-import PlusButton from "../../components/PlusButton.jsx";
-import LinkService from "../../services/LinkService.js";
+import Header from "../../../components/navigation/Header.jsx";
+import TileList from "../../../components/lists/TileList.jsx";
+import WishCard from "../../../components/WishCard.jsx";
+import PlusButton from "../../../components/buttons/PlusButton.jsx";
+import LinkService from "../../../services/LinkService.js";
 import toast from "react-hot-toast";
 
 const ViewWishlist = () => {

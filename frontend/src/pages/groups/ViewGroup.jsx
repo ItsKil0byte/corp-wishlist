@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "../../components/Header/Header.jsx";
+import Header from "../../components/navigation/Header.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import TileList from "../../components/lists/TileList.jsx";
 import toast from "react-hot-toast";
@@ -54,25 +54,32 @@ const ViewGroup = () => {
                     text={group.icon ? `${group.icon} ${group.name}` : group.name}
                     onShare={() => onShare()}
                     onEdit={() => navigate(`/groups/group/edit?id=${searchParams.get("id")}`)}/>
-            <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll relative"}>
+            {
+                groupIsEmpty && (
+                    <div className="w-fit h-fit absolute top-12 right-6">
+                        <svg width="73"
+                             height="208"
+                             viewBox="0 0 73 208"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M0.295617 202.529C41.5004 172.029 52.9754 86.5291 66.5771 4.90671" stroke="#707579"/>
+                            <line y1="-0.5" x2="18.7404" y2="-0.5" transform="matrix(-0.2783 -0.960494 0.966332 -0.257299 72.7953 22.0293)" stroke="#707579"/>
+                            <line y1="-0.5" x2="20.3152" y2="-0.5" transform="matrix(-0.616202 0.787588 -0.811927 -0.583759 66.5366 4.0293)" stroke="#707579"/>
+                        </svg>
+                    </div>
+                )
+            }
+            <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll"}>
                 {
                     groupIsEmpty ? (
-                        <>
-                            <div className="absolute top-0 right-2 w-24 h-48 sm:w-32 sm:h-56">
-                                <svg width="73" height="208" viewBox="0 0 73 208" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0.295617 202.529C41.5004 172.029 52.9754 86.5291 66.5771 4.90671" stroke="#707579"/>
-                                    <line y1="-0.5" x2="18.7404" y2="-0.5" transform="matrix(-0.2783 -0.960494 0.966332 -0.257299 72.7953 22.0293)" stroke="#707579"/>
-                                    <line y1="-0.5" x2="20.3152" y2="-0.5" transform="matrix(-0.616202 0.787588 -0.811927 -0.583759 66.5366 4.0293)" stroke="#707579"/>
-                                </svg>
-                            </div>
-                            <div className="absolute grow inset-0 flex flex-col items-center pointer-events-none">
-                                <div className="text-center font-bold text-2xl text-black max-w-[300px] mt-52">
+                            <div className="absolute grow inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <div className="text-center font-bold text-2xl text-black max-w-[300px]">
                                     <p>Группа создана!</p>
                                     <p>Самое время пригласить</p>
                                     <p>новых участников</p>
                                 </div>
                             </div>
-                        </>
                     ) : (
                         <TileList items={group.members} render={renderUserProfile} className={"w-full grid-cols-2 min-[30rem]:grid-cols-3"} />
                     )

@@ -3,21 +3,20 @@ import Shell from './Shell'
 import Groups from './pages/groups/Groups.jsx'
 import Profile from './pages/profile/Profile.jsx'
 import Wishlists from './pages/wishlists/Wishlists'
-import Test from './components/Test'
-import CreateWishlist from './pages/wishlists/CreateWishlist'
-import CreateWish from './pages/wishlist/CreateWish'
-import ViewWish from './pages/wish/ViewWish.jsx'
+import CreateWishlist from './pages/wishlists/wishlist/CreateWishlist.jsx'
+import CreateWish from './pages/wishlists/wish/CreateWish.jsx'
+import ViewWish from './pages/wishlists/wish/ViewWish.jsx'
 import CreateGroup from "./pages/groups/CreateGroup.jsx";
 import ViewGroup from "./pages/groups/ViewGroup.jsx";
 import EditGroup from "./pages/groups/EditGroup.jsx";
 import OthersProfile from "./pages/profile/OthersProfile.jsx";
-import ViewWishlist from "./pages/wishlists/ViewWishlist.jsx";
-import EditWishlist from "./pages/wishlists/EditWishlist.jsx";
-import EditWish from "./pages/wish/EditWish.jsx";
-import ViewOthersWishlist from "./pages/wishlists/ViewOthersWishlist.jsx";
-import ViewOthersWish from "./pages/wish/ViewOthersWish.jsx";
-import ViewSharedWishlist from "./pages/wishlists/ViewSharedWishlist.jsx";
-import ViewSharedWish from "./pages/wish/ViewSharedWish.jsx";
+import ViewWishlist from "./pages/wishlists/wishlist/ViewWishlist.jsx";
+import EditWishlist from "./pages/wishlists/wishlist/EditWishlist.jsx";
+import EditWish from "./pages/wishlists/wish/EditWish.jsx";
+import ViewOthersWishlist from "./pages/wishlists/wishlist/ViewOthersWishlist.jsx";
+import ViewOthersWish from "./pages/wishlists/wish/ViewOthersWish.jsx";
+import ViewSharedWishlist from "./pages/wishlists/wishlist/ViewSharedWishlist.jsx";
+import ViewSharedWish from "./pages/wishlists/wish/ViewSharedWish.jsx";
 
 function App() {
 	return (
@@ -46,7 +45,6 @@ function App() {
                 <Route path="profile" element={<Profile />} />
                 <Route path="profile/others" element={<OthersProfile />} />
 			</Route>
-			<Route path='/test' element={<Test />} />
 		</Routes>
 	)
 }
