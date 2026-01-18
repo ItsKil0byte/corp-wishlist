@@ -15,21 +15,74 @@ const EditWish = () => {
     const color = `bg-${wish.color}`
     const [title, setTitle] = useState(wish.title)
     const [description, setDescription] = useState(wish.description)
+    const [blockButtons, setBlockButtons] = useState(false)
 
     const onDelete = async () => {
-        await WishService.deleteWish(wish.id)
-        const updatedWishlist = await WishlistService.getWishlists()
-        sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlist))
-        toast.success("Желание удалено")
-        navigate(`/wishlists/wishlist/view?id=${Number(searchParams.get("from"))}`)
+        if(!blockButtons) {
+            setBlockButtons(true)
+            const tId = toast.loading("Удаление")
+
+            try {
+                await WishService.deleteWish(wish.id)
+                const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
+
+                const updatedWishlists = localWishlists.map(w => {
+                    if (w.id === Number(searchParams.get("from"))) {
+                        return {
+                            ...w,
+                            wishes: w.wishes.filter(wish => wish.id !== Number(searchParams.get("id")))
+                        };
+                    }
+
+                    return w;
+                })
+
+                sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlists))
+                toast.success("Желание удалено", { id: tId })
+                navigate(`/wishlists/wishlist/view?id=${Number(searchParams.get("from"))}`)
+            } catch {
+                toast.error("Произошла ошибка", { id: tId })
+            } finally {
+                setBlockButtons(false)
+            }
+        }
     }
 
     const onEditWish = async () => {
-        await WishService.updateWish(wish.id, title, description, wish.color)
-        const updatedWishlist = await WishlistService.getWishlists()
-        sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlist))
-        toast.success("Изменения сохранены")
-        navigate(`/wishlists/wishlist/view?id=${Number(searchParams.get("from"))}`)
+        if(!blockButtons) {
+            setBlockButtons(true)
+            const tId = toast.loading("Сохранение")
+
+            try {
+                const upd_wish = await WishService.updateWish(wish.id, title, description, wish.color)
+                const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
+
+                const updatedWishlists = localWishlists.map(w => {
+                    if(w.id === Number(searchParams.get("from"))) {
+                        return {
+                            ...w,
+                            wishes: w.wishes.map(wish => {
+                                if (wish.id === Number(searchParams.get("id"))) {
+                                    return upd_wish
+                                }
+
+                                return wish;
+                            })
+                        }
+                    }
+
+                    return w;
+                })
+
+                sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlists))
+                toast.success("Изменения сохранены", { id: tId })
+                navigate(`/wishlists/wishlist/view?id=${Number(searchParams.get("from"))}`)
+            } catch {
+                toast.error("Произошла ошибка", { id: tId })
+            } finally {
+                setBlockButtons(false)
+            }
+        }
     }
 
     return (
@@ -53,7 +106,7 @@ const EditWish = () => {
             </div>
             <div className={"w-full flex justify-around mt-auto mb-6"}>
                 <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wish/view?id=${Number(searchParams.get("id"))}&from=${Number(searchParams.get("from"))}`)}} />
-                <AcceptButton  text={"Сохранить"} onClick={onEditWish} />
+                <AcceptButton  text={"Сохранить"} onClick={onEditWish} disabled={title.length === 0 || blockButtons}/>
             </div>
         </div>
     );

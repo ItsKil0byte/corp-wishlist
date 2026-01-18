@@ -35,7 +35,7 @@ services:
             context: ./backend
             dockerfile: Dockerfile
         env_file:
-            - .env
+            - .env 
         environment:
             SPRING_PROFILES_ACTIVE: postgres
         depends_on:

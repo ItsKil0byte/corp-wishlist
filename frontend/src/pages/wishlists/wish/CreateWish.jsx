@@ -12,7 +12,7 @@ import WishlistService from "../../../services/WishlistService.js";
 function CreateWish() {
 	const [searchParams, _] = useSearchParams()
 	const wishlistId = searchParams.get("id")
-    console.log("АЙДИ ВИШ" + wishlistId)
+    const [blockButtons, setBlockButtons] = useState(false);
 
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
@@ -21,19 +21,31 @@ function CreateWish() {
 	const navigate = useNavigate()
 
 	const handleCreate = async () => {
-		try {
-			const wishlist = await WishService.addWish(wishlistId, title, description, getRandomItemFromArray(colors))
-            const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
+        if (!blockButtons) {
+            setBlockButtons(true);
+            const tId = toast.loading("Создание")
 
-            const updatedWishlists = await WishlistService.getWishlists()
+            try {
+                const wish = await WishService.addWish(wishlistId, title, description, getRandomItemFromArray(colors))
+                const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
 
-            sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlists));
-            toast.success(`Желание добавлено`)
-            navigate(`/wishlists/wishlist/view?id=${wishlistId}`)
-		} catch {
-			toast.error(`Произошла ошибка`)
-            navigate(`/wishlists/wishlist/view?id=${wishlistId}`)
-		}
+                const updatedWishlists = localWishlists.map((wishlist) => {
+                    if (wishlist.id === Number(wishlistId)) {
+                        wishlist.wishes.push(wish);
+                    }
+
+                    return wishlist;
+                })
+
+                sessionStorage.setItem("wishlists", JSON.stringify(updatedWishlists));
+                toast.success(`Желание добавлено`, { id: tId })
+                navigate(`/wishlists/wishlist/view?id=${wishlistId}`)
+            } catch {
+                toast.error(`Произошла ошибка`, { id: tId })
+            } finally {
+                setBlockButtons(false);
+            }
+        }
 	}
 
 	return (
@@ -44,8 +56,8 @@ function CreateWish() {
                     <Input className={"w-full h-12"} title={"Заголовок"} placeholder={"Наушники"} value={title} onChange={e => setTitle(e.target.value)}/>
                     <Input className={"w-full h-12"} title={"Описание"} placeholder={"Беспроводные, синего цвета"} value={description} onChange={e => setDescription(e.target.value)}/>
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
-                        <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${wishlistId}`)}} />
-                        <AcceptButton text={"Создать"} onClick={handleCreate} />
+                        <DismissButton text={"Отмена"} onClick={() => {navigate(`/wishlists/wishlist/view?id=${wishlistId}`)}}/>
+                        <AcceptButton text={"Создать"} onClick={handleCreate} disabled={title.length === 0 || blockButtons} />
                     </div>
                 </div>
             </div>

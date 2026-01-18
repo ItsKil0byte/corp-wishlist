@@ -16,41 +16,60 @@ const EditGroup = () => {
     const [groupName, setGroupName] = useState(currentGroup.name);
     const [emoji, setEmoji] = useState(currentGroup.icon);
     const navigate = useNavigate();
+    const [blockButtons, setBlockButtons] = useState(false);
 
     const onEditGroup = async () => {
-        const updatedGroup = await GroupService.updateGroup(Number(searchParams.get("id")), groupName, emoji);
-        const currentGroups = JSON.parse(sessionStorage.getItem("groups"));
+        if (!blockButtons) {
+            setBlockButtons(true)
+            const tId = toast.loading("Сохранение")
 
-        const updatedGroups = currentGroups.map(group => {
-            if (group.id === Number(searchParams.get("id"))) {
-                return updatedGroup
+            try {
+                const updatedGroup = await GroupService.updateGroup(Number(searchParams.get("id")), groupName, emoji);
+                const currentGroups = JSON.parse(sessionStorage.getItem("groups"));
+
+                const updatedGroups = currentGroups.map(group => {
+                    if (group.id === Number(searchParams.get("id"))) {
+                        return updatedGroup
+                    }
+
+                    return group;
+                })
+
+                sessionStorage.setItem("groups", JSON.stringify(updatedGroups));
+
+                toast.success("Группа изменена", { id: tId });
+                navigate(`/groups/group/view?id=${Number(searchParams.get("id"))}`);
+            } catch {
+                toast.error("Произошла ошибка", { id: tId })
+            } finally {
+                setBlockButtons(false)
             }
-
-            return group;
-        })
-
-        sessionStorage.setItem("groups", JSON.stringify(updatedGroups));
-
-        toast.success("Группа изменена!");
-        navigate(`/groups/group/view?id=${Number(searchParams.get("id"))}`);
+        }
     }
 
     const onDeleteGroup = async () => {
-        try {
-            const status = await GroupService.deleteGroup(Number(searchParams.get("id")));
-            const currentGroups = JSON.parse(sessionStorage.getItem("groups"));
+        if (!blockButtons) {
+            setBlockButtons(true)
+            const tId = toast.loading("Удаление")
 
-            const updatedGroups = currentGroups.filter(group => group.id !== Number(searchParams.get("id")));
-            sessionStorage.setItem("groups", JSON.stringify(updatedGroups));
+            try {
+                const status = await GroupService.deleteGroup(Number(searchParams.get("id")));
+                const currentGroups = JSON.parse(sessionStorage.getItem("groups"));
 
-            if (status.toString().startsWith("2")) {
-                toast.success(`Группа ${groupName} удалена`)
-                navigate("/groups");
-            } else {
-                toast.error("При удалении произошла ошибка")
+                const updatedGroups = currentGroups.filter(group => group.id !== Number(searchParams.get("id")));
+                sessionStorage.setItem("groups", JSON.stringify(updatedGroups));
+
+                if (status.toString().startsWith("2")) {
+                    toast.success(`Группа ${groupName} удалена`, { id: tId })
+                    navigate("/groups");
+                } else {
+                    toast.error("Произошла ошибка", { id: tId })
+                }
+            } catch {
+                toast.error("Произошла ошибка", { id: tId })
+            } finally {
+                setBlockButtons(false);
             }
-        } catch {
-            toast.error("При удалении произошла ошибка")
         }
     }
 
@@ -63,7 +82,7 @@ const EditGroup = () => {
                     <EmojiPicker title={"Иконка группы"} emojiSet={emojiSet} initialEmoji={emoji} onEmojiPicked={setEmoji} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
                         <DismissButton text={"Отмена"} onClick={() => {navigate(`/groups/group/view?id=${Number(searchParams.get("id"))}`)}} />
-                        <AcceptButton  text={"Сохранить"} onClick={onEditGroup} />
+                        <AcceptButton  text={"Сохранить"} onClick={onEditGroup} disabled={groupName.length === 0 || blockButtons} />
                     </div>
                 </div>
             </div>

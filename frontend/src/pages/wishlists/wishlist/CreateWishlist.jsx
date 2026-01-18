@@ -14,19 +14,34 @@ function CreateWishlist() {
     const [emoji, setEmoji] = useState(null)
     const [wishlistName, setWishlistName] = useState("")
     const emojiSet = emojiSets.wishlist;
-    const [creating, setCreating] = useState(false);
+    const [blockButtons, setBlockButtons] = useState(false);
 
     const onEmojiPicked = (pickedEmoji) => {
         setEmoji(pickedEmoji)
     }
 
     const onCreateWishlist = async () => {
-        if (!creating) {
-            setCreating(true);
-            await WishlistService.addWishlist(wishlistName, "main-theme-lite", emoji)
-            sessionStorage.removeItem("wishlists");
-            toast.success("Вишлист создан")
-            navigate("/wishlists");
+        if (!blockButtons) {
+            setBlockButtons(true);
+            const tId = toast.loading("Создание")
+
+            try {
+                const wishlist = await WishlistService.addWishlist(wishlistName, "main-theme-lite", emoji)
+                const localWishlists = JSON.parse(sessionStorage.getItem("wishlists"));
+
+                console.dir(wishlist);
+                console.dir(localWishlists);
+
+                localWishlists.push(wishlist);
+                sessionStorage.setItem("wishlists", JSON.stringify(localWishlists));
+
+                toast.success("Вишлист создан", { id: tId });
+                navigate("/wishlists");
+            } catch {
+                toast.error("Произошла ошибка", { id: tId });
+            } finally {
+                setBlockButtons(false);
+            }
         }
     }
 
@@ -39,7 +54,7 @@ function CreateWishlist() {
                     <EmojiPicker title={"Иконка вишлиста"} emojiSet={emojiSet} onEmojiPicked={onEmojiPicked} />
                     <div className={"w-full flex justify-around mt-auto mb-6"}>
                         <DismissButton text={"Отмена"} onClick={() => {navigate("/wishlists")}} />
-                        <AcceptButton text={"Создать"} onClick={onCreateWishlist} />
+                        <AcceptButton text={"Создать"} onClick={onCreateWishlist} disabled={wishlistName.length === 0 || blockButtons} />
                     </div>
                 </div>
             </div>
