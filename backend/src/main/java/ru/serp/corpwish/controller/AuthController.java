@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.serp.corpwish.DTO.TelegramAuthRequest;
 import ru.serp.corpwish.DTO.TelegramAuthResponse;
 import ru.serp.corpwish.DTO.auth.web.WebAuthResponse;
+import ru.serp.corpwish.DTO.auth.web.WebLoginRequest;
 import ru.serp.corpwish.DTO.auth.web.WebRegisterRequest;
 import ru.serp.corpwish.service.AuthService;
 
@@ -45,6 +46,15 @@ public class AuthController {
             @RequestBody WebRegisterRequest request
     ){
         String token = authService.registerWithWeb(request);
+
+        return ResponseEntity.ok(new WebAuthResponse(token));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<WebAuthResponse> loginWithWeb(
+            @RequestBody WebLoginRequest request
+    ){
+        String token = authService.loginWithWeb(request);
 
         return ResponseEntity.ok(new WebAuthResponse(token));
     }
