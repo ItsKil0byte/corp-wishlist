@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class WebRegisterRequest {
-    String login;
-    String password;
+    private String login;
+    private String password;
 }
