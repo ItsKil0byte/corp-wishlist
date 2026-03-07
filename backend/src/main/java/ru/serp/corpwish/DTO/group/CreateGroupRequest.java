@@ -1,4 +1,4 @@
-package ru.serp.corpwish.DTO;
+package ru.serp.corpwish.DTO.group;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package ru.serp.corpwish.service;
 
 import org.springframework.data.domain.Pageable;
-import ru.serp.corpwish.DTO.CreateWishlistRequest;
-import ru.serp.corpwish.DTO.WishlistDto;
+import ru.serp.corpwish.DTO.wishlist.CreateWishlistRequest;
+import ru.serp.corpwish.DTO.wishlist.WishlistDto;
 
 import java.util.List;
 

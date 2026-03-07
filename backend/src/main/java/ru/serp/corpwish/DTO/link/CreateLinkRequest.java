@@ -1,7 +1,6 @@
-package ru.serp.corpwish.DTO;
+package ru.serp.corpwish.DTO.link;
 
 import lombok.Data;
-import ru.serp.corpwish.entity.LinkType;
 
 import java.time.Instant;
 

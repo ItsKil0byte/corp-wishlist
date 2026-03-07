@@ -1,8 +1,8 @@
 package ru.serp.corpwish.service;
 
-import ru.serp.corpwish.DTO.GroupDto;
-import ru.serp.corpwish.DTO.InviteLinkDto;
-import ru.serp.corpwish.DTO.PublicLinkDto;
+import ru.serp.corpwish.DTO.group.GroupDto;
+import ru.serp.corpwish.DTO.link.InviteLinkDto;
+import ru.serp.corpwish.DTO.link.PublicLinkDto;
 import ru.serp.corpwish.entity.LinkType;
 import ru.serp.corpwish.entity.User;
 

@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.serp.corpwish.DTO.CreateWishRequest;
-import ru.serp.corpwish.DTO.WishDto;
+import ru.serp.corpwish.DTO.wish.CreateWishRequest;
+import ru.serp.corpwish.DTO.wish.WishDto;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.WishService;
 

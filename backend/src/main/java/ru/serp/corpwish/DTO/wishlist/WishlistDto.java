@@ -1,6 +1,7 @@
-package ru.serp.corpwish.DTO;
+package ru.serp.corpwish.DTO.wishlist;
 
 import lombok.Data;
+import ru.serp.corpwish.DTO.wish.WishDto;
 
 import java.util.List;
 
