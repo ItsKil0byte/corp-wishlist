@@ -20,6 +20,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(name = "login", unique = true)
+    private String login;
+
+    @Column(name = "passwordHash")
+    private String passwordHash;
+
     @Column(name = "telegramId", unique = true)
     private Long telegramId;
 
