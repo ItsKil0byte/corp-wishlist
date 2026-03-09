@@ -1,7 +1,6 @@
-package ru.serp.corpwish.DTO.group;
+package ru.serp.corpwish.DTO;
 
 import lombok.Data;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
 
 import java.util.List;
 

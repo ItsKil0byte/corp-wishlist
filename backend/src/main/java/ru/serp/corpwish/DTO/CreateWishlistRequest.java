@@ -1,4 +1,4 @@
-package ru.serp.corpwish.DTO.wishlist;
+package ru.serp.corpwish.DTO;
 
 import lombok.Data;
 

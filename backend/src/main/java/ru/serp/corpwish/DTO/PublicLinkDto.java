@@ -1,11 +1,9 @@
-package ru.serp.corpwish.DTO.link;
+package ru.serp.corpwish.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.serp.corpwish.DTO.wish.WishDto;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
 
 import java.util.List;
 

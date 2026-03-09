@@ -1,4 +1,4 @@
-package ru.serp.corpwish.DTO.wish;
+package ru.serp.corpwish.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

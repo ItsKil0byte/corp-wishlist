@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.serp.corpwish.DTO.wishlist.CreateWishlistRequest;
-import ru.serp.corpwish.DTO.wishlist.WishlistDto;
+import ru.serp.corpwish.DTO.CreateWishlistRequest;
+import ru.serp.corpwish.DTO.WishlistDto;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.WishlistService;
 

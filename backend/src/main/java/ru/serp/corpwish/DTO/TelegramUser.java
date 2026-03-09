@@ -1,4 +1,4 @@
-package ru.serp.corpwish.DTO.auth.telegram;
+package ru.serp.corpwish.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

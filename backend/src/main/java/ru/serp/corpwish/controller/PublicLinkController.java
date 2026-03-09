@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.serp.corpwish.DTO.group.GroupDto;
-import ru.serp.corpwish.DTO.link.PublicLinkDto;
+import ru.serp.corpwish.DTO.GroupDto;
+import ru.serp.corpwish.DTO.PublicLinkDto;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.LinkService;
 

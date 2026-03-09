@@ -1,7 +1,7 @@
 package ru.serp.corpwish.service;
 
-import ru.serp.corpwish.DTO.group.CreateGroupRequest;
-import ru.serp.corpwish.DTO.group.GroupDto;
+import ru.serp.corpwish.DTO.CreateGroupRequest;
+import ru.serp.corpwish.DTO.GroupDto;
 
 import java.util.List;
 

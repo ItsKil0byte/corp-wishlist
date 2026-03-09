@@ -1,10 +1,10 @@
-package ru.serp.corpwish.DTO.auth.web;
+package ru.serp.corpwish.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class WebAuthResponse {
+public class TelegramAuthResponse {
     private String token;
 }

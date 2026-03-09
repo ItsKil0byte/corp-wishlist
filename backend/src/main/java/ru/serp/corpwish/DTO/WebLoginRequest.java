@@ -1,9 +1,9 @@
-package ru.serp.corpwish.DTO.auth.web;
+package ru.serp.corpwish.DTO;
 
 import lombok.Data;
 
 @Data
-public class WebRegisterRequest {
+public class WebLoginRequest {
     private String login;
     private String password;
 }

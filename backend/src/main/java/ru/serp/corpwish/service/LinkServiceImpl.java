@@ -2,11 +2,11 @@ package ru.serp.corpwish.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
-import ru.serp.corpwish.DTO.group.GroupDto;
-import ru.serp.corpwish.DTO.link.InviteLinkDto;
-import ru.serp.corpwish.DTO.link.PublicLinkDto;
-import ru.serp.corpwish.DTO.wish.WishDto;
+import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.GroupDto;
+import ru.serp.corpwish.DTO.InviteLinkDto;
+import ru.serp.corpwish.DTO.PublicLinkDto;
+import ru.serp.corpwish.DTO.WishDto;
 import ru.serp.corpwish.entity.*;
 import ru.serp.corpwish.repository.GroupRepository;
 import ru.serp.corpwish.repository.LinksRepository;
