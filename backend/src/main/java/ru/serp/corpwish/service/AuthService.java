@@ -67,6 +67,7 @@ public class AuthService {
 
         newUser.setTelegramId(user.getId());
         newUser.setUsername(user.getUsername());
+        newUser.setPhoto_url(user.getPhoto_url());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
 

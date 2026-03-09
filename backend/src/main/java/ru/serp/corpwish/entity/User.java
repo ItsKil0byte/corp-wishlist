@@ -32,11 +32,20 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "picture")
+    private String photo_url;
+
     @Column(name = "firstName")
     private String firstName;
 
     @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "hobbies")
+    private String hobbies;
+
+    @Column(name = "interests")
+    private String interests;
 
     @ManyToMany(mappedBy = "members")
     private List<Group> groups = new ArrayList<>();

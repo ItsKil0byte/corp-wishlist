@@ -27,6 +27,7 @@ public class GroupServiceImpl implements GroupService{
         Group group = new Group();
 
         group.setName(groupData.getName());
+        group.setIcon(groupData.getIcon());
         group.setOwner(user);
 
         groupRepository.save(group);
@@ -43,6 +44,7 @@ public class GroupServiceImpl implements GroupService{
         }
 
         group.setName(newGroupData.getName());
+        group.setIcon(newGroupData.getIcon());
         groupRepository.save(group);
 
         return convertToDto(group);
@@ -148,6 +150,7 @@ public class GroupServiceImpl implements GroupService{
 
         groupDto.setId(group.getId());
         groupDto.setName(group.getName());
+        groupDto.setIcon(group.getIcon());
         groupDto.setMembers(
                 group.getMembers().stream()
                         .map(this::convertToTelegramUser)
@@ -161,6 +164,7 @@ public class GroupServiceImpl implements GroupService{
         TelegramUser telegramUser = new TelegramUser();
 
         telegramUser.setId(user.getTelegramId());
+        telegramUser.setPhoto_url(user.getPhoto_url());
         telegramUser.setUsername(user.getUsername());
         telegramUser.setFirstName(user.getFirstName());
         telegramUser.setLastName(user.getLastName());

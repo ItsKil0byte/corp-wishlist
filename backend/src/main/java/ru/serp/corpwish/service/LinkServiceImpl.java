@@ -111,6 +111,7 @@ public class LinkServiceImpl implements LinkService {
                                 wish.getId(),
                                 wish.getTitle(),
                                 wish.getDescription(),
+                                wish.getColor(),
                                 wishlist.getId()
                         ))
                         .toList())
@@ -129,8 +130,11 @@ public class LinkServiceImpl implements LinkService {
                         .map(user -> new TelegramUser(
                                 user.getTelegramId(),
                                 user.getUsername(),
+                                user.getPhoto_url(),
                                 user.getFirstName(),
-                                user.getLastName()
+                                user.getLastName(),
+                                user.getHobbies(),
+                                user.getInterests()
                         ))
                         .toList())
                 .build();

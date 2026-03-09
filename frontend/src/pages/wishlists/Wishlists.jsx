@@ -1,97 +1,72 @@
-import WishlistsEmpty from "./WishlistsEmpty";
-import Header from "../../components/Header/Header";
-import HeaderButton from "../../components/Header/HeaderButton";
-import { useEffect, useState } from "react";
-import { Navigate, NavLink, useSearchParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import WishlistService from "../../services/WishlistService.js";
-import Wishlist from "../wishlist/Wishlist.jsx";
-import WebApp from "@twa-dev/sdk";
-import Storage from "../../store/Storage.js";
-import Loading from "../loading/Loading.jsx";
-import XScrollable from "../../components/XScrollable.jsx";
+import Loading from "../Loading.jsx";
+import FlatList from "../../components/lists/FlatList.jsx";
+import PlusButton from "../../components/buttons/PlusButton.jsx";
 
 function Wishlists() {
-	const [searchParams, _] = useSearchParams()
-	const nameFromUrl = searchParams.get("name")
+	const [wishlists, setWishlists] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-	const [wishlists, setWishlists] = useState(null)
-	const [currentWishlistName, setCurrentWishlistName] = useState(nameFromUrl || null)
+    useEffect(() => {
+        const fetchWishlists = async () => {
+            let data;
+            const localWishlists = sessionStorage.getItem("wishlists");
 
-	const [isLoading, setIsLoading] = useState(true)
+            if (localWishlists && localWishlists.length > 0) {
+                data = JSON.parse(localWishlists);
+            } else {
+                data = await WishlistService.getWishlists();
+            }
 
-	useEffect(() => {
-		const fetch = async () => {
-			try {
-				const list = await WishlistService.getWishlists()
-				setWishlists(list)
+            if (data && data.length === 0) {
+                await WishlistService.addWishlist("На новый год", "main-theme-lite", "\uD83C\uDF84");
+                data = await WishlistService.getWishlists();
+            }
 
-				if (list && list.length > 0 && !currentWishlistName) {
-					setCurrentWishlistName(list[0].name)
-				}
-			} catch (e) {
-				console.error(e)
-			} finally {
-				setIsLoading(false)
-			}
+            sessionStorage.setItem("wishlists", JSON.stringify(data));
+            setWishlists(data);
+            setLoading(false);
+        }
 
-		}
+        fetchWishlists();
+    }, []);
 
-		fetch()
-	}, [])
+    const renderWishlist = (item, index) => {
+        console.log(item);
 
-	useEffect(() => {
-		if (nameFromUrl) {
-			setCurrentWishlistName(nameFromUrl)
-		}
-	}, [nameFromUrl])
+        return (
+            <li className={`w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 ${"bg-" + item.color} rounded-[0.625rem] list-none list-image-none`}
+                key={index}
+                onClick={() => {navigate(`/wishlists/wishlist/view?id=${item.id}`)}}
+            >
+                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
+                    {item.icon}
+                </div>
+                <div className="flex flex-col flex-1 min-w-0">
+                    <div className="text-[1.1875rem] truncate">
+                        {item.name}
+                    </div>
+                    <div className="text-[0.9375rem] truncate">
+                        {item.wishes.length} {`желаний`}
+                    </div>
+                </div>
+            </li>
+        )
+    }
 
-	if (isLoading) {
-		return (
-			<Loading message={"Подготавливаю ваши вишлисты"} />
-		)
-	}
-
-	if (!wishlists || wishlists.length === 0) {
-		return <WishlistsEmpty />
-	}
-
-	const activeWishlist = wishlists.find(wishlist => wishlist.name === currentWishlistName);
+    if (loading) {
+        return <Loading message="Загружаю вишлисты..." />;
+    }
 
 	return (
-		<div className="h-full flex flex-col">
-			<Header>
-				<XScrollable>
-					{
-						wishlists.map((el) => {
-							const name = el.name
-							return (
-								<HeaderButton isDark={name === currentWishlistName}>
-									{name}
-								</HeaderButton>
-							)
-						})
-					}
-				</XScrollable>
-				<NavLink
-					className="flex justify-center items-center text-lg font-semibold h-10 px-2 whitespace-nowrap rounded-4xl bg-main-theme-lite text-main-theme-primary"
-					to="/wishlists/create">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 12 12">
-						<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 2v8m4-4H2" />
-					</svg>
-
-				</NavLink>
-				<NavLink
-					className="flex justify-center items-center text-lg font-semibold h-10 px-2 whitespace-nowrap rounded-4xl bg-main-theme-lite text-main-theme-primary"
-					to={`/wishlists/share?wishlistId=${activeWishlist.id}&wishlistName=${activeWishlist.name}`}>
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" /></svg>
-				</NavLink>
-			</Header>
-			{
-				isLoading
-					? <Loading message={"Подготавливаю ваши вишлисты"} />
-					: <Wishlist wishlist={activeWishlist} />
-			}
-		</div>
+        <div className="w-full h-full flex px-8 pt-8 overflow-hidden relative">
+            <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"} />
+            <PlusButton className={"absolute right-5 bottom-5"}
+                        onClick={() => navigate("/wishlists/wishlist/create")}/>
+        </div>
 	);
 }
 

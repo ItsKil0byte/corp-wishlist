@@ -1,16 +1,38 @@
 import $api from "../http/index.js";
 
 export default class WishService {
-	static async getWishes(wishlistId) {
-		return await $api.get(`/wishes?wishlistId=${wishlistId}`)
+	static async getWish(id) {
+		const {data} = await $api.get(`/wishes/${id}`)
+        return data
 	}
 
-	static async addWish(title, description, wishlistId) {
-		console.log(`Создаю желание с параметрами:\n${title}\n${description}\n${wishlistId}`)
+    static async updateWish(id, title, description, color) {
+        const {data} = await $api.put(`/wishes/${id}`, {
+            title: title,
+            description: description,
+            color: color,
+        })
 
-		return await $api.post(`/wishes/${wishlistId}`, {
+        return data
+    }
+
+    static async deleteWish(id) {
+        const {statusText} = await $api.delete(`/wishes/${id}`)
+        return statusText
+    }
+
+	static async addWish(wishlistId ,title, description, color) {
+		const {data} = await $api.post(`/wishes/${wishlistId}`, {
 			title: title,
-			description: description
+			description: description,
+            color: color,
 		})
+
+        return data
 	}
+
+    static async getWishes(wishlistId) {
+        const {data} = await $api.get(`/wishes?wishlistId=${wishlistId}`)
+        return data
+    }
 }

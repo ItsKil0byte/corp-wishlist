@@ -24,6 +24,8 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public List<WishlistDto> getWishlists(Long ownerId, Long cursor, Pageable pageable) {
+        // TODO: Реализовать перегрузку метода для запроса чужих вишлистов
+
         List<Wishlist> wishlists = wishlistRepository.findNextWishlists(ownerId, cursor, pageable);
 
         return wishlists.stream().map(this::convertToDto).toList();
@@ -45,6 +47,8 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = new Wishlist();
         wishlist.setName(request.getName());
         wishlist.setOwner(owner);
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -60,6 +64,8 @@ public class WishlistServiceImpl implements WishlistService {
         }
 
         wishlist.setName(request.getName());
+        wishlist.setColor(request.getColor());
+        wishlist.setIcon(request.getIcon());
 
         wishlistRepository.save(wishlist);
         return convertToDto(wishlist);
@@ -83,10 +89,12 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
         wishlistDto.setOwnerId(wishlist.getOwner().getUserId());
+        wishlistDto.setColor(wishlist.getColor());
+        wishlistDto.setIcon(wishlist.getIcon());
         wishlistDto.setWishes(
                 wishlist.getWishes().stream()
                         .map(wish -> new WishDto(
-                                wish.getId(), wish.getTitle(), wish.getDescription(), wishlist.getId()
+                                wish.getId(), wish.getTitle(), wish.getDescription(), wish.getColor(), wishlist.getId()
                         )).toList()
         );
 

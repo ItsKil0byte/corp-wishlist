@@ -36,6 +36,23 @@ public class WishlistController {
         return ResponseEntity.ok(wishlistsDto);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<WishlistDto>> getWishlistsByOwner(
+            @AuthenticationPrincipal User requester, // Пригодится для будущей логики
+            @PathVariable Long userId, // ID пользователя, чьи вишлисты запрашиваются
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "25") int limit
+    ) {
+        // В текущей упрощенной логике: всегда возвращаем вишлисты пользователя userId
+        // (предполагается, что они все "публичные")
+        // TODO: Нужно реализовать ограничения на приватные и публичные вишлисты для последующих релизов
+
+        List<WishlistDto> wishlistsDto = wishlistService
+                .getWishlists(userId, cursor, PageRequest.of(0, limit));
+
+        return ResponseEntity.ok(wishlistsDto);
+    }
+
     @GetMapping("/{wishlistId}")
     public ResponseEntity<WishlistDto> getWishlist(
             @AuthenticationPrincipal User requester,

@@ -22,6 +22,9 @@ public class Group {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "icon")
+    private String icon;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", referencedColumnName = "userId")
     private User owner;
