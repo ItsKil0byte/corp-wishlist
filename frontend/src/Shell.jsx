@@ -17,9 +17,11 @@ function Shell() {
     useEffect(() => {
         const effect = async () => {
             try {
+                const initData = WebApp.initDataUnsafe
+                if (!initData?.user) return
 
-                const startParam = WebApp.initDataUnsafe.start_param
-                const userId = WebApp.initDataUnsafe.user.id
+                const startParam = initData.start_param
+                const userId = initData.user.id
 
                 if(startParam && !loading && !sessionStorage.getItem("paramIsUsed")) {
                     setLoading(true);
@@ -75,17 +77,17 @@ function Shell() {
         return <Loading message={message} />;
     }
 
-	return (
-		<div className="w-screen h-screen flex flex-col bg-white">
+    return (
+        <div className="w-screen h-screen flex flex-col bg-white">
             <Toaster position={"top-center"} reverseOrder={false} />
-			<main className="w-full h-full flex flex-col overflow-hidden relative">
-				<Outlet />
-			</main>
+            <main className="w-full h-full flex flex-col overflow-hidden relative">
+                <Outlet />
+            </main>
             {
                 pathsWithFooter.includes(location.pathname) && <FooterNav />
             }
-		</div>
-	);
+        </div>
+    );
 }
 
 export default Shell;
