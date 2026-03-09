@@ -17,7 +17,7 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 
     @Query("""
             SELECT wishlist FROM Wishlist wishlist
-            WHERE wishlist.owner.telegramId = :ownerId
+            WHERE wishlist.owner.userId = :ownerId
                 AND (:cursor IS NULL OR wishlist.id < :cursor)
             ORDER BY wishlist.id DESC
             """)

@@ -14,12 +14,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String telegramIDStr) throws UsernameNotFoundException {
-        Long telegramID = Long.parseLong(telegramIDStr);
-        User user = userRepository.findByTelegramId(telegramID)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + telegramIDStr + " не найден."));
+    public UserDetails loadUserByUsername(String userIDStr) throws UsernameNotFoundException {
+        Long userID = Long.parseLong(userIDStr);
+        User user = userRepository.findByUserId(userID)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + userIDStr + " не найден."));
 
         //Возможно добавление AccountExpired() и подобных в будущем
         return user;
     }
 }
+

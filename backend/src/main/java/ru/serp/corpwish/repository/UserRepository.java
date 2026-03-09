@@ -10,4 +10,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByTelegramId(Long telegramID);
     Optional<User> findByLogin(String login);
     boolean existsByLogin(String login);
+    Optional<User> findByUserId(Long userId);
 }

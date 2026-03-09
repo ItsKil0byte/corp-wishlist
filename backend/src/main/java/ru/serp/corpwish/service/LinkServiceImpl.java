@@ -70,7 +70,7 @@ public class LinkServiceImpl implements LinkService {
             throw new RuntimeException("No user provided to join");
         }
 
-        return groupService.joinGroup(link.getEntityId(), user.getTelegramId(), user.getTelegramId());
+        return groupService.joinGroup(link.getEntityId(), user.getUserId(), user.getUserId());
     }
 
     @Override

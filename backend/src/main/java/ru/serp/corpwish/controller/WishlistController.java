@@ -28,7 +28,7 @@ public class WishlistController {
     ) {
         List<WishlistDto> wishlistsDto = wishlistService
                 .getWishlists(
-                        owner.getTelegramId(),
+                        owner.getUserId(),
                         cursor,
                         PageRequest.of(0, limit)
                 );
@@ -42,7 +42,7 @@ public class WishlistController {
             @PathVariable Long wishlistId
     ) {
         WishlistDto wishlistDto = wishlistService
-                .getWishlist(requester.getTelegramId(), wishlistId);
+                .getWishlist(requester.getUserId(), wishlistId);
 
         return ResponseEntity
                 .ok(wishlistDto);
@@ -54,7 +54,7 @@ public class WishlistController {
             @RequestBody CreateWishlistRequest request
     ) {
         WishlistDto wishlistDto = wishlistService
-                .createWishlist(owner.getTelegramId(), request);
+                .createWishlist(owner.getUserId(), request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -68,7 +68,7 @@ public class WishlistController {
             @RequestBody CreateWishlistRequest request
     ) {
         WishlistDto wishlistDto = wishlistService
-                .updateWishlist(owner.getTelegramId(), wishlistId, request);
+                .updateWishlist(owner.getUserId(), wishlistId, request);
 
         return ResponseEntity
                 .ok(wishlistDto);
@@ -79,7 +79,7 @@ public class WishlistController {
             @AuthenticationPrincipal User owner,
             @PathVariable Long wishlistId
     ) {
-        wishlistService.deleteWishlist(owner.getTelegramId(), wishlistId);
+        wishlistService.deleteWishlist(owner.getUserId(), wishlistId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -25,7 +25,7 @@ public class AuthService {
 
         Long userID = userRepository.findByTelegramId(telegramUser.getId())
                 .orElseGet(() -> createNewTelegramUser(telegramUser))
-                .getTelegramId();
+                .getUserId();
 
         return jwtService.generateToken(userID);
     }
