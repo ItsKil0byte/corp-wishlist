@@ -41,7 +41,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto createWishlist(Long ownerId, CreateWishlistRequest request) {
-        User owner = userRepository.findByTelegramId(ownerId)
+        User owner = userRepository.findByUserId(ownerId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Wishlist wishlist = new Wishlist();
@@ -59,7 +59,7 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
-        if (!wishlist.getOwner().getTelegramId().equals(ownerId)) {
+        if (!wishlist.getOwner().getUserId().equals(ownerId)) {
             throw new RuntimeException("Only owner can update wishlist");
         }
 
@@ -76,7 +76,7 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
-        if (!wishlist.getOwner().getTelegramId().equals(ownerId)) {
+        if (!wishlist.getOwner().getUserId().equals(ownerId)) {
             throw new RuntimeException("Only owner delete this wishlist");
         }
 
@@ -88,9 +88,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
-        wishlistDto.setOwnerId(wishlist.getOwner().getTelegramId());
-        wishlistDto.setColor(wishlist.getColor());
-        wishlistDto.setIcon(wishlist.getIcon());
+        wishlistDto.setOwnerId(wishlist.getOwner().getUserId());
         wishlistDto.setWishes(
                 wishlist.getWishes().stream()
                         .map(wish -> new WishDto(

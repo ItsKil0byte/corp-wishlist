@@ -50,10 +50,10 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         try {
-            Long telegramID = jwtService.extractTelegramID(token);
-            String telegramIDStr = telegramID.toString();
+            Long userID = jwtService.extractUserID(token);
+            String userIDStr = userID.toString();
 
-            UserDetails userDetails = userService.loadUserByUsername(telegramIDStr);
+            UserDetails userDetails = userService.loadUserByUsername(userIDStr);
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(

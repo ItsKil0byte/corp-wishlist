@@ -22,7 +22,7 @@ public class GroupController {
     public ResponseEntity<List<GroupDto>> getGroups (
             @AuthenticationPrincipal User user
     ) {
-        List<GroupDto> groups = groupService.getGroups(user.getTelegramId());
+        List<GroupDto> groups = groupService.getGroups(user.getUserId());
 
         return ResponseEntity.ok(groups);
     }
@@ -32,7 +32,7 @@ public class GroupController {
             @AuthenticationPrincipal User user,
             @PathVariable Long groupId
     ) {
-        GroupDto group = groupService.getGroup(groupId, user.getTelegramId());
+        GroupDto group = groupService.getGroup(groupId, user.getUserId());
 
         return ResponseEntity.ok(group);
     }
@@ -42,7 +42,7 @@ public class GroupController {
             @AuthenticationPrincipal User user,
             @RequestBody CreateGroupRequest groupRequest
     ) {
-        GroupDto groupDto = groupService.createGroup(user.getTelegramId(), groupRequest);
+        GroupDto groupDto = groupService.createGroup(user.getUserId(), groupRequest);
 
         return ResponseEntity.ok(groupDto);
     }
@@ -53,7 +53,7 @@ public class GroupController {
             @PathVariable Long groupId,
             @RequestBody CreateGroupRequest createGroupRequest
     ) {
-        GroupDto groupDto = groupService.updateGroup(groupId, owner.getTelegramId(), createGroupRequest);
+        GroupDto groupDto = groupService.updateGroup(groupId, owner.getUserId(), createGroupRequest);
 
         return ResponseEntity.ok(groupDto);
     }
@@ -64,7 +64,7 @@ public class GroupController {
             @PathVariable Long groupId,
             @PathVariable Long userId
     ) {
-        GroupDto groupDto = groupService.joinGroup(groupId, userId, requester.getTelegramId());
+        GroupDto groupDto = groupService.joinGroup(groupId, userId, requester.getUserId());
 
         return ResponseEntity.ok(groupDto);
     }
@@ -74,7 +74,7 @@ public class GroupController {
             @AuthenticationPrincipal User owner,
             @PathVariable Long groupId
     ) {
-        groupService.deleteGroup(groupId, owner.getTelegramId());
+        groupService.deleteGroup(groupId, owner.getUserId());
 
         return ResponseEntity.noContent().build();
     }
@@ -85,7 +85,7 @@ public class GroupController {
             @PathVariable Long groupId,
             @PathVariable Long userId
     ) {
-        GroupDto groupDto = groupService.leaveGroup(groupId, userId, requester.getTelegramId());
+        GroupDto groupDto = groupService.leaveGroup(groupId, userId, requester.getUserId());
 
         return ResponseEntity.ok(groupDto);
     }

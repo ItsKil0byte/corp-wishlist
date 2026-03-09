@@ -2,7 +2,11 @@ package ru.serp.corpwish.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.serp.corpwish.DTO.*;
+import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.GroupDto;
+import ru.serp.corpwish.DTO.InviteLinkDto;
+import ru.serp.corpwish.DTO.PublicLinkDto;
+import ru.serp.corpwish.DTO.WishDto;
 import ru.serp.corpwish.entity.*;
 import ru.serp.corpwish.repository.GroupRepository;
 import ru.serp.corpwish.repository.LinksRepository;
@@ -66,7 +70,7 @@ public class LinkServiceImpl implements LinkService {
             throw new RuntimeException("No user provided to join");
         }
 
-        return groupService.joinGroup(link.getEntityId(), user.getTelegramId(), user.getTelegramId());
+        return groupService.joinGroup(link.getEntityId(), user.getUserId(), user.getUserId());
     }
 
     @Override
