@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
 
@@ -25,25 +26,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TelegramUser getUserInfo(Long userId) {
-        User user = userRepository.findByTelegramId(userId)
+    public UserInfo getUserInfo(Long userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get user info - no such user"));
 
-        return convertToTelegramUser(user);
+        return convertToUserInfo(user);
     }
 
     @Override
-    public TelegramUser updateUserInfo(Long ownerId, TelegramUser userInfo) {
-        User user = userRepository.findByTelegramId(ownerId)
+    public UserInfo updateUserInfo(Long ownerId, UserInfo userInfo) {
+        User user = userRepository.findByUserId(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not update user info - no such user"));
 
-        if(!userInfo.getId().equals(ownerId)){
-            throw new RuntimeException("Can not update user info - not an owner");
-        }
-
-        User newUserInfo = convertToUser(userInfo);
+        User newUserInfo = convertToUser(ownerId, userInfo);
 
         userRepository.save(newUserInfo);
+
+        return userInfo;
+    }
+
+    private UserInfo convertToUserInfo(User user){
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.setTelegramId(user.getTelegramId());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setPhoto_url(user.getPhoto_url());
+        userInfo.setInterests(userInfo.getInterests());
+        userInfo.setHobbies(userInfo.getHobbies());
 
         return userInfo;
     }
@@ -51,7 +61,7 @@ public class UserServiceImpl implements UserService {
     private TelegramUser convertToTelegramUser(User user){
         TelegramUser telegramUser = new TelegramUser();
 
-        telegramUser.setId(user.getTelegramId());
+        telegramUser.setId(user.getUserId());
         telegramUser.setUsername(user.getUsername());
         telegramUser.setPhoto_url(user.getPhoto_url());
         telegramUser.setFirstName(user.getFirstName());
@@ -62,16 +72,17 @@ public class UserServiceImpl implements UserService {
         return telegramUser;
     }
 
-    private User convertToUser(TelegramUser telegramUser){
+    private User convertToUser(Long userId, UserInfo userInfo){
         User user = new User();
 
-        user.setTelegramId(telegramUser.getId());
-        user.setUsername(telegramUser.getUsername());
-        user.setPhoto_url(telegramUser.getPhoto_url());
-        user.setFirstName(telegramUser.getFirstName());
-        user.setLastName(telegramUser.getLastName());
-        user.setHobbies(telegramUser.getHobbies());
-        user.setInterests(telegramUser.getInterests());
+        user.setUserId(userId);
+        user.setTelegramId(userInfo.getTelegramId());
+        user.setUsername(userInfo.getUsername());
+        user.setPhoto_url(userInfo.getPhoto_url());
+        user.setFirstName(userInfo.getFirstName());
+        user.setLastName(userInfo.getLastName());
+        user.setHobbies(userInfo.getHobbies());
+        user.setInterests(userInfo.getInterests());
 
         return user;
     }
