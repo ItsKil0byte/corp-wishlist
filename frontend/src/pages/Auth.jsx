@@ -12,35 +12,41 @@ export default function Auth() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+    const [submitDisabled, setSubmitDisabled] = useState(false);
 
     const isRegister = mode === 'register';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSubmitDisabled(true);
+        const tId = toast.loading("Авторизация")
+
         if (isRegister && password !== confirmPassword) {
-            toast.error("Пароли не совпадают");
+            toast.error("Пароли не совпадают", { id: tId });
+            setSubmitDisabled(false);
             return;
         }
 
         try {
             if (isRegister) {
                 await AuthService.registerViaJWT(login, password);
-                toast.success("Регистрация прошла успешно");
+                toast.success("Регистрация прошла успешно", { id: tId });
             } else {
                 await AuthService.loginViaJWT(login, password);
-                toast.success("Вход выполнен успешно");
+                toast.success("Вход выполнен успешно", { id: tId });
             }
 
             navigate("/");
         } catch (error) {
             console.error(error);
-            const msg = error?.response?.data?.message || "Ошибка авторизации";
-            toast.error(msg);
+            toast.error("Ошибка авторизации", { id: tId });
         }
+
+        setSubmitDisabled(false);
     };
 
     return (
-        <div className="w-full h-full flex flex-col px-4 py-6 gap-6">
+        <div className="w-120 justify-self-center min-h-screen h-full flex flex-col px-4 py-6 gap-6 overflow-hidden bg-white">
             <Toaster position="top-center" reverseOrder={false} />
 
             <div className="flex justify-center">
@@ -50,13 +56,13 @@ export default function Auth() {
             </div>
 
             <div className="flex gap-3">
-                <AcceptButton
-                    className={`flex-1 text-center ${!isRegister ? '' : 'opacity-50'}`}
+                <DismissButton
+                    className={`flex-1 text-center ${!isRegister ? 'font-bold' : ''}`}
                     text="Вход"
                     onClick={() => setMode('login')}
                 />
                 <DismissButton
-                    className={`flex-1 text-center ${isRegister ? '' : 'opacity-50'}`}
+                    className={`flex-1 text-center ${isRegister ? 'font-bold' : ''}`}
                     text="Регистрация"
                     onClick={() => setMode('register')}
                 />
@@ -73,6 +79,7 @@ export default function Auth() {
                 <Input
                     className="w-full h-[3.5rem]"
                     title="Пароль"
+                    type={"password"}
                     placeholder="Введите пароль"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -82,6 +89,7 @@ export default function Auth() {
                         className="w-full h-[3.5rem]"
                         title="Повторите пароль"
                         placeholder="Повторите пароль"
+                        type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
@@ -90,6 +98,7 @@ export default function Auth() {
                 <AcceptButton
                     className="w-full mt-4 text-center"
                     text={isRegister ? 'Зарегистрироваться' : 'Войти'}
+                    disabled={submitDisabled}
                     onClick={handleSubmit}
                 />
             </form>

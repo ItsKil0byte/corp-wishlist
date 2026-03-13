@@ -11,16 +11,16 @@ import './index.css'
 
 WebApp.ready();
 WebApp.expand();
-WebApp.setHeaderColor('#FFFFFF');
 
+if (WebApp.isVersionAtLeast('6.10')) {
+    WebApp.setHeaderColor('#FFFFFF');
+}
 if (WebApp.isVersionAtLeast('7.7')) {
     WebApp.disableVerticalSwipes();
 }
 
 createRoot(document.getElementById('root')).render(
-	<StrictMode>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</StrictMode>,
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
 )

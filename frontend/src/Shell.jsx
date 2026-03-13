@@ -17,7 +17,11 @@ function Shell() {
     useEffect(() => {
         const effect = async () => {
             try {
-                const initData = WebApp.initDataUnsafe
+                if (!WebApp?.initDataUnsafe) {
+                    return;
+                }
+
+                const initData = WebApp.initDataUnsafe;
                 if (!initData?.user) return
 
                 const startParam = initData.start_param
@@ -78,14 +82,16 @@ function Shell() {
     }
 
     return (
-        <div className="w-screen h-screen flex flex-col bg-white">
-            <Toaster position={"top-center"} reverseOrder={false} />
-            <main className="w-full h-full flex flex-col overflow-hidden relative">
-                <Outlet />
-            </main>
-            {
-                pathsWithFooter.includes(location.pathname) && <FooterNav />
-            }
+        <div className="w-full min-h-screen flex justify-center bg-transparent overflow-hidden">
+            <div className="w-full max-w-[800px] h-screen min-h-screen flex flex-col overflow-hidden bg-white shadow-md">
+                <Toaster position={"top-center"} reverseOrder={false} />
+                <main className="w-full h-full flex flex-col overflow-hidden relative">
+                    <Outlet />
+                </main>
+                {
+                    pathsWithFooter.includes(location.pathname) && <FooterNav />
+                }
+            </div>
         </div>
     );
 }

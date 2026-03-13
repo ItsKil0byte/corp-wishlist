@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import Shell from './Shell'
-import Groups from './pages/groups/Groups.jsx'
-import Profile from './pages/profile/Profile.jsx'
-import Wishlists from './pages/wishlists/Wishlists'
-import CreateWishlist from './pages/wishlists/wishlist/CreateWishlist.jsx'
-import CreateWish from './pages/wishlists/wish/CreateWish.jsx'
-import ViewWish from './pages/wishlists/wish/ViewWish.jsx'
+import { useEffect, useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import FallingGifts from './components/FallingGifts';
+import Shell from './Shell';
+import Groups from './pages/groups/Groups.jsx';
+import Profile from './pages/profile/Profile.jsx';
+import Wishlists from './pages/wishlists/Wishlists';
+import CreateWishlist from './pages/wishlists/wishlist/CreateWishlist.jsx';
+import CreateWish from './pages/wishlists/wish/CreateWish.jsx';
+import ViewWish from './pages/wishlists/wish/ViewWish.jsx';
 import CreateGroup from "./pages/groups/CreateGroup.jsx";
 import ViewGroup from "./pages/groups/ViewGroup.jsx";
 import EditGroup from "./pages/groups/EditGroup.jsx";
@@ -20,76 +21,99 @@ import ViewSharedWishlist from "./pages/wishlists/wishlist/ViewSharedWishlist.js
 import ViewSharedWish from "./pages/wishlists/wish/ViewSharedWish.jsx";
 import Auth from "./pages/Auth.jsx";
 import AuthService from "./services/AuthService.js";
+import Loading from "./pages/Loading.jsx";
+
+const ProtectedRoute = ({ children }) => {
+    const token = localStorage.getItem('token');
+    const location = useLocation();
+    const isTelegram = AuthService.isTelegramMiniApp();
+
+    if (!token && !isTelegram) {
+        return <Navigate to="/web/auth" state={{ from: location }} replace />;
+    }
+
+    return children;
+};
 
 function App() {
     const [authInitialized, setAuthInitialized] = useState(false)
-    const navigate = useNavigate();
     const location = useLocation();
+    const isTelegram = AuthService.isTelegramMiniApp();
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
     useEffect(() => {
-        if (location.pathname.startsWith('/web/auth')) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setAuthInitialized(true)
-            return
-        }
-
         const initAuth = async () => {
-            const token = localStorage.getItem('token')
+            if (!isTelegram) {
+                setAuthInitialized(true);
+                return;
+            }
 
-            if (!token) {
-                if (AuthService.isTelegramMiniApp()) {
-                    try {
-                        await AuthService.telegramAuth()
-                        setAuthInitialized(true)
-                    } catch (e) {
-                        console.error('Ошибка авторизации через Telegram', e)
-                        setAuthInitialized(true)
-                    }
-                } else {
-                    console.log('Открыт в обычном браузере — ожидается логин по логину и паролю')
-                    navigate('/web/auth')
-                    setAuthInitialized(true)
+            const storedToken = localStorage.getItem('token');
+
+            if (!storedToken) {
+                try {
+                    await AuthService.telegramAuth();
+                } catch (e) {
+                    console.error('Ошибка авторизации через Telegram', e);
+                } finally {
+                    setAuthInitialized(true);
                 }
             } else {
-                setAuthInitialized(true)
+                setAuthInitialized(true);
             }
         }
 
         initAuth()
     }, [])
 
-    if (!authInitialized) {
-        return null
+    if (isTelegram && !authInitialized) {
+        return <Loading message={"Авторизация Telegram..."}/>;
+    }
+
+    if (!isTelegram && !token && !location.pathname.startsWith('/web/auth')) {
+        return <Navigate to="/web/auth" replace />;
     }
 
     return (
-        <Routes>
-            <Route path="/web/auth" element={<Auth />} />
-            <Route path="/" element={<Shell />}>
-                <Route index element={<Navigate to="/wishlists" />} />
-                <Route path="wishlists" element={<Wishlists />} />
+        <>
+            <div className="relative w-full min-h-screen">
+                {!location.pathname.startsWith('/web/auth') && (
+                    <div className="absolute inset-0 overflow-hidden">
+                        <FallingGifts count={25} />
+                    </div>
+                )}
 
-                <Route path='wishlists/wishlist/create' element={<CreateWishlist />} />
-                <Route path="wishlists/wishlist/view" element={<ViewWishlist />} />
-                <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist />} />
-                <Route path="wishlists/wishlist/view/shared" element={<ViewSharedWishlist />} />
-                <Route path="wishlists/wishlist/edit" element={<EditWishlist />} />
-
-                <Route path='wishlists/wish/create' element={<CreateWish />} />
-                <Route path='wishlists/wish/view' element={<ViewWish />} />
-                <Route path='wishlists/wish/view/others' element={<ViewOthersWish />} />
-                <Route path='wishlists/wish/view/shared' element={<ViewSharedWish />} />
-                <Route path='wishlists/wish/edit' element={<EditWish />} />
-
-                <Route path="groups" element={<Groups />} />
-                <Route path="groups/create" element={<CreateGroup />} />
-                <Route path="groups/group/view" element={<ViewGroup />} />
-                <Route path="groups/group/edit" element={<EditGroup />} />
-
-                <Route path="profile" element={<Profile />} />
-                <Route path="profile/others" element={<OthersProfile />} />
-            </Route>
-        </Routes>
+                <div className="relative z-10">
+                    <Routes>
+                        <Route path="/web/auth" element={<Auth />} />
+                        <Route path="/" element={
+                            <ProtectedRoute>
+                                <Shell />
+                            </ProtectedRoute>
+                        }>
+                            <Route index element={<Navigate to="/wishlists" replace />} />
+                            <Route path="wishlists" element={<Wishlists />} />
+                            <Route path='wishlists/wishlist/create' element={<CreateWishlist />} />
+                            <Route path="wishlists/wishlist/view" element={<ViewWishlist />} />
+                            <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist />} />
+                            <Route path="wishlists/wishlist/view/shared" element={<ViewSharedWishlist />} />
+                            <Route path="wishlists/wishlist/edit" element={<EditWishlist />} />
+                            <Route path='wishlists/wish/create' element={<CreateWish />} />
+                            <Route path='wishlists/wish/view' element={<ViewWish />} />
+                            <Route path='wishlists/wish/view/others' element={<ViewOthersWish />} />
+                            <Route path='wishlists/wish/view/shared' element={<ViewSharedWish />} />
+                            <Route path='wishlists/wish/edit' element={<EditWish />} />
+                            <Route path="groups" element={<Groups />} />
+                            <Route path="groups/create" element={<CreateGroup />} />
+                            <Route path="groups/group/view" element={<ViewGroup />} />
+                            <Route path="groups/group/edit" element={<EditGroup />} />
+                            <Route path="profile" element={<Profile />} />
+                            <Route path="profile/others" element={<OthersProfile />} />
+                        </Route>
+                    </Routes>
+                </div>
+            </div>
+        </>
     )
 }
 

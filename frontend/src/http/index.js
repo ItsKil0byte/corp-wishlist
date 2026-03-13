@@ -11,6 +11,7 @@ const $api = axios.create({
 $api.interceptors.request.use(async config => {
     console.log("Запрос попал в interceptor")
     console.log(`Запрос на url:${config.method} ${config.url}`)
+
     if (config.url.includes('/auth')) {
         return config
     }
@@ -29,10 +30,11 @@ $api.interceptors.request.use(async config => {
 $api.interceptors.response.use(
     (config) => {
         return config;
-    }, async (error) => {
+    },
+    async (error) => {
         const originReq = error.config;
 
-        if (error.response && error.response.status === 401 && originReq && !originReq._isRetry) {
+        if (error.response?.status === 401 && !originReq?._isRetry) {
             originReq._isRetry = true;
 
             try {
@@ -40,13 +42,17 @@ $api.interceptors.response.use(
                     await AuthService.telegramAuth();
                     const token = localStorage.getItem("token")
 
-                    originReq.headers['Authorization'] = `Bearer ${token}`
-                    return $api.request(originReq);
+                    if (token) {
+                        originReq.headers['Authorization'] = `Bearer ${token}`
+                        return $api.request(originReq);
+                    }
                 }
             } catch (e) {
                 console.log("Попытка обновить токен не удалась: ", e)
             }
         }
+
+        return Promise.reject(error);
     }
 )
 
