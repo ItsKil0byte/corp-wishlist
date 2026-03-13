@@ -89,6 +89,8 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
         wishlistDto.setOwnerId(wishlist.getOwner().getUserId());
+        wishlistDto.setColor(wishlist.getColor());
+        wishlistDto.setIcon(wishlist.getIcon());
         wishlistDto.setWishes(
                 wishlist.getWishes().stream()
                         .map(wish -> new WishDto(
