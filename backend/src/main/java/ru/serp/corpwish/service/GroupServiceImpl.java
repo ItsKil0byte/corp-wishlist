@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.CreateGroupRequest;
 import ru.serp.corpwish.DTO.GroupDto;
 import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.Group;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.GroupRepository;
@@ -153,11 +154,26 @@ public class GroupServiceImpl implements GroupService{
         groupDto.setIcon(group.getIcon());
         groupDto.setMembers(
                 group.getMembers().stream()
-                        .map(this::convertToTelegramUser)
+                        .map(this::convertToUserInfo)
                         .collect(Collectors.toList())
         );
 
         return groupDto;
+    }
+
+    private UserInfo convertToUserInfo(User user){
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.setUserId(user.getUserId());
+        userInfo.setTelegramId(user.getTelegramId());
+        userInfo.setUsername(user.getUsername());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setPhoto_url(user.getPhoto_url());
+        userInfo.setHobbies(user.getHobbies());
+        userInfo.setInterests(user.getInterests());
+
+        return userInfo;
     }
 
     private TelegramUser convertToTelegramUser(User user){
