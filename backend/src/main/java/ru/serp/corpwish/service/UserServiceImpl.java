@@ -38,22 +38,35 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not update user info - no such user"));
 
-        User newUserInfo = convertToUser(ownerId, userInfo);
+        User newUserInfo = updateUser(user, userInfo);
 
         userRepository.save(newUserInfo);
 
-        return userInfo;
+        return convertToUserInfo(newUserInfo);
+    }
+
+    private User updateUser(User user, UserInfo newUserInfo){
+        user.setTelegramId(newUserInfo.getTelegramId());
+        user.setUsername(newUserInfo.getUsername());
+        user.setPhoto_url(newUserInfo.getPhoto_url());
+        user.setFirstName(newUserInfo.getFirstName());
+        user.setLastName(newUserInfo.getLastName());
+        user.setHobbies(newUserInfo.getHobbies());
+        user.setInterests(newUserInfo.getInterests());
+
+        return user;
     }
 
     private UserInfo convertToUserInfo(User user){
         UserInfo userInfo = new UserInfo();
 
         userInfo.setTelegramId(user.getTelegramId());
+        userInfo.setUsername(user.getLogin());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
         userInfo.setPhoto_url(user.getPhoto_url());
-        userInfo.setInterests(userInfo.getInterests());
-        userInfo.setHobbies(userInfo.getHobbies());
+        userInfo.setInterests(user.getInterests());
+        userInfo.setHobbies(user.getHobbies());
 
         return userInfo;
     }
@@ -70,21 +83,6 @@ public class UserServiceImpl implements UserService {
         telegramUser.setHobbies(user.getHobbies());
 
         return telegramUser;
-    }
-
-    private User convertToUser(Long userId, UserInfo userInfo){
-        User user = new User();
-
-        user.setUserId(userId);
-        user.setTelegramId(userInfo.getTelegramId());
-        user.setUsername(userInfo.getUsername());
-        user.setPhoto_url(userInfo.getPhoto_url());
-        user.setFirstName(userInfo.getFirstName());
-        user.setLastName(userInfo.getLastName());
-        user.setHobbies(userInfo.getHobbies());
-        user.setInterests(userInfo.getInterests());
-
-        return user;
     }
 }
 
