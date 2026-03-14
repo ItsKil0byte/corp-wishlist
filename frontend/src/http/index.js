@@ -8,6 +8,8 @@ const $api = axios.create({
     baseURL: API_URL,
 })
 
+const usedStorage = localStorage;
+
 $api.interceptors.request.use(async config => {
     console.log("Запрос попал в interceptor")
     console.log(`Запрос на url:${config.method} ${config.url}`)
@@ -16,12 +18,14 @@ $api.interceptors.request.use(async config => {
         return config
     }
 
-    const token = localStorage.getItem('token')
+    const token = usedStorage.getItem('token')
     console.log(token ? `Токен не пуст: ${token}` : "Токена не оказалось в хранилище")
 
     if (token) {
         console.log("Помещаю токен в заголовок авторизации")
         config.headers['Authorization'] = `Bearer ${token}`
+    } else {
+        // TODO: Перенаправить на страницу авторизации
     }
 
     return config
@@ -39,8 +43,9 @@ $api.interceptors.response.use(
 
             try {
                 if (AuthService.isTelegramMiniApp()) {
+                    console.log(AuthService.isTelegramMiniApp())
                     await AuthService.telegramAuth();
-                    const token = localStorage.getItem("token")
+                    const token = usedStorage.getItem("token")
 
                     if (token) {
                         originReq.headers['Authorization'] = `Bearer ${token}`
@@ -48,7 +53,9 @@ $api.interceptors.response.use(
                     }
                 }
             } catch (e) {
-                console.log("Попытка обновить токен не удалась: ", e)
+                console.log("Попытка обновить токен не удалась: ", e);
+                usedStorage.removeItem("token");
+                window.location.href = '/web/auth';
             }
         }
 

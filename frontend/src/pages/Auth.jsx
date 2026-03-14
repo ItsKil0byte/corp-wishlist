@@ -59,11 +59,13 @@ export default function Auth() {
                 <DismissButton
                     className={`flex-1 text-center ${!isRegister ? 'font-bold' : ''}`}
                     text="Вход"
+                    disabled={submitDisabled}
                     onClick={() => setMode('login')}
                 />
                 <DismissButton
                     className={`flex-1 text-center ${isRegister ? 'font-bold' : ''}`}
                     text="Регистрация"
+                    disabled={submitDisabled}
                     onClick={() => setMode('register')}
                 />
             </div>
