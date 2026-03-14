@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
 
@@ -15,35 +16,57 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String telegramIDStr) throws UsernameNotFoundException {
-        Long telegramID = Long.parseLong(telegramIDStr);
-        User user = userRepository.findByTelegramId(telegramID)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + telegramIDStr + " не найден."));
+    public UserDetails loadUserByUsername(String userIDStr) throws UsernameNotFoundException {
+        Long userID = Long.parseLong(userIDStr);
+        User user = userRepository.findByUserId(userID)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + userIDStr + " не найден."));
 
         //Возможно добавление AccountExpired() и подобных в будущем
         return user;
     }
 
     @Override
-    public TelegramUser getUserInfo(Long userId) {
-        User user = userRepository.findByTelegramId(userId)
+    public UserInfo getUserInfo(Long userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get user info - no such user"));
 
-        return convertToTelegramUser(user);
+        return convertToUserInfo(user);
     }
 
     @Override
-    public TelegramUser updateUserInfo(Long ownerId, TelegramUser userInfo) {
-        User user = userRepository.findByTelegramId(ownerId)
+    public UserInfo updateUserInfo(Long ownerId, UserInfo userInfo) {
+        User user = userRepository.findByUserId(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not update user info - no such user"));
 
-        if(!userInfo.getId().equals(ownerId)){
-            throw new RuntimeException("Can not update user info - not an owner");
-        }
-
-        User newUserInfo = convertToUser(userInfo);
+        User newUserInfo = updateUser(user, userInfo);
 
         userRepository.save(newUserInfo);
+
+        return convertToUserInfo(newUserInfo);
+    }
+
+    private User updateUser(User user, UserInfo newUserInfo){
+        user.setTelegramId(newUserInfo.getTelegramId());
+        user.setUsername(newUserInfo.getUsername());
+        user.setPhoto_url(newUserInfo.getPhoto_url());
+        user.setFirstName(newUserInfo.getFirstName());
+        user.setLastName(newUserInfo.getLastName());
+        user.setHobbies(newUserInfo.getHobbies());
+        user.setInterests(newUserInfo.getInterests());
+
+        return user;
+    }
+
+    private UserInfo convertToUserInfo(User user){
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.setTelegramId(user.getTelegramId());
+        userInfo.setUsername(user.getLogin());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setPhoto_url(user.getPhoto_url());
+        userInfo.setInterests(user.getInterests());
+        userInfo.setHobbies(user.getHobbies());
 
         return userInfo;
     }
@@ -51,7 +74,7 @@ public class UserServiceImpl implements UserService {
     private TelegramUser convertToTelegramUser(User user){
         TelegramUser telegramUser = new TelegramUser();
 
-        telegramUser.setId(user.getTelegramId());
+        telegramUser.setId(user.getUserId());
         telegramUser.setUsername(user.getUsername());
         telegramUser.setPhoto_url(user.getPhoto_url());
         telegramUser.setFirstName(user.getFirstName());
@@ -61,18 +84,5 @@ public class UserServiceImpl implements UserService {
 
         return telegramUser;
     }
-
-    private User convertToUser(TelegramUser telegramUser){
-        User user = new User();
-
-        user.setTelegramId(telegramUser.getId());
-        user.setUsername(telegramUser.getUsername());
-        user.setPhoto_url(telegramUser.getPhoto_url());
-        user.setFirstName(telegramUser.getFirstName());
-        user.setLastName(telegramUser.getLastName());
-        user.setHobbies(telegramUser.getHobbies());
-        user.setInterests(telegramUser.getInterests());
-
-        return user;
-    }
 }
+

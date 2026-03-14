@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.CreateGroupRequest;
 import ru.serp.corpwish.DTO.GroupDto;
 import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.Group;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.GroupRepository;
@@ -21,7 +22,7 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public GroupDto createGroup(Long userId, CreateGroupRequest groupData) {
-        User user = userRepository.findByTelegramId(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not create group - User not found"));
 
         Group group = new Group();
@@ -39,7 +40,7 @@ public class GroupServiceImpl implements GroupService{
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not update group - group not found"));
 
-        if(!group.getOwner().getTelegramId().equals(userId)){
+        if(!group.getOwner().getUserId().equals(userId)){
             throw new RuntimeException("Can not update group - user is not an owner");
         }
 
@@ -52,15 +53,15 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public List<GroupDto> getGroups(Long userId) {
-        User user = userRepository.findByTelegramId(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get groups - User not found"));
 
         List<Group> allGroups = groupRepository.findAll();
 
         return allGroups.stream()
-                .filter(group -> group.getOwner().getTelegramId().equals(userId) ||
+                .filter(group -> group.getOwner().getUserId().equals(userId) ||
                         group.getMembers().stream()
-                                .anyMatch(member -> member.getTelegramId().equals(userId))
+                                .anyMatch(member -> member.getUserId().equals(userId))
                 )
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -68,15 +69,15 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public GroupDto getGroup(Long groupId, Long userId) {
-        User user = userRepository.findByTelegramId(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get group - User not found"));
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not get group - group not found"));
 
-        boolean isOwner = group.getOwner().getTelegramId().equals(userId);
+        boolean isOwner = group.getOwner().getUserId().equals(userId);
         boolean isMember = group.getMembers().stream()
-                .anyMatch(member -> member.getTelegramId().equals(userId));
+                .anyMatch(member -> member.getUserId().equals(userId));
 
         if(!isOwner && !isMember){
             throw new RuntimeException("Access denied to this group");
@@ -87,13 +88,13 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public void deleteGroup(Long groupId, Long ownerId) {
-        User user = userRepository.findByTelegramId(ownerId)
+        User user = userRepository.findByUserId(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not delete group - owner not found"));
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not delete group - group not found"));
 
-        if(!group.getOwner().getTelegramId().equals(ownerId)){
+        if(!group.getOwner().getUserId().equals(ownerId)){
             throw new RuntimeException("Can not delete group - user is not an owner");
         }
 
@@ -102,21 +103,21 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public GroupDto leaveGroup(Long groupId, Long userId, Long requesterId) {
-        User user = userRepository.findByTelegramId(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not leave group - user not found"));
 
-        if(!user.getTelegramId().equals(requesterId)){
+        if(!user.getUserId().equals(requesterId)){
             throw new RuntimeException("Can not join group - User is not a requester");
         }
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not leave group - group not found"));
 
-        if(group.getOwner().getTelegramId().equals(userId)){
+        if(group.getOwner().getUserId().equals(userId)){
             throw new RuntimeException("Owner can not leave his group"); //Пока так, пусть он может только удалять
         }
 
-        group.getMembers().removeIf(member -> member.getTelegramId().equals(userId));
+        group.getMembers().removeIf(member -> member.getUserId().equals(userId));
 
         groupRepository.save(group);
 
@@ -125,17 +126,17 @@ public class GroupServiceImpl implements GroupService{
 
     @Override
     public GroupDto joinGroup(Long groupId, Long userId, Long requesterId) {
-        User user = userRepository.findByTelegramId(userId)
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not join group - user not found"));
 
-        if(!user.getTelegramId().equals(requesterId)){
+        if(!user.getUserId().equals(requesterId)){
             throw new RuntimeException("Can not join group - User is not a requester");
         }
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not join group - group not found"));
 
-        if(group.getMembers().stream().anyMatch(member -> member.getTelegramId().equals(userId))){
+        if(group.getMembers().stream().anyMatch(member -> member.getUserId().equals(userId))){
             throw new RuntimeException("Can nor join group - this user already in this group");
         }
 
@@ -153,11 +154,26 @@ public class GroupServiceImpl implements GroupService{
         groupDto.setIcon(group.getIcon());
         groupDto.setMembers(
                 group.getMembers().stream()
-                        .map(this::convertToTelegramUser)
+                        .map(this::convertToUserInfo)
                         .collect(Collectors.toList())
         );
 
         return groupDto;
+    }
+
+    private UserInfo convertToUserInfo(User user){
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.setUserId(user.getUserId());
+        userInfo.setTelegramId(user.getTelegramId());
+        userInfo.setUsername(user.getUsername());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setPhoto_url(user.getPhoto_url());
+        userInfo.setHobbies(user.getHobbies());
+        userInfo.setInterests(user.getInterests());
+
+        return userInfo;
     }
 
     private TelegramUser convertToTelegramUser(User user){

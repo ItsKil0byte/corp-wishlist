@@ -4,10 +4,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -30,9 +28,9 @@ public class JWTService {
         return new SecretKeySpec(decodedKey, SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public String generateToken(Long telegramID){
+    public String generateToken(Long userID){
         return Jwts.builder()
-                .setSubject(telegramID.toString())
+                .setSubject(userID.toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
@@ -40,7 +38,7 @@ public class JWTService {
     }
 
 
-    public Long extractTelegramID(String token){
+    public Long extractUserID(String token){
         String subject = Jwts.parserBuilder()
                 .setSigningKey(getSecretKey())
                 .build()

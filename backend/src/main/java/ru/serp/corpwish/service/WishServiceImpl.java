@@ -54,7 +54,7 @@ public class WishServiceImpl implements WishService{
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new RuntimeException("Can not update wish - wish not found"));
 
-        if(!wish.getWishlist().getOwner().getTelegramId().equals(ownerId)){
+        if(!wish.getWishlist().getOwner().getUserId().equals(ownerId)){
             throw new RuntimeException("Can not update wish - not an owner");
         }
 
@@ -72,7 +72,7 @@ public class WishServiceImpl implements WishService{
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new RuntimeException("Can not delete wish - no such wish"));
 
-        if(!wish.getWishlist().getOwner().getTelegramId().equals(ownerId)){
+        if(!wish.getWishlist().getOwner().getUserId().equals(ownerId)){
             throw new RuntimeException("Can not delete wish - not an owner");
         }
 

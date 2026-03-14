@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.UserService;
 
@@ -14,21 +15,21 @@ import ru.serp.corpwish.service.UserService;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<TelegramUser> getUserInfo (
-            @PathVariable Long userId
+    @GetMapping()
+    public ResponseEntity<UserInfo> getUserInfo (
+            @AuthenticationPrincipal User user
     ) {
-        TelegramUser userInfo = userService.getUserInfo(userId);
+        UserInfo userInfo = userService.getUserInfo(user.getUserId());
 
         return ResponseEntity.ok(userInfo);
     }
 
     @PutMapping
-    public ResponseEntity<TelegramUser> updateUserInfo (
+    public ResponseEntity<UserInfo> updateUserInfo (
             @AuthenticationPrincipal User user,
-            @RequestBody TelegramUser newUserInfo
+            @RequestBody UserInfo newUserInfo
     ) {
-        TelegramUser userInfo = userService.updateUserInfo(user.getTelegramId(), newUserInfo);
+        UserInfo userInfo = userService.updateUserInfo(user.getUserId(), newUserInfo);
 
         return ResponseEntity.ok(userInfo);
     }
