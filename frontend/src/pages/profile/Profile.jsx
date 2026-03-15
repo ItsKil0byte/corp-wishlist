@@ -5,14 +5,13 @@ import UserInfoService from "../../services/UserInfoService.js";
 import Loading from "../Loading.jsx";
 
 const Profile = () => {
-    const userInfoFromTg = WebApp.initDataUnsafe.user
     const [userInfo, setUserInfo] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             if(loading) {
-                const loadedUser = await UserInfoService.getInfo(Number(userInfoFromTg.id));
+                const loadedUser = await UserInfoService.getCurrentUserInfo();
                 setUserInfo(loadedUser);
                 setLoading(false);
             }
@@ -37,10 +36,10 @@ const Profile = () => {
                     <div id={"info"} className={"h-[6rem] flex flex-col justify-around"}>
                         <div className={"w-full flex flex-col items-center"}>
                             <span className={"w-full text-start text-[1.0625rem]"}>
-                                {userInfoFromTg.first_name || ""}
+                                {userInfo.firstName || ""}
                             </span>
                             <span className={"w-full text-start text-[1.0625rem]"}>
-                                {userInfoFromTg.last_name || ""}
+                                {userInfo.lastName || ""}
                             </span>
                         </div>
                         <span className={"w-full text-start text-[0.8125rem]"}>

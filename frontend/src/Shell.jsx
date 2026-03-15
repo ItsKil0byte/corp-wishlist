@@ -82,10 +82,10 @@ function Shell() {
     }
 
     return (
-        <div className="w-full min-h-screen flex justify-center bg-transparent overflow-hidden">
-            <div className="w-full max-w-[800px] h-screen min-h-screen flex flex-col overflow-hidden bg-white shadow-md">
+        <div className="w-full h-full flex justify-center bg-transparent">
+            <div className="w-full max-w-[800px] h-full flex flex-col bg-white shadow-md">
                 <Toaster position={"top-center"} reverseOrder={false} />
-                <main className="w-full h-full flex flex-col overflow-hidden relative">
+                <main className="flex-1 overflow-y-auto relative flex flex-col">
                     <Outlet />
                 </main>
                 {

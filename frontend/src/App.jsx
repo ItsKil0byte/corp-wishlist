@@ -75,45 +75,43 @@ function App() {
     }
 
     return (
-        <>
-            <div className="relative w-full min-h-screen">
-                {!location.pathname.startsWith('/web/auth') && (
-                    <div className="absolute inset-0 overflow-hidden">
-                        <FallingGifts count={25} />
-                    </div>
-                )}
-
-                <div className="relative z-10">
-                    <Routes>
-                        <Route path="/web/auth" element={<Auth />} />
-                        <Route path="/" element={
-                            <ProtectedRoute>
-                                <Shell />
-                            </ProtectedRoute>
-                        }>
-                            <Route index element={<Navigate to="/wishlists" replace />} />
-                            <Route path="wishlists" element={<Wishlists />} />
-                            <Route path='wishlists/wishlist/create' element={<CreateWishlist />} />
-                            <Route path="wishlists/wishlist/view" element={<ViewWishlist />} />
-                            <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist />} />
-                            <Route path="wishlists/wishlist/view/shared" element={<ViewSharedWishlist />} />
-                            <Route path="wishlists/wishlist/edit" element={<EditWishlist />} />
-                            <Route path='wishlists/wish/create' element={<CreateWish />} />
-                            <Route path='wishlists/wish/view' element={<ViewWish />} />
-                            <Route path='wishlists/wish/view/others' element={<ViewOthersWish />} />
-                            <Route path='wishlists/wish/view/shared' element={<ViewSharedWish />} />
-                            <Route path='wishlists/wish/edit' element={<EditWish />} />
-                            <Route path="groups" element={<Groups />} />
-                            <Route path="groups/create" element={<CreateGroup />} />
-                            <Route path="groups/group/view" element={<ViewGroup />} />
-                            <Route path="groups/group/edit" element={<EditGroup />} />
-                            <Route path="profile" element={<Profile />} />
-                            <Route path="profile/others" element={<OthersProfile />} />
-                        </Route>
-                    </Routes>
+        <div className="relative w-full flex-1 flex flex-col h-full overflow-hidden">
+            {!location.pathname.startsWith('/web/auth') && (
+                <div className="absolute inset-0 overflow-hidden">
+                    <FallingGifts count={25}/>
                 </div>
+            )}
+
+            <div className="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+                <Routes>
+                    <Route path="/web/auth" element={<Auth/>}/>
+                    <Route path="/" element={
+                        <ProtectedRoute>
+                            <Shell/>
+                        </ProtectedRoute>
+                    }>
+                        <Route index element={<Navigate to="/wishlists" replace/>}/>
+                        <Route path="wishlists" element={<Wishlists/>}/>
+                        <Route path='wishlists/wishlist/create' element={<CreateWishlist/>}/>
+                        <Route path="wishlists/wishlist/view" element={<ViewWishlist/>}/>
+                        <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist/>}/>
+                        <Route path="wishlists/wishlist/view/shared" element={<ViewSharedWishlist/>}/>
+                        <Route path="wishlists/wishlist/edit" element={<EditWishlist/>}/>
+                        <Route path='wishlists/wish/create' element={<CreateWish/>}/>
+                        <Route path='wishlists/wish/view' element={<ViewWish/>}/>
+                        <Route path='wishlists/wish/view/others' element={<ViewOthersWish/>}/>
+                        <Route path='wishlists/wish/view/shared' element={<ViewSharedWish/>}/>
+                        <Route path='wishlists/wish/edit' element={<EditWish/>}/>
+                        <Route path="groups" element={<Groups/>}/>
+                        <Route path="groups/create" element={<CreateGroup/>}/>
+                        <Route path="groups/group/view" element={<ViewGroup/>}/>
+                        <Route path="groups/group/edit" element={<EditGroup/>}/>
+                        <Route path="profile" element={<Profile/>}/>
+                        <Route path="profile/others" element={<OthersProfile/>}/>
+                    </Route>
+                </Routes>
             </div>
-        </>
+        </div>
     )
 }
 

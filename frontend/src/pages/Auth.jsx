@@ -46,7 +46,7 @@ export default function Auth() {
     };
 
     return (
-        <div className="w-120 justify-self-center min-h-screen h-full flex flex-col px-4 py-6 gap-6 overflow-hidden bg-white">
+        <div className="w-full max-w-120 mx-auto justify-self-center min-h-[100dvh] h-full flex flex-col px-4 py-6 gap-6 overflow-hidden bg-white">
             <Toaster position="top-center" reverseOrder={false} />
 
             <div className="flex justify-center">

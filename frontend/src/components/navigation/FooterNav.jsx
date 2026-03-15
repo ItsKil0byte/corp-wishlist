@@ -4,7 +4,7 @@ function FooterNav() {
 	const footerBtnStyle = "flex flex-col justify-center items-center bg-transparent grow rounded-4xl"
 
 	return (
-		<nav className="h-11 flex flex-row justify-around bg-main-theme-lite rounded-4xl mx-5 my-2 p-0.5">
+		<nav className="h-11 shrink-01 flex flex-row justify-around bg-main-theme-lite rounded-4xl mx-5 my-2 p-0.5">
 			<NavLink
 				to="/wishlists"
 				className={({ isActive }) => footerBtnStyle + (isActive && " bg-white font-bold")}

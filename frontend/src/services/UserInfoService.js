@@ -32,4 +32,13 @@ export default class UserInfoService {
         const { data } = await $api.get(`/userInfo/${userId}`);
         return data;
     }
+
+    /**
+     * Возвращает информацию о текущем пользователе.
+     * @returns {Promise<UserInfo>}
+     * **/
+    static async getCurrentUserInfo() {
+        const { data } = await $api.get(`/userInfo`);
+        return data;
+    }
 }
