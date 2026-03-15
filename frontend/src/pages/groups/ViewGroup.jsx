@@ -19,7 +19,7 @@ const ViewGroup = () => {
         return (
             <div key={index}
                  className={`w-full h-full flex flex-col justify-center items-center mb-6`}
-                 onClick={() => {navigate(`/profile/others?id=${item.id}&from=${group.id}`)}}
+                 onClick={() => {navigate(`/profile/others?id=${item.userId}&from=${group.id}`)}}
             >
                 <div className={`w-[6.25rem] h-[6.25rem] flex-col justify-center items-center overflow-clip mb-2 bg-gray-300 rounded-[50%]`}>
                     <img className={"w-full h-full"} alt={"аватар"} src={item.photo_url} />
