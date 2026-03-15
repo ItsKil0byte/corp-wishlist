@@ -70,6 +70,11 @@ function App() {
         return <Loading message={"Авторизация Telegram..."}/>;
     }
 
+    if (location.pathname === '/link' && location.search) {
+        // Redirect /link?start_param=... into the app root so Shell can process start_param
+        return <Navigate to={`/${location.search}`} replace />;
+    }
+
     if (!isTelegram && !token && !location.pathname.startsWith('/web/auth')) {
         return <Navigate to="/web/auth" replace />;
     }
