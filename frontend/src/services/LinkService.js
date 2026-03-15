@@ -2,7 +2,7 @@ import axios from "axios";
 import $api from "../http/index.js";
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://squarely-compatible-lungfish.cloudpub.ru/api'
-const URL = API_URL.replace('/api', '')
+const URL = API_URL.endsWith('/api') ? API_URL.slice(0, -4) : API_URL;
 
 export default class LinkService {
     static async getLinkInfo(type, entityId, expiresAt = null) {
