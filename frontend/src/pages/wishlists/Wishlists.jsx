@@ -21,10 +21,10 @@ function Wishlists() {
                 data = await WishlistService.getWishlists();
             }
 
-            if (data && data.length === 0) {
-                await WishlistService.addWishlist("На новый год", "main-theme-lite", "\uD83C\uDF84");
-                data = await WishlistService.getWishlists();
-            }
+            // if (data && data.length === 0) {
+            //     await WishlistService.addWishlist("На новый год", "main-theme-lite", "\uD83C\uDF84");
+            //     data = await WishlistService.getWishlists();
+            // }
 
             sessionStorage.setItem("wishlists", JSON.stringify(data));
             setWishlists(data);
@@ -61,9 +61,9 @@ function Wishlists() {
         return <Loading message="Загружаю вишлисты..." />;
     }
 
-	return (
-        <div className="w-full h-full flex px-8 pt-8 overflow-hidden relative">
-            <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"} />
+    return (
+        <div className="w-full flex-1 flex flex-col px-8 pt-8 overflow-hidden relative">
+            <FlatList items={wishlists} render={renderWishlist} className={"w-full flex-1"} />
             <PlusButton className={"absolute right-5 bottom-5"}
                         onClick={() => navigate("/wishlists/wishlist/create")}/>
         </div>

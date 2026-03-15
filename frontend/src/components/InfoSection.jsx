@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 const InfoSection = ({ title, info, placeholder, userInfo, setUserInfo, type, canBeEdited = false }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = React.useState(info);
-    const [loading, setLoading] = React.useState(false);
+    // const [loading, setLoading] = React.useState(false);
 
     const renderForm = () => {
         return isEditing ? (

@@ -4,8 +4,11 @@ import GroupService from "../../services/GroupService.js";
 import Loading from "../Loading.jsx";
 import {useNavigate} from "react-router-dom";
 import PlusButton from "../../components/buttons/PlusButton.jsx";
-import Storage from "../../store/Storage.js";
+// import Storage from "../../store/Storage.js"; - в дальнейшем полностью убрать из проекта
 import getNumeralEnding from "../../utils/getNumeralEnding.js";
+
+const usedStorage = sessionStorage;
+const storageKey = 'groups';
 
 function Groups() {
     const [groups, setGroups] = useState([]);
@@ -14,25 +17,27 @@ function Groups() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const localGroups = sessionStorage.getItem("groups");
+            const localGroups = usedStorage.getItem(storageKey);
 
             if (localGroups === null) {
                 let data = await GroupService.getGroups();
 
-                if (data && data.length === 0) {
-                    const canCreatePlaceholderGroup = await Storage.getItem("canCreatePlaceholderGroup");
+                //  FIX | Реализация создания начальной группы будет перенесено на бэк
+                //
+                //  if (data && data.length === 0) {
+                //      const canCreatePlaceholderGroup = await Storage.getItem("canCreatePlaceholderGroup");
+                //      if (canCreatePlaceholderGroup === null) {
+                //      await GroupService.addGroup("Одногруппники", "🥳")
+                //      data = await GroupService.getGroups();
+                //
+                //      await Storage.setItem("canCreatePlaceholderGroup", "false");
+                //      }
+                //  }
 
-                    if (canCreatePlaceholderGroup === null) {
-                        await GroupService.addGroup("Одногруппники", "🥳")
-                        data = await GroupService.getGroups();
-                        await Storage.setItem("canCreatePlaceholderGroup", "false");
-                    }
-                }
-
-                sessionStorage.setItem("groups", JSON.stringify(data));
+                usedStorage.setItem(storageKey, JSON.stringify(data));
                 setGroups(data);
             } else {
-                setGroups(JSON.parse(sessionStorage.getItem("groups")));
+                setGroups(JSON.parse(usedStorage.getItem(storageKey)));
             }
 
             setLoading(false);

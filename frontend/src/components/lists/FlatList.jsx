@@ -2,7 +2,7 @@ import React from 'react';
 
 const FlatList = ({ items, render, className, overscroll = true }) => {
     return (
-        <ol className={`flex-col justify-center items-center overflow-y-scroll ${className}`}>
+        <ol className={`flex flex-col overflow-y-auto ${className}`}>
             {
                 items.map((item, index) => (
                     render(item, index)

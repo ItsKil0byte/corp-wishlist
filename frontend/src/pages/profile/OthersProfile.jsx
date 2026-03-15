@@ -64,8 +64,16 @@ const OthersProfile = () => {
                 <div className={"w-full px-9 my-4 grow flex flex-col items-center max-w-[31.5rem]"}>
                     <section id="profile" className={"w-full max-w-[17.5rem] grid grid-cols-2 max-[22.5rem]:grid-cols-1 max-[22.5rem]:grid-rows-2 gap-6 mb-8"}>
                         <div id={"avatar"} className={"w-full h-full flex justify-center items-center"}>
-                            <div className={`w-[8.125rem] h-[8.125rem] flex-col justify-center items-center overflow-clip mb-2 bg-gray-300 rounded-[50%]`}>
-                                <img className={"w-full h-full"} alt={"аватар"} src={userInfo.photo_url} />
+                            <div className={`w-[8.125rem] h-[8.125rem] flex justify-center items-center overflow-clip mb-2 bg-main-theme-lite rounded-[50%]`}>
+                                {
+                                    userInfo.photo_url ? (
+                                        <img className={"w-full h-full object-cover"} alt={"аватар"} src={userInfo.photo_url}/>
+                                    ) : (
+                                        <span className="text-4xl font-bold text-main-theme uppercase">
+                                        {userInfo.username?.[0] || '?'}
+                                    </span>
+                                    )
+                                }
                             </div>
                         </div>
                         <div id={"info"} className={"h-[6rem] flex flex-col justify-around"}>

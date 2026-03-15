@@ -19,23 +19,28 @@ const ViewGroup = () => {
         return (
             <div key={index}
                  className={`w-full h-full flex flex-col justify-center items-center mb-6`}
-                 onClick={() => {navigate(`/profile/others?id=${item.id}&from=${group.id}`)}}
+                 onClick={() => {navigate(`/profile/others?id=${item.userId}&from=${group.id}`)}}
             >
-                <div className={`w-[6.25rem] h-[6.25rem] flex-col justify-center items-center overflow-clip mb-2 bg-gray-300 rounded-[50%]`}>
-                    <img className={"w-full h-full"} alt={"аватар"} src={item.photo_url} />
+                <div className={`w-[6.25rem] h-[6.25rem] flex items-center justify-center overflow-clip mb-2 bg-main-theme-lite rounded-[50%]`}>
+                    {item.photo_url ? (
+                        <img className={"w-full h-full object-cover"} alt={"аватар"} src={item.photo_url} />
+                    ) : (
+                        <span className="text-4xl font-bold text-main-theme uppercase">
+                            {item.username?.[0] || '?'}
+                        </span>
+                    )}
                 </div>
-                <span>{`${item.first_name} ${item.last_name}`}</span>
+                {/*<span>{`${item.first_name} ${item.last_name}`}</span>*/}
+                <span>{`@${item.username}`}</span>
             </div>
         )
     }
 
     const onShare = async () => {
-        if (!group) return;
-
         const linkInfo = await LinkService.getLinkInfo("GROUP_INVITE", group.id);
 
-        const link = `https://t.me/RADpoDARky_bot/raddar?startapp=${linkInfo.token}`;
-        console.dir(link);
+        const origin = window.location.origin;
+        const link = `${origin}/link?start_param=${linkInfo.token}`;
 
         await navigator.clipboard.writeText(link);
         toast.success("Ссылка скопирована");
