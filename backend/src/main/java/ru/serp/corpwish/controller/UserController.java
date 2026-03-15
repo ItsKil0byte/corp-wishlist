@@ -24,6 +24,19 @@ public class UserController {
         return ResponseEntity.ok(userInfo);
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserInfo> getUserInfoById(
+            @AuthenticationPrincipal User requester,
+            @PathVariable Long userId
+    ) {
+
+        // Бля, а зачем убирали? Я что-то проморгал
+        // TODO: безопасность и т.д.
+
+        UserInfo userInfo = userService.getUserInfo(userId);
+        return ResponseEntity.ok(userInfo);
+    }
+
     @PutMapping
     public ResponseEntity<UserInfo> updateUserInfo (
             @AuthenticationPrincipal User user,
