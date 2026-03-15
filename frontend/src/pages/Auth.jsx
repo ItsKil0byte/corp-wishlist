@@ -18,14 +18,25 @@ export default function Auth() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitDisabled(true);
-        const tId = toast.loading("Авторизация")
+
+        if (login.trim().length === 0) {
+            toast.error("Введите логин");
+            return;
+        }
+
+        if (password.length === 0) {
+            toast.error("Введите пароль");
+            return;
+        }
 
         if (isRegister && password !== confirmPassword) {
-            toast.error("Пароли не совпадают", { id: tId });
+            toast.error("Пароли не совпадают");
             setSubmitDisabled(false);
             return;
         }
+
+        setSubmitDisabled(true);
+        const tId = toast.loading("Авторизация")
 
         try {
             if (isRegister) {
@@ -40,9 +51,9 @@ export default function Auth() {
         } catch (error) {
             console.error(error);
             toast.error("Ошибка авторизации", { id: tId });
+        } finally {
+            setSubmitDisabled(false);
         }
-
-        setSubmitDisabled(false);
     };
 
     return (
