@@ -17,7 +17,7 @@ const ViewSharedWishlist = () => {
                           name={item.title}
                           description={item.description}
                           color={item.color}
-                          onClick={() => navigate(`/wishlists/wish/view/shared?id=${item.id}`)} />
+                          onClick={() => navigate(`/shared-wishlist-wish?id=${item.id}`)} />
             </div>
         )
     }
