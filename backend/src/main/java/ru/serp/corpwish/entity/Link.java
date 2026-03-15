@@ -31,7 +31,7 @@ public class Link {
     private Long entityId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", referencedColumnName = "telegramId")
+    @JoinColumn(name = "owner_id", referencedColumnName = "userId")
     private User owner;
 
     @Column(nullable = false)
