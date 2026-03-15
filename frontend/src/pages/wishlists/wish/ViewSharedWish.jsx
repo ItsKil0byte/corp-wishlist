@@ -15,7 +15,7 @@ const ViewSharedWish = () => {
         <div className="h-full w-full flex flex-col">
             <Header hasBackButton={true}
                     hasText={true}
-                    onBack={() => {navigate(`/wishlists/wishlist/view/shared`)}}
+                    onBack={() => {navigate(`/shared-wishlist`)}}
                     text={wishlist.icon ? `${wishlist.icon} ${wishlist.title}` : wishlist.title}/>
             <div className={`p-4 mx-4 ${color} rounded-2xl flex flex-col justify-center`}>
                 <span className="w-full text-center wrap-break-word font-semibold text-2xl">{wish.title}</span>

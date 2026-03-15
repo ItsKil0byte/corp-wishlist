@@ -24,7 +24,6 @@ function Shell() {
                 const startParamFromWebApp = initData?.start_param;
                 const startParamFromQuery = new URLSearchParams(location.search).get('start_param');
                 const startParam = startParamFromWebApp || startParamFromQuery;
-                const user = await UserInfoService.getCurrentUserInfo();
 
                 if (!startParam) {
                     return;
@@ -39,6 +38,7 @@ function Shell() {
                     case 'GROUP_INVITE':
                         try {
                             setMessage('Присоединение к группе...');
+                            const user = await UserInfoService.getCurrentUserInfo();
                             await GroupService.addMember(entity.entityId, user.userId);
                             sessionStorage.removeItem("groups");
                             toast.success('Вы были добавлены в группу!', { id: tId });
@@ -54,7 +54,7 @@ function Shell() {
                             setMessage('Загружаю вишлист...');
                             sessionStorage.setItem('shared_wishlist', JSON.stringify(entity));
                             toast.success('Вишлист загружен!', { id: tId });
-                            navigate(`/wishlists/wishlist/view/shared`);
+                            navigate(`/shared-wishlist`);
                         } catch (e) {
                             toast.error('Не удалось загрузить вишлист', { id: tId });
                             console.error(e);

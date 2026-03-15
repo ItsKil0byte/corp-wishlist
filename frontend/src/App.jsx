@@ -70,18 +70,9 @@ function App() {
         return <Loading message={"Авторизация Telegram..."}/>;
     }
 
-    if (location.pathname === '/link' && location.search) {
-        // Redirect /link?start_param=... into the app root so Shell can process start_param
-        return <Navigate to={`/${location.search}`} replace />;
-    }
-
-    if (!isTelegram && !token && !location.pathname.startsWith('/web/auth')) {
-        return <Navigate to="/web/auth" replace />;
-    }
-
     return (
         <div className="relative w-full flex-1 flex flex-col h-full overflow-hidden">
-            {!location.pathname.startsWith('/web/auth') && (
+            {!location.pathname.startsWith('/web/auth') && !location.pathname.startsWith('/link') && !location.pathname.startsWith('/shared-wishlist') && (
                 <div className="absolute inset-0 overflow-hidden">
                     <FallingGifts count={25}/>
                 </div>
@@ -90,6 +81,10 @@ function App() {
             <div className="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
                 <Routes>
                     <Route path="/web/auth" element={<Auth/>}/>
+                    <Route path="/link" element={<Shell/>}/>
+                    <Route path="/shared-wishlist" element={<ViewSharedWishlist/>}/>
+                    <Route path="/shared-wishlist-wish" element={<ViewSharedWish/>}/>
+
                     <Route path="/" element={
                         <ProtectedRoute>
                             <Shell/>
@@ -97,16 +92,14 @@ function App() {
                     }>
                         <Route index element={<Navigate to="/wishlists" replace/>}/>
                         <Route path="wishlists" element={<Wishlists/>}/>
-                        <Route path='wishlists/wishlist/create' element={<CreateWishlist/>}/>
+                        <Route path="wishlists/wishlist/create" element={<CreateWishlist/>}/>
                         <Route path="wishlists/wishlist/view" element={<ViewWishlist/>}/>
                         <Route path="wishlists/wishlist/view/others" element={<ViewOthersWishlist/>}/>
-                        <Route path="wishlists/wishlist/view/shared" element={<ViewSharedWishlist/>}/>
                         <Route path="wishlists/wishlist/edit" element={<EditWishlist/>}/>
-                        <Route path='wishlists/wish/create' element={<CreateWish/>}/>
-                        <Route path='wishlists/wish/view' element={<ViewWish/>}/>
-                        <Route path='wishlists/wish/view/others' element={<ViewOthersWish/>}/>
-                        <Route path='wishlists/wish/view/shared' element={<ViewSharedWish/>}/>
-                        <Route path='wishlists/wish/edit' element={<EditWish/>}/>
+                        <Route path="wishlists/wish/create" element={<CreateWish/>}/>
+                        <Route path="wishlists/wish/view" element={<ViewWish/>}/>
+                        <Route path="wishlists/wish/view/others" element={<ViewOthersWish/>}/>
+                        <Route path="wishlists/wish/edit" element={<EditWish/>}/>
                         <Route path="groups" element={<Groups/>}/>
                         <Route path="groups/create" element={<CreateGroup/>}/>
                         <Route path="groups/group/view" element={<ViewGroup/>}/>
