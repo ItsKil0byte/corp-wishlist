@@ -55,6 +55,7 @@ public class AuthService {
         User newUser = new User();
 
         newUser.setLogin(user.getLogin());
+        newUser.setUsername(user.getLogin()); // Ставим логин, чтобы не было null по умолчанию
         newUser.setPasswordHash(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(newUser);

@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
     private UserInfo convertToUserInfo(User user){
         UserInfo userInfo = new UserInfo();
 
+        userInfo.setUserId(user.getUserId());
         userInfo.setTelegramId(user.getTelegramId());
         userInfo.setUsername(user.getLogin());
         userInfo.setFirstName(user.getFirstName());

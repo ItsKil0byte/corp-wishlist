@@ -31,6 +31,9 @@ public class GroupServiceImpl implements GroupService{
         group.setIcon(groupData.getIcon());
         group.setOwner(user);
 
+        // Добавляем самого владельца в список участников
+        group.getMembers().add(user);
+
         groupRepository.save(group);
         return convertToDto(group);
     }
