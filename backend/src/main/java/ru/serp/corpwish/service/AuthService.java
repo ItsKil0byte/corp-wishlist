@@ -85,7 +85,7 @@ public class AuthService {
         // Вишлист
         CreateWishlistRequest wishlistRequest = new CreateWishlistRequest();
         wishlistRequest.setName("Новый год 2026");
-        wishlistRequest.setColor("#00ee63");
+        wishlistRequest.setColor("main-theme-lite");
         wishlistRequest.setIcon("\uD83C\uDF84");
         wishlistService.createWishlist(userId, wishlistRequest);
 
