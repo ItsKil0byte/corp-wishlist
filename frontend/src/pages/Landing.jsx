@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import FallingGifts from "../components/FallingGifts";
 
 export default function Landing() {
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div className="w-full h-full overflow-y-auto overflow-x-hidden relative bg-white no-scrollbar">
@@ -15,7 +15,10 @@ export default function Landing() {
                     <div className="text-xl font-black text-main-theme tracking-tigher uppercase">
                         Корпоративный <span className="text-gray-800">вишлист</span>
                     </div>
-                    <button className="bg-main-theme text-white font-bold py-2 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all">
+                    <button 
+                        className="bg-main-theme text-white font-bold py-2 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all"
+                        onClick={() => navigate("/web/auth")}
+                    >
                         Войти
                     </button>
                 </header>
@@ -30,7 +33,10 @@ export default function Landing() {
                                 Создавайте вишлисты, делитесь ими со своими коллегами, объединяйтесь в группы и забудьте о выборе подарка в последнюю минуту.
                             </p>
                             <div className="flex">
-                                <button className="bg-main-theme text-white font-bold py-4 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all">
+                                <button 
+                                    className="bg-main-theme text-white font-bold py-4 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all"
+                                    onClick={() => navigate("/web/auth")}
+                                >
                                     Создать вишлист
                                 </button>
                             </div>
