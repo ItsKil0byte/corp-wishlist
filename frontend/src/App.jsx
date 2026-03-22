@@ -116,6 +116,8 @@ function App() {
                         <Route path="profile" element={<Profile/>}/>
                         <Route path="profile/others" element={<OthersProfile/>}/>
                     </Route>
+
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>
         </div>
