@@ -22,7 +22,6 @@ import ViewSharedWish from "./pages/wishlists/wish/ViewSharedWish.jsx";
 import Auth from "./pages/Auth.jsx";
 import AuthService from "./services/AuthService.js";
 import Loading from "./pages/Loading.jsx";
-import Landing from './pages/Landing.jsx';
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
@@ -73,11 +72,9 @@ function App() {
 
     return (
         <div className="relative w-full flex-1 flex flex-col h-full overflow-hidden">
-            {/* Падающие подарки будут отображаться только для следующих путей */}
             {!location.pathname.startsWith('/web/auth') && 
             !location.pathname.startsWith('/link') && 
-            !location.pathname.startsWith('/shared-wishlist') && 
-            location.pathname !== '/' && (
+            !location.pathname.startsWith('/shared-wishlist') && (
                 <div className="absolute inset-0 overflow-hidden">
                     <FallingGifts count={25}/>
                 </div>
@@ -90,9 +87,10 @@ function App() {
                     <Route path="/shared-wishlist" element={<ViewSharedWishlist/>}/>
                     <Route path="/shared-wishlist-wish" element={<ViewSharedWish/>}/>
 
-                    {/* Корень */}
                     <Route path="/" element={
-                        (isTelegram || token) ? <Navigate to="/wishlists" replace /> : <Landing />
+                        (isTelegram || token) 
+                        ? <Navigate to="/wishlists" replace /> 
+                        : <Navigate to="/web/auth" replace />
                     } />
 
                     <Route element={
