@@ -72,7 +72,9 @@ function App() {
 
     return (
         <div className="relative w-full flex-1 flex flex-col h-full overflow-hidden">
-            {!location.pathname.startsWith('/web/auth') && !location.pathname.startsWith('/link') && !location.pathname.startsWith('/shared-wishlist') && (
+            {!location.pathname.startsWith('/web/auth') && 
+            !location.pathname.startsWith('/link') && 
+            !location.pathname.startsWith('/shared-wishlist') && (
                 <div className="absolute inset-0 overflow-hidden">
                     <FallingGifts count={25}/>
                 </div>
@@ -86,11 +88,16 @@ function App() {
                     <Route path="/shared-wishlist-wish" element={<ViewSharedWish/>}/>
 
                     <Route path="/" element={
+                        (isTelegram || token) 
+                        ? <Navigate to="/wishlists" replace /> 
+                        : <Navigate to="/web/auth" replace />
+                    } />
+
+                    <Route element={
                         <ProtectedRoute>
                             <Shell/>
                         </ProtectedRoute>
                     }>
-                        <Route index element={<Navigate to="/wishlists" replace/>}/>
                         <Route path="wishlists" element={<Wishlists/>}/>
                         <Route path="wishlists/wishlist/create" element={<CreateWishlist/>}/>
                         <Route path="wishlists/wishlist/view" element={<ViewWishlist/>}/>
@@ -107,6 +114,8 @@ function App() {
                         <Route path="profile" element={<Profile/>}/>
                         <Route path="profile/others" element={<OthersProfile/>}/>
                     </Route>
+
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </div>
         </div>

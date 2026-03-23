@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корпоративный вишлист — Подарки, которые радуют</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Настройки темы проекта */
+        :root {
+            --main-theme: #04C9A8;
+            --main-theme-lite: #DEFAF5;
+            --main-theme-primary: #595959;
+        }
+
+        @theme {
+            .bg-main-theme { background-color: var(--main-theme); }
+            .bg-main-theme-lite { background-color: var(--main-theme-lite); }
+            .text-main-theme { color: var(--main-theme); }
+            .border-main-theme { border-color: var(--main-theme); }
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: var(--gift-opacity); }
+            90% { opacity: var(--gift-opacity); }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .btn-main {
+            background-color: #04C9A8;
+            color: white;
+            transition: all 0.2s;
+        }
+        .btn-main:hover {
+            transform: scale(1.1);
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'main-theme': '#04C9A8',
+                        'main-theme-lite': '#DEFAF5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="w-full h-screen overflow-y-auto overflow-x-hidden relative bg-white no-scrollbar">
+    
+    <div class="relative z-10 flex flex-col items-center w-full max-w-6xl mx-auto px-6">
+        
+        <!-- Header -->
+        <header class="bg-main-theme-lite w-full flex justify-between items-center py-6 mb-12 rounded-xl px-8 mt-6 shadow-sm">
+            <div class="text-xl font-black text-main-theme tracking-tighter uppercase">
+                Корпоративный <span class="text-gray-800">вишлист</span>
+            </div>
+            <a href="https://app.corpwishlist.ru" class="bg-main-theme text-white font-bold py-2 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all">
+                Войти
+            </a>
+        </header>
+
+        <main class="w-full flex flex-col gap-24">
+            <!-- Hero Section -->
+            <section class="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+                <div class="w-full md:w-1/2 text-left">
+                    <h1 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+                        Вишлист, который <br/> <span class="text-main-theme">понимает коллег.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
+                        Создавайте вишлисты, делитесь ими со своими коллегами, объединяйтесь в группы и забудьте о выборе подарка в последнюю минуту.
+                    </p>
+                    <div class="flex">
+                        <a href="https://app.corpwishlist.ru" 
+                           class="bg-main-theme text-white font-bold py-4 px-8 rounded-xl text-lg shadow-sm hover:scale-110 transition-all">
+                            Создать вишлист
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex justify-center md:justify-end">
+                    <img src="mock.jpg" alt="mock" class="w-3/4 md:w-full max-w-sm md:max-w-md h-auto">
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group p-8 rounded-xl bg-gray-50 hover:translate-y-[-5px] shadow-sm transition-all border border-transparent hover:border-main-theme/20">
+                    <div class="text-3xl mb-4">🏠</div>
+                    <h3 class="text-xl font-bold mb-3">Создавайте группы</h3>
+                    <p class="text-gray-600">
+                        Создавайте группы для своей команды. 
+                        Её участники смогут видеть вишлисты друг друга, 
+                        обмениваться идеями и вместе готовиться к праздникам.
+                    </p>
+                </div>
+                <div class="group p-8 rounded-xl bg-gray-50 hover:translate-y-[-5px] shadow-sm transition-all border border-transparent hover:border-main-theme/20">
+                    <div class="text-3xl mb-4">🔗</div>
+                    <h3 class="text-xl font-bold mb-3">Делитесь вишлистами</h3>
+                    <p class="text-gray-600">
+                        Делитесь своими вишлистами с другими коллегами. 
+                        Они откроют их в один клик, без регистрации и лишних паролей. 
+                        Просто отправьте им ссылку!
+                    </p>
+                </div>
+                <div class="group p-8 rounded-xl bg-gray-50 hover:translate-y-[-5px] shadow-sm transition-all border border-transparent hover:border-main-theme/20">
+                    <div class="text-3xl mb-4">⏰</div>
+                    <h3 class="text-xl font-bold mb-3">Экономьте время</h3>
+                    <p class="text-gray-600">
+                        Забудьте о бесконечных обсуждениях в чатах и мучительном выборе подарков. 
+                        С нашим вишлистом всё просто: вы видите, что хотят ваши коллеги, и выбираете подарок, 
+                        который точно понравится.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Stats -->
+            <section class="bg-main-theme-lite rounded-xl p-12 text-center hover:translate-y-[-5px] shadow-sm transition-all">
+                <h2 class="text-3xl text-gray-900 font-bold mb-8">Сделаем праздники в вашем отделе лучше!</h2>
+                <div class="flex flex-wrap justify-center gap-12">
+                    <div>
+                        <div class="text-4xl font-black text-main-theme">0</div>
+                        <div class="text-gray-600">Ненужных подарков</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-black text-main-theme">100%</div>
+                        <div class="text-gray-600">Попадание в цель</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-black text-main-theme">2 мин</div>
+                        <div class="text-gray-600">Вашего времени</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="w-full py-12 mt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-gray-400 text-sm">© 2026 Корпоративный вишлист. Разработано с любовью от студентов ИИТ ❤️</div>
+        </footer>
+    </div>
+</body>
+</html>
