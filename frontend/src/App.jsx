@@ -74,13 +74,13 @@ function App() {
 
   return (
     <div className="relative w-full flex-1 flex flex-col h-full overflow-hidden">
-      {!location.pathname.startsWith("/web/auth") &&
+      {/* {!location.pathname.startsWith("/web/auth") &&
         !location.pathname.startsWith("/link") &&
         !location.pathname.startsWith("/shared-wishlist") && (
           <div className="absolute inset-0 overflow-hidden">
             <FallingGifts count={25} />
           </div>
-        )}
+        )} */}
 
       <div className="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
         <Routes>

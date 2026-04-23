@@ -1,97 +1,61 @@
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import FooterNav from "./components/navigation/FooterNav.jsx";
-import WebApp from "@twa-dev/sdk";
-import toast, {Toaster} from "react-hot-toast";
-import {useEffect, useState} from "react";
-import GroupService from "./services/GroupService.js";
-import Loading from "./pages/Loading.jsx";
-import LinkService from "./services/LinkService.js";
-import UserInfoService from "./services/UserInfoService.js";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import UserInfoService from "./services/UserInfoService";
+import WishlistService from "./services/WishlistService";
+import AppSidebar from "./components/navigation/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import GroupService from "./services/GroupService";
+import { TooltipProvider } from "./components/ui/tooltip";
 
-function Shell() {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const pathsWithFooter = ["/wishlists", "/groups", "/profile"];
+export default function Shell() {
+  const [user, setUser] = useState(null);
+  const [wishlists, setWishlists] = useState([]);
+  const [groups, setGroups] = useState([]);
 
-    useEffect(() => {
-        const effect = async () => {
-            try {
-                const initData = WebApp?.initDataUnsafe;
-                //const userId = initData?.user?.id;
+  // TODO: Динамически обновлять sidebar.
+  // TODO: Header с кнопкой.
+  // TODO: Протестировать на мобилке.
 
-                const startParamFromWebApp = initData?.start_param;
-                const startParamFromQuery = new URLSearchParams(location.search).get('start_param');
-                const startParam = startParamFromWebApp || startParamFromQuery;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Получаем информацию о пользователе
+        const user = await UserInfoService.getCurrentUserInfo();
+        setUser(user);
 
-                if (!startParam) {
-                    return;
-                }
+        if (user) {
+          // Получаем вишлисты и группы пользователя
+          const [wishlists, groups] = await Promise.all([
+            WishlistService.getWishlists(),
+            GroupService.getGroups(),
+          ]);
 
-                const tId = toast.loading("Запрос выполняется...")
-                setLoading(true);
-                const entity = await LinkService.getEntity(startParam);
-                console.dir(entity);
+          setWishlists(wishlists || []);
+          setGroups(groups || []);
+        }
+      } catch (error) {
+        console.error("Ошибка при загрузке данных:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-                switch (entity.type) {
-                    case 'GROUP_INVITE':
-                        try {
-                            setMessage('Присоединение к группе...');
-                            const user = await UserInfoService.getCurrentUserInfo();
-                            await GroupService.addMember(entity.entityId, user.userId);
-                            sessionStorage.removeItem("groups");
-                            toast.success('Вы были добавлены в группу!', { id: tId });
-                            navigate('/groups');
-                        } catch (e) {
-                            toast.error('Не удалось присоединиться', { id: tId });
-                            console.error(e);
-                            navigate('/');
-                        }
-                        break;
-                    case 'WISHLIST_SHARE':
-                        try {
-                            setMessage('Загружаю вишлист...');
-                            sessionStorage.setItem('shared_wishlist', JSON.stringify(entity));
-                            toast.success('Вишлист загружен!', { id: tId });
-                            navigate(`/shared-wishlist`);
-                        } catch (e) {
-                            toast.error('Не удалось загрузить вишлист', { id: tId });
-                            console.error(e);
-                            navigate('/');
-                        }
-                        break;
-                }
+  return (
+    <TooltipProvider>
+      <SidebarProvider>
+        <div className="flex h-screen w-full bg-gray-50 font-sans overflow-hidden">
+          <AppSidebar user={user} wishlists={wishlists} groups={groups} />
 
-            } catch (e) {
-                console.log(e);
-                toast.error('Ошибка');
-                setLoading(false);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        effect();
-    }, []);
-
-	if (loading) {
-        return <Loading message={message} />;
-    }
-
-    return (
-        <div className="w-full h-full flex justify-center bg-transparent">
-            <div className="w-full max-w-[800px] h-full flex flex-col bg-white shadow-md">
-                <Toaster position={"top-center"} reverseOrder={false} />
-                <main className="flex-1 overflow-y-auto relative flex flex-col">
-                    <Outlet />
-                </main>
-                {
-                    pathsWithFooter.includes(location.pathname) && <FooterNav />
-                }
+          <main className="relative flex-1 flex flex-col min-w-0 overflow-hidden p-2">
+            <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-lg shadow">
+              <header className="flex h-12 shrink-0 items-center p-4 gap-2">
+                <SidebarTrigger className="text-gray-900 hover:text-main-theme transition-colors" />
+              </header>
+              <Outlet />
             </div>
+          </main>
         </div>
-    );
+      </SidebarProvider>
+    </TooltipProvider>
+  );
 }
-
-export default Shell;
