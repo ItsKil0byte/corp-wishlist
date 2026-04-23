@@ -1,120 +1,155 @@
-import { useState } from 'react';
+import AuthService from "@/services/AuthService";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
-import Input from "../components/inputs/Input.jsx";
-import AcceptButton from "../components/buttons/AcceptButton.jsx";
-import DismissButton from "../components/buttons/DismissButton.jsx";
-import AuthService from "../services/AuthService.js";
+import toast from "react-hot-toast";
+import FallingGifts from "@/components/FallingGifts";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export default function Auth() {
-    const [mode, setMode] = useState('login'); // 'login' | 'register'
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
-    const [submitDisabled, setSubmitDisabled] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
-    const isRegister = mode === 'register';
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const [parent] = useAutoAnimate();
+  const [isLoading, setIsLoading] = useState(false);
 
-        if (login.trim().length === 0) {
-            toast.error("Введите логин");
-            return;
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        if (password.length === 0) {
-            toast.error("Введите пароль");
-            return;
-        }
+    if (!isLogin && password !== confirmPassword) {
+      toast.error("Пароли не совпадают!");
+      return;
+    }
 
-        if (isRegister && password !== confirmPassword) {
-            toast.error("Пароли не совпадают");
-            setSubmitDisabled(false);
-            return;
-        }
+    setIsLoading(true);
+    const tId = toast.loading("Авторизация...");
 
-        setSubmitDisabled(true);
-        const tId = toast.loading("Авторизация")
+    try {
+      if (isLogin) {
+        await AuthService.loginViaJWT(login, password);
+        toast.success("Успешный вход!", { id: tId });
+      } else {
+        await AuthService.registerViaJWT(login, password);
+        toast.success("Успешная регистрация!", { id: tId });
+      }
 
-        try {
-            if (isRegister) {
-                await AuthService.registerViaJWT(login, password);
-                toast.success("Регистрация прошла успешно", { id: tId });
-            } else {
-                await AuthService.loginViaJWT(login, password);
-                toast.success("Вход выполнен успешно", { id: tId });
-            }
+      navigate("/");
+    } catch (error) {
+      console.error("Ошибка при авторизации/регистрации: ", error);
+      toast.error(error.response?.data?.message || "Произошла ошибка!", {
+        id: tId,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            navigate("/");
-        } catch (error) {
-            console.error(error);
-            toast.error("Ошибка авторизации", { id: tId });
-        } finally {
-            setSubmitDisabled(false);
-        }
-    };
+  return (
+    <div className="relative min-h-screen w-full bg-main-theme-lite flex items-center justify-center overflow-hidden">
+      {/* TODO: Заменить на что-нибудь */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <FallingGifts />
+      </div>
 
-    return (
-        <div className="w-full max-w-120 mx-auto justify-self-center min-h-[100dvh] h-full flex flex-col px-4 py-6 gap-6 overflow-hidden bg-white">
-            <Toaster position="top-center" reverseOrder={false} />
+      <Card className="relative w-full max-w-[380px] shadow-xl border bg-white">
+        <CardHeader className="text-center py-4">
+          <CardTitle className="text-3xl font-black text-gray-900">
+            {isLogin ? "Вход" : "Регистрация"}
+          </CardTitle>
+        </CardHeader>
 
-            <div className="flex justify-center">
-                <h1 className="text-2xl font-semibold text-main-theme">
-                    {isRegister ? 'Регистрация' : 'Вход'}
-                </h1>
+        <form onSubmit={handleSubmit}>
+          <CardContent ref={parent} className="space-y-5 px-6">
+            <div className="space-y-2">
+              <Label htmlFor="login" className="text-gray-900 font-medium">
+                Логин
+              </Label>
+              <Input
+                required
+                type="text"
+                placeholder="Введите логин"
+                id="login"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+                className="h-10 text-base px-4 rounded-lg border-2"
+                disabled={isLoading}
+              />
             </div>
-
-            <div className="flex gap-3">
-                <DismissButton
-                    className={`flex-1 text-center ${!isRegister ? 'font-bold' : ''}`}
-                    text="Вход"
-                    disabled={submitDisabled}
-                    onClick={() => setMode('login')}
-                />
-                <DismissButton
-                    className={`flex-1 text-center ${isRegister ? 'font-bold' : ''}`}
-                    text="Регистрация"
-                    disabled={submitDisabled}
-                    onClick={() => setMode('register')}
-                />
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-gray-900 font-medium">
+                Пароль
+              </Label>
+              <Input
+                required
+                type="password"
+                id="password"
+                placeholder="Введите пароль"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-10 text-base px-4 rounded-lg border-2"
+                disabled={isLoading}
+              />
             </div>
-
-            <form className="flex flex-col gap-4 mt-2" onSubmit={handleSubmit}>
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-gray-900 font-medium"
+                >
+                  Подтвердите пароль
+                </Label>
                 <Input
-                    className="w-full h-[3.5rem]"
-                    title="Логин"
-                    placeholder="Введите логин"
-                    value={login}
-                    onChange={(e) => setLogin(e.target.value)}
+                  required
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Подтвердите пароль"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="h-10 text-base px-4 rounded-lg border-2"
+                  disabled={isLoading}
                 />
-                <Input
-                    className="w-full h-[3.5rem]"
-                    title="Пароль"
-                    type={"password"}
-                    placeholder="Введите пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {isRegister && (
-                    <Input
-                        className="w-full h-[3.5rem]"
-                        title="Повторите пароль"
-                        placeholder="Повторите пароль"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                )}
+              </div>
+            )}
+          </CardContent>
 
-                <AcceptButton
-                    className="w-full mt-4 text-center"
-                    text={isRegister ? 'Зарегистрироваться' : 'Войти'}
-                    disabled={submitDisabled}
-                    onClick={handleSubmit}
-                />
-            </form>
-        </div>
-    );
+          <CardFooter className="flex flex-col gap-4 px-6 pt-6 pb-6 bg-white border-none">
+            <Button
+              type="submit"
+              className="w-full bg-main-theme hover:bg-main-theme-hover border-2 border-main-theme-border text-gray-900 font-bold text-base h-12"
+              disabled={isLoading}
+            >
+              {isLogin ? "Войти" : "Зарегистрироваться"}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200"
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setLogin("");
+                setPassword("");
+                setConfirmPassword("");
+              }}
+              disabled={isLoading}
+            >
+              {isLogin ? "Зарегистрироваться" : "Войти"}
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
+  );
 }
