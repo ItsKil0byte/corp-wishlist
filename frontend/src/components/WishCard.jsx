@@ -1,29 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 
-// eslint-disable-next-line no-unused-vars
-function WishCard({id, wishlistName, name, description, color, clickable = true, onClick}) {
-	const navigate = useNavigate()
+export default function WishCard({ title, description, color, onClick }) {
+  return (
+    <Card
+      onClick={onClick}
+      className="flex flex-col h-full min-h-[200px] border-gray-200 border rounded-lg shadow-xs hover:shadow-md transition-all group cursor-pointer active:scale-[0.98] overflow-hidden"
+    >
+      <div className="px-4 pb-3 border-b border-gray-100">
+        <h3 className="font-bold text-lg text-gray-900 leading-tight">
+          {title}
+        </h3>
+      </div>
+      <div className="px-4 flex-1">
+        <p className="text-gray-600 text-sm line-clamp-5 leading-relaxed">
+          {description}
+        </p>
+      </div>
 
-    const colors = {
-        "gift-one-lite": "bg-gift-one-lite",
-        "gift-two-lite": "bg-gift-two-lite",
-        "gift-profile-lite": "bg-gift-profile-lite",
-    }
-
-	return (
-		<div className={`${colors[color]} w-full h-40 flex flex-col px-4 rounded-lg`} onClick={() =>{
-            if(!clickable){
-                return;
-            } else if (onClick){
-                onClick();
-            } else {
-                navigate(`/wishlists/wish/view?wishlistName=${wishlistName}&wishName=${name}&wishDescription=${description}&color=${color}`)
-            }
-        }}>
-			<span className="text-center text-[20px] font-semibold my-2 line-clamp-1 wrap-break-word">{name}</span>
-			<span className="text-center text-[15px] font-semibold text-main-theme-primary line-clamp-4 mb-3 text-pretty wrap-anywhere">{description}</span>
-		</div>
-	);
+      {/* Цветной акцент внизу карточки */}
+      {/* TODO: Реализовать цветной акцент на всей карточке с перекрасом цвета */}
+      <div
+        className="flex h-2 mx-4 rounded-full"
+        style={{ backgroundColor: color }}
+      />
+    </Card>
+  );
 }
-
-export default WishCard;

@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import WishCard from "@/components/WishCard";
 import WishlistService from "@/services/WishlistService";
 import WishService from "@/services/WishService";
 import { Settings, Share2, Sparkle } from "lucide-react";
@@ -106,8 +107,18 @@ export default function ViewWishlist() {
         </Button>
       </PageHeader>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        {wishes.map((wish) => `${wish.color} ${wish.title}`)}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+        {wishes.map((wish) => (
+          <WishCard
+            key={wish.id}
+            title={wish.title}
+            description={wish.description}
+            color={wish.color}
+            onClick={() =>
+              alert("Функция просмотра деталей желания в разработке")
+            }
+          />
+        ))}
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
