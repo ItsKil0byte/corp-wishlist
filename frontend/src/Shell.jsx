@@ -12,33 +12,47 @@ export default function Shell() {
   const [wishlists, setWishlists] = useState([]);
   const [groups, setGroups] = useState([]);
 
-  // TODO: Динамически обновлять sidebar.
-  // TODO: Header с кнопкой.
-  // TODO: Протестировать на мобилке.
+  const fetchWishlists = async () => {
+    try {
+      const data = await WishlistService.getWishlists();
+      setWishlists(data);
+    } catch (error) {
+      console.error("Ошибка при загрузке вишлистов:", error);
+    }
+  };
+
+  const fetchGroups = async () => {
+    try {
+      const data = await GroupService.getGroups();
+      setGroups(data);
+    } catch (error) {
+      console.error("Ошибка при загрузке групп:", error);
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const user = await UserInfoService.getCurrentUserInfo();
+      setUser(user);
+    } catch (error) {
+      console.error("Ошибка при загрузке информации о пользователе:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Получаем информацию о пользователе
-        const user = await UserInfoService.getCurrentUserInfo();
-        setUser(user);
-
-        if (user) {
-          // Получаем вишлисты и группы пользователя
-          const [wishlists, groups] = await Promise.all([
-            WishlistService.getWishlists(),
-            GroupService.getGroups(),
-          ]);
-
-          setWishlists(wishlists || []);
-          setGroups(groups || []);
-        }
-      } catch (error) {
-        console.error("Ошибка при загрузке данных:", error);
-      }
-    };
-    fetchData();
+    fetchUser();
+    fetchWishlists();
+    fetchGroups();
   }, []);
+
+  const contextValue = {
+    user,
+    wishlists,
+    groups,
+    fetchWishlists,
+    fetchGroups,
+    fetchUser,
+  };
 
   return (
     <TooltipProvider>
@@ -48,7 +62,7 @@ export default function Shell() {
 
           <main className="relative flex-1 flex flex-col min-w-0 overflow-hidden p-2">
             <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-lg shadow-sm">
-              <Outlet />
+              <Outlet context={contextValue} />
             </div>
           </main>
         </div>

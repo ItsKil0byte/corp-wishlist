@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WishlistService from "../../services/WishlistService.js";
 import PageHeader from "@/components/navigation/PageHeader.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -13,20 +13,12 @@ import {
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import WishlistCard from "@/components/WishlistCard.jsx";
+import { useOutletContext } from "react-router-dom";
 
 export default function Wishlists() {
-  const [wishlists, setWishlists] = useState([]);
+  const { wishlists, fetchWishlists } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newWishlistName, setNewWishlistName] = useState("");
-
-  const fetchData = async () => {
-    try {
-      const data = await WishlistService.getWishlists();
-      setWishlists(data);
-    } catch (error) {
-      console.error("Ошибка при загрузке вишлистов:", error);
-    }
-  };
 
   const handleModal = async () => {
     if (isModalOpen && newWishlistName.trim() !== "") {
@@ -34,16 +26,12 @@ export default function Wishlists() {
         await WishlistService.addWishlist(newWishlistName, "#000000", "🎁");
         setNewWishlistName("");
         setIsModalOpen(false);
-        fetchData();
+        fetchWishlists();
       } catch (error) {
         console.error("Ошибка при создании вишлиста:", error);
       }
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="p-4">
