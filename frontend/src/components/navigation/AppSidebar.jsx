@@ -37,6 +37,8 @@ export default function AppSidebar({ user, wishlists, groups }) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
+              tooltip="Профиль"
+              isActive={location.pathname.startsWith("/profile")}
               className="hover:bg-main-theme/10 text-gray-900 transition-all duration-300 h-16 w-full group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center"
             >
               <Link to="/profile">
