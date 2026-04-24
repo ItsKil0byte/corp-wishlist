@@ -47,10 +47,7 @@ export default function Shell() {
           <AppSidebar user={user} wishlists={wishlists} groups={groups} />
 
           <main className="relative flex-1 flex flex-col min-w-0 overflow-hidden p-2">
-            <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-lg shadow">
-              <header className="flex h-12 shrink-0 items-center p-4 gap-2">
-                <SidebarTrigger className="text-gray-900 hover:text-main-theme transition-colors" />
-              </header>
+            <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-lg shadow-sm">
               <Outlet />
             </div>
           </main>
