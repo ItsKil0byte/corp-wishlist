@@ -1,73 +1,100 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import WishlistService from "../../services/WishlistService.js";
 import Loading from "../Loading.jsx";
 import FlatList from "../../components/lists/FlatList.jsx";
 import PlusButton from "../../components/buttons/PlusButton.jsx";
+import PageHeader from "@/components/navigation/PageHeader.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { Sparkles } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog.jsx";
+import { Label } from "@/components/ui/label.jsx";
+import { Input } from "@/components/ui/input.jsx";
 
-function Wishlists() {
-	const [wishlists, setWishlists] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+export default function Wishlists() {
+  const [wishlists, setWishlists] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newWishlistName, setNewWishlistName] = useState("");
 
-    useEffect(() => {
-        const fetchWishlists = async () => {
-            let data;
-            const localWishlists = sessionStorage.getItem("wishlists");
+  const fetchData = async () => {
+    try {
+      const data = await WishlistService.getWishlists();
+      setWishlists(data);
+    } catch (error) {
+      console.error("Ошибка при загрузке вишлистов:", error);
+    }
+  };
 
-            if (localWishlists && localWishlists.length > 0) {
-                data = JSON.parse(localWishlists);
-            } else {
-                data = await WishlistService.getWishlists();
-            }
+  const handleModal = async () => {
+    if (isModalOpen && newWishlistName.trim() !== "") {
+      try {
+        await WishlistService.addWishlist(newWishlistName, "#000000", "list");
+        setNewWishlistName("");
+        setIsModalOpen(false);
+        fetchData();
+      } catch (error) {
+        console.error("Ошибка при создании вишлиста:", error);
+      }
+    }
+  };
 
-            // if (data && data.length === 0) {
-            //     await WishlistService.addWishlist("На новый год", "main-theme-lite", "\uD83C\uDF84");
-            //     data = await WishlistService.getWishlists();
-            // }
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-            sessionStorage.setItem("wishlists", JSON.stringify(data));
-            setWishlists(data);
-            setLoading(false);
-        }
+  return (
+    <div className="p-4">
+      <PageHeader title="Мои вишлисты">
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg"
+        >
+          <Sparkles />
+          Создать новый вишлист
+        </Button>
+      </PageHeader>
 
-        fetchWishlists();
-    }, []);
-
-    const renderWishlist = (item, index) => {
-        console.log(item);
-
-        return (
-            <li className={`w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 ${"bg-" + item.color} rounded-[0.625rem] list-none list-image-none`}
-                key={index}
-                onClick={() => {navigate(`/wishlists/wishlist/view?id=${item.id}`)}}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-[425px] rounded-lg">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              Создание нового вишлиста
+            </DialogTitle>
+          </DialogHeader>
+          <div>
+            <Label htmlFor="wishlist-name" className="mb-2">
+              Название
+            </Label>
+            <Input
+              value={newWishlistName}
+              onChange={(e) => setNewWishlistName(e.target.value)}
+              placeholder="Например: День рождения, Новый год и т.д."
+              className="rounded-lg border-2 h-10 border-gray-300"
+            />
+          </div>
+          <DialogFooter className="bg-white border-none flex pt-0">
+            <Button
+              onClick={() => setIsModalOpen(false)}
+              variant="outline"
+              className="flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200"
             >
-                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                    <div className="text-[1.1875rem] truncate">
-                        {item.name}
-                    </div>
-                    <div className="text-[0.9375rem] truncate">
-                        {item.wishes.length} {`желаний`}
-                    </div>
-                </div>
-            </li>
-        )
-    }
-
-    if (loading) {
-        return <Loading message="Загружаю вишлисты..." />;
-    }
-
-    return (
-        <div className="w-full flex-1 flex flex-col px-8 pt-8 overflow-hidden relative">
-            <FlatList items={wishlists} render={renderWishlist} className={"w-full flex-1"} />
-            <PlusButton className={"absolute right-5 bottom-5"}
-                        onClick={() => navigate("/wishlists/wishlist/create")}/>
-        </div>
-	);
+              Отмена
+            </Button>
+            <Button
+              onClick={handleModal}
+              className="flex-1 bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg"
+            >
+              Создать
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
-
-export default Wishlists;
