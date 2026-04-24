@@ -50,7 +50,7 @@ export default function Wishlists() {
       <PageHeader title="Мои вишлисты">
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg"
+          className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
         >
           <Sparkles />
           Создать новый вишлист
@@ -87,17 +87,17 @@ export default function Wishlists() {
               className="rounded-lg border-2 h-10 border-gray-300"
             />
           </div>
-          <DialogFooter className="bg-white border-none flex pt-0">
+          <DialogFooter className="flex gap-2 sm:gap-4 sm:flex-row pt-0 bg-white border-none">
             <Button
               onClick={() => setIsModalOpen(false)}
               variant="outline"
-              className="flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200"
+              className="w-full sm:flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200"
             >
               Отмена
             </Button>
             <Button
               onClick={handleModal}
-              className="flex-1 bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg"
+              className="w-full sm:flex-1 sm:w-auto bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg"
             >
               Создать
             </Button>
