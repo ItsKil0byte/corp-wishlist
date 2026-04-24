@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import WishlistService from "../../services/WishlistService.js";
-import Loading from "../Loading.jsx";
-import FlatList from "../../components/lists/FlatList.jsx";
-import PlusButton from "../../components/buttons/PlusButton.jsx";
 import PageHeader from "@/components/navigation/PageHeader.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Sparkles } from "lucide-react";
@@ -16,6 +12,7 @@ import {
 } from "@/components/ui/dialog.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
+import WishlistCard from "@/components/WishlistCard.jsx";
 
 export default function Wishlists() {
   const [wishlists, setWishlists] = useState([]);
@@ -34,7 +31,7 @@ export default function Wishlists() {
   const handleModal = async () => {
     if (isModalOpen && newWishlistName.trim() !== "") {
       try {
-        await WishlistService.addWishlist(newWishlistName, "#000000", "list");
+        await WishlistService.addWishlist(newWishlistName, "#000000", "🎁");
         setNewWishlistName("");
         setIsModalOpen(false);
         fetchData();
@@ -59,6 +56,18 @@ export default function Wishlists() {
           Создать новый вишлист
         </Button>
       </PageHeader>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        {wishlists.map((wishlist) => (
+          <WishlistCard
+            key={wishlist.id}
+            id={wishlist.id}
+            name={wishlist.name}
+            icon={wishlist.icon}
+            wishCount={wishlist.wishesCount}
+          />
+        ))}
+      </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-[425px] rounded-lg">
