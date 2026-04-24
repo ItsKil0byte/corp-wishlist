@@ -66,7 +66,7 @@ export default function Wishlists() {
             id={wishlist.id}
             name={wishlist.name}
             icon={wishlist.icon}
-            wishCount={wishlist.wishesCount}
+            wishCount={wishlist.wishes.length}
           />
         ))}
       </div>
