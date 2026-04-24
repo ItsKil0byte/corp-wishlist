@@ -81,7 +81,10 @@ export default function ViewWishlist() {
 
   return (
     <div className="p-4">
-      <PageHeader title={`${wishlist.icon} ${wishlist.name}`}>
+      <PageHeader
+        title={`${wishlist.icon} ${wishlist.name}`}
+        onBack={() => navigate("/wishlists")}
+      >
         <Button
           onClick={() => setIsModalOpen(true)}
           className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
