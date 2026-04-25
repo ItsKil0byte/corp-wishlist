@@ -2,6 +2,8 @@ services:
     app:
       environment:
             UPLOAD_DIR: ${UPLOAD_DIR}
+      volumes:
+            - wishlist-images:/data/uploads
 
     postgres:
         image: postgres:16-alpine
@@ -99,3 +101,4 @@ services:
 volumes:
     data:
     cloudpub-config:
+    wishlist-images:
