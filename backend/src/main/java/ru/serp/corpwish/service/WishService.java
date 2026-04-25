@@ -19,7 +19,7 @@ public interface WishService {
 
     void deleteWish(Long ownerId, Long wishId);
 
-    Wish addImages(Long wishId, List<String> filenames);
+    WishDto addImages(Long wishId, List<String> filenames);
 
     void removeImage(Long wishId, String filename);
 }
