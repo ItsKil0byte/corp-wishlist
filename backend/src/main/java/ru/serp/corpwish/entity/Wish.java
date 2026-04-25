@@ -38,8 +38,13 @@ public class Wish {
     private List<String> imageFileNames = new ArrayList<>();
 
     public List<String> getImageUrls() {
-        return this.imageFileNames.stream()
-                .map(name -> "/uploads/" + name)
-                .toList();
+        if(this.imageFileNames != null) {
+            return this.imageFileNames.stream()
+                    .map(name -> "/uploads/" + name)
+                    .toList();
+        }
+        else {
+            return null;
+        }
     }
 }
