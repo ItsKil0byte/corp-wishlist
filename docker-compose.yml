@@ -1,10 +1,4 @@
 services:
-    app:
-      environment:
-            UPLOAD_DIR: ${UPLOAD_DIR}
-      volumes:
-            - wishlist-images:/data/uploads
-
     postgres:
         image: postgres:16-alpine
         environment:
@@ -44,6 +38,9 @@ services:
             - .env 
         environment:
             SPRING_PROFILES_ACTIVE: postgres
+            UPLOAD_DIR: ${UPLOAD_DIR}
+        volumes:
+          - wishlist-images:/data/uploads
         depends_on:
             postgres:
                 condition: service_healthy
