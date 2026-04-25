@@ -112,7 +112,8 @@ public class LinkServiceImpl implements LinkService {
                                 wish.getTitle(),
                                 wish.getDescription(),
                                 wish.getColor(),
-                                wishlist.getId()
+                                wishlist.getId(),
+                                wish.getImageUrls()
                         ))
                         .toList())
                 .build();

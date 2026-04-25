@@ -101,14 +101,8 @@ public class WishServiceImpl implements WishService{
         wishDto.setDescription(wish.getDescription());
         wishDto.setColor(wish.getColor());
         wishDto.setWishlistId(wish.getWishlist().getId());
-        wishDto.setImageUrls(getImageUrls(wish.getImageFileNames()));
+        wishDto.setImageUrls(wish.getImageUrls());
 
         return wishDto;
-    }
-
-    private List<String> getImageUrls(List<String> imageFileNames) {
-        return imageFileNames.stream()
-                .map(name -> "/uploads" + name)
-                .toList();
     }
 }

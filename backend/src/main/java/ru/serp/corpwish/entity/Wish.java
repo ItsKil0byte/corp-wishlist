@@ -36,4 +36,10 @@ public class Wish {
     @Column(name = "file_name")
     @OrderColumn(name = "sort_order")
     private List<String> imageFileNames = new ArrayList<>();
+
+    public List<String> getImageUrls() {
+        return this.imageFileNames.stream()
+                .map(name -> "/uploads/" + name)
+                .toList();
+    }
 }
