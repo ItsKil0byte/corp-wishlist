@@ -79,6 +79,20 @@ public class WishServiceImpl implements WishService{
         wishRepository.delete(wish);
     }
 
+    public Wish addImages(Long wishId, List<String> filenames) {
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new RuntimeException("Can not add images - no such wish"));
+        wish.getImageFileNames().addAll(filenames);
+        return wishRepository.save(wish);
+    }
+
+    public void removeImage(Long wishId, String filename) {
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new RuntimeException("Can not delete image - no such wish"));
+        wish.getImageFileNames().remove(filename);
+        wishRepository.save(wish);
+    }
+
     private WishDto convertToDto(Wish wish){
         WishDto wishDto = new WishDto();
 
