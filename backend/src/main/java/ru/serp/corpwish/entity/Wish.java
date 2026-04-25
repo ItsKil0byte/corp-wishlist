@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +30,10 @@ public class Wish {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wishlist_id", referencedColumnName = "id")
     private Wishlist wishlist;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "wish_images", joinColumns = @JoinColumn(name = "wish_id"))
+    @Column(name = "file_name")
+    @OrderColumn(name = "sort_order")
+    private List<String> imageFileNames = new ArrayList<>();
 }
