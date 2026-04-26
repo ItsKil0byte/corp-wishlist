@@ -77,9 +77,9 @@ export default function ViewWishlist() {
     }
   };
 
-  const handleDeleteWish = async (wishId) => {
+  const handleDeleteWish = async () => {
     try {
-      await WishService.deleteWish(wishId);
+      await WishService.deleteWish(editingWish.id);
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
