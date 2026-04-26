@@ -1,28 +1,36 @@
 import { Card } from "@/components/ui/card";
+import { getBorderColor, getContrastColor } from "@/lib/utils";
 
 export default function WishCard({ title, description, color, onClick }) {
+  const contrastColor = getContrastColor(color);
+  const borderColor = getBorderColor(color);
+
   return (
     <Card
       onClick={onClick}
-      className="flex flex-col h-full min-h-[200px] border-gray-200 border rounded-lg shadow-xs hover:shadow-md transition-all group cursor-pointer active:scale-[0.98] overflow-hidden"
+      style={{
+        backgroundColor: color,
+        borderColor: borderColor,
+      }}
+      className={`flex flex-col h-full min-h-[200px] border-2 rounded-lg shadow-md hover:scale-102 active:scale-95 transition-all cursor-pointer overflow-hidden`}
     >
-      <div className="px-4 pb-3 border-b border-gray-100">
-        <h3 className="font-bold text-lg text-gray-900 leading-tight">
+      <div
+        className="px-4 pb-3 border-b-2"
+        style={{ borderColor: borderColor }}
+      >
+        <h3
+          className={`font-bold text-lg wrap-break-word leading-tight ${contrastColor}`}
+        >
           {title}
         </h3>
       </div>
       <div className="px-4 flex-1">
-        <p className="text-gray-600 text-sm line-clamp-5 leading-relaxed">
+        <p
+          className={`text-sm line-clamp-5 leading-relaxed whitespace-pre-wrap wrap-break-word ${contrastColor}`}
+        >
           {description}
         </p>
       </div>
-
-      {/* Цветной акцент внизу карточки */}
-      {/* TODO: Реализовать цветной акцент на всей карточке с перекрасом цвета */}
-      <div
-        className="flex h-2 mx-4 rounded-full"
-        style={{ backgroundColor: color }}
-      />
     </Card>
   );
 }
