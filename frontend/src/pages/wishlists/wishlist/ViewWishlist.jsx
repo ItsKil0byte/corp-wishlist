@@ -1,15 +1,6 @@
+import Wish from "@/components/modals/Wish";
 import PageHeader from "@/components/navigation/PageHeader";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import WishCard from "@/components/WishCard";
 import WishlistService from "@/services/WishlistService";
 import WishService from "@/services/WishService";
@@ -29,9 +20,7 @@ export default function ViewWishlist() {
   const [wishlist, setWishlist] = useState(null);
   const [wishes, setWishes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [wishTitle, setWishTitle] = useState("");
-  const [wishDescription, setWishDescription] = useState("");
-  const [wishColor, setWishColor] = useState("#ffffff");
+  const [editingWish, setEditingWish] = useState(null);
 
   const fetchData = async () => {
     if (!wishlistId) {
@@ -54,24 +43,47 @@ export default function ViewWishlist() {
     fetchData();
   }, [wishlistId]);
 
-  const handleModal = async () => {
-    if (!wishTitle.trim()) {
-      return;
-    }
+  const openAddModal = () => {
+    setEditingWish(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (wish) => {
+    setEditingWish(wish);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveWish = async (wishData) => {
     try {
-      await WishService.addWish(
-        wishlistId,
-        wishTitle,
-        wishDescription,
-        wishColor,
-      );
-      setWishTitle("");
-      setWishDescription("");
-      setWishColor("#ffffff");
+      if (editingWish) {
+        await WishService.updateWish(
+          editingWish.id,
+          wishData.title,
+          wishData.description,
+          wishData.color,
+        );
+      } else {
+        await WishService.addWish(
+          wishlistId,
+          wishData.title,
+          wishData.description,
+          wishData.color,
+        );
+      }
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
-      console.error("Ошибка при добавлении желания:", error);
+      console.error("Ошибка при сохранении желания:", error);
+    }
+  };
+
+  const handleDeleteWish = async (wishId) => {
+    try {
+      await WishService.deleteWish(wishId);
+      setIsModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Ошибка при удалении желания:", error);
     }
   };
 
@@ -86,7 +98,7 @@ export default function ViewWishlist() {
         onBack={() => navigate("/wishlists")}
       >
         <Button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => openAddModal()}
           className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
         >
           <Sparkle />
@@ -117,75 +129,18 @@ export default function ViewWishlist() {
             title={wish.title}
             description={wish.description}
             color={wish.color}
-            onClick={() =>
-              alert("Функция просмотра деталей желания в разработке")
-            }
+            onClick={() => openEditModal(wish)}
           />
         ))}
       </div>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="bg-white rounded-lg p-6 w-full max-w-md mx-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">
-              Добавить желание
-            </DialogTitle>
-          </DialogHeader>
-
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-4">
-              <div className="flex-1">
-                <Label htmlFor="wish-title" className="mb-2">
-                  Название
-                </Label>
-                <Input
-                  value={wishTitle}
-                  placeholder="Например: iPhone 17 Pro и т.д."
-                  onChange={(e) => setWishTitle(e.target.value)}
-                  className="rounded-lg border-2 h-10 border-gray-300 shadow-xs"
-                />
-              </div>
-              <div className="w-16">
-                <Label htmlFor="wish-color" className="mb-2">
-                  Цвет
-                </Label>
-                <Input
-                  type="color"
-                  value={wishColor}
-                  onChange={(e) => setWishColor(e.target.value)}
-                  className="w-full h-10 border-2 border-gray-300 rounded-lg shadow-xs"
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="wish-description" className="mb-2">
-                Описание
-              </Label>
-              <Textarea
-                value={wishDescription}
-                placeholder="Дополнительные детали, ссылки и т.д."
-                onChange={(e) => setWishDescription(e.target.value)}
-                className="rounded-lg border-2 min-h-32 border-gray-300 shadow-xs"
-              />
-            </div>
-          </div>
-          <DialogFooter className="flex gap-2 sm:gap-4 sm:flex-row pt-0 bg-white border-none">
-            <Button
-              onClick={() => setIsModalOpen(false)}
-              variant="outline"
-              className="w-full sm:flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200 shadow-xs rounded-lg transition-all"
-            >
-              Отмена
-            </Button>
-            <Button
-              onClick={handleModal}
-              className="w-full sm:flex-1 sm:w-auto bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg shadow-xs"
-            >
-              Добавить
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <Wish
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveWish}
+        onDelete={handleDeleteWish}
+        data={editingWish}
+      />
     </div>
   );
 }
