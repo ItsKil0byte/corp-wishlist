@@ -86,7 +86,7 @@ export default function Wish({
               value={description}
               placeholder="Дополнительные детали, ссылки и т.д."
               onChange={(e) => setDescription(e.target.value)}
-              className="rounded-lg border-2 min-h-32 border-gray-300 shadow-xs"
+              className="rounded-lg border-2 min-h-48 border-gray-300 shadow-xs field-sizing-fixed resize-none"
             />
           </div>
         </div>
