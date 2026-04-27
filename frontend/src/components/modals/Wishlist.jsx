@@ -54,7 +54,7 @@ export default function Wishlist({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-lg">
+      <DialogContent className="sm:max-w-[425px] ring-0 border-2 rounded-lg p-6 border-gray-300">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             {isEdit ? "Редактировать вишлист" : "Создать новый вишлист"}
@@ -69,20 +69,20 @@ export default function Wishlist({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Например: День рождения, Новый год и т.д."
-              className="rounded-lg border-2 h-10 border-gray-300 shadow-xs"
+              className="rounded-lg border-2 h-12 border-gray-200"
             />
 
             <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="size-10 rounded-full p-0 flex items-center justify-center border-2 border-gray-300 hover:border-main-theme-border transition-colors hover:bg-main-theme-lite shadow-sm shrink-0"
+                  className="size-10 rounded-full flex items-center justify-center border-2 border-gray-200 hover:border-main-theme-border transition-colors hover:bg-main-theme-lite shrink-0"
                 >
                   {icon}
                 </Button>
               </PopoverTrigger>
               <PopoverContent
-                className="w-fit p-2 rounded-lg shadow-xs border border-gray-300"
+                className="w-fit p-2 rounded-lg ring-0 border-2 border-gray-200"
                 align="end"
               >
                 <div className="grid grid-cols-4 gap-2">
@@ -90,7 +90,7 @@ export default function Wishlist({
                     <Button
                       key={emoji}
                       variant="ghost"
-                      className={`size-10 rounded-full p-0 flex items-center justify-center ${
+                      className={`size-10 rounded-full flex items-center justify-center ${
                         icon === emoji
                           ? "border-2 border-main-theme-border shadow-sm"
                           : "border-2 border-gray-300 hover:border-main-theme-border hover:bg-main-theme-lite transition-colors"
@@ -113,13 +113,13 @@ export default function Wishlist({
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-100 shadow-xs rounded-lg transition-all"
+              className="flex-1 border-2 border-gray-200 text-gray-900 text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
             >
               Отмена
             </Button>
             <Button
               onClick={handleSave}
-              className="flex-1 bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg shadow-xs"
+              className="flex-1 bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
             >
               {isEdit ? "Сохранить" : "Добавить"}
             </Button>
