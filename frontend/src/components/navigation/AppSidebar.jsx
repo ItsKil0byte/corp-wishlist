@@ -4,6 +4,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarFooter,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,6 +13,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
   SidebarMenuAction,
+  SidebarTrigger,
 } from "../ui/sidebar";
 import { Sidebar } from "../ui/sidebar";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
@@ -31,20 +33,20 @@ export default function AppSidebar({ user, wishlists, groups }) {
   // TODO: Центровка.
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="floating" collapsible="icon" className={"p-4 pr-0"}>
       <SidebarHeader className="transition-all duration-300">
-        <SidebarMenu>
+        <SidebarMenu className="p-2 pb-0 group-data-[collapsible=icon]:px-0">
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
               tooltip="Профиль"
               isActive={location.pathname.startsWith("/profile")}
-              className="hover:bg-main-theme/10 text-gray-900 transition-all duration-300 h-16 w-full group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center"
+              className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 transition-all duration-300 h-16 w-full group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center"
             >
               <Link to="/profile">
-                <Avatar className="bg-main-theme transition-all duration-300 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6 h-12 w-12 shrink-0">
+                <Avatar className="bg-main-theme after:border-2 transition-all duration-300 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6 h-12 w-12 shrink-0">
                   <AvatarImage src={user?.photo_url} />
-                  <AvatarFallback className="bg-main-theme text-white">
+                  <AvatarFallback className="bg-main-theme text-gray-900">
                     <User className="size-8! transition-all duration-300 group-data-[collapsible=icon]:size-4!" />
                   </AvatarFallback>
                 </Avatar>
@@ -68,12 +70,12 @@ export default function AppSidebar({ user, wishlists, groups }) {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
+        <SidebarGroup className="pt-0">
           <SidebarGroupLabel className="text-gray-900 font-bold text-base">
             Навигация
           </SidebarGroupLabel>
 
-          <SidebarMenu>
+          <SidebarMenu className="p-2 group-data-[collapsible=icon]:px-0">
             {/* ВИШЛИСТЫ */}
             <Collapsible asChild defaultOpen className="group/collapsible">
               <SidebarMenuItem>
@@ -81,7 +83,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                   asChild
                   tooltip="Мои вишлисты"
                   isActive={location.pathname.startsWith("/wishlists")}
-                  className="hover:bg-main-theme/10 text-gray-900 h-11 px-3"
+                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 h-11 px-3"
                 >
                   <Link to="/wishlists">
                     <Gift className="w-6 h-6 shrink-0" />
@@ -91,7 +93,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
 
                 {state === "expanded" && (
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="right-2 h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
+                    <SidebarMenuAction className="right-2 hover:bg-transparent h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
                       <ChevronRight className="w-5 h-5 text-gray-900" />
                     </SidebarMenuAction>
                   </CollapsibleTrigger>
@@ -107,7 +109,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                             location.pathname.includes("/wishlists") &&
                             location.search.includes(`id=${wishlist.id}`)
                           }
-                          className="h-8"
+                          className="h-8 hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10"
                         >
                           <Link
                             to={`/wishlists/wishlist/view?id=${wishlist.id}`}
@@ -130,7 +132,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                   asChild
                   tooltip="Мои группы"
                   isActive={location.pathname.startsWith("/groups")}
-                  className="hover:bg-main-theme/10 text-gray-900 h-11 px-3"
+                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 h-11 px-3"
                 >
                   <Link to="/groups">
                     <Users className="w-6 h-6 shrink-0" />
@@ -140,7 +142,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
 
                 {state === "expanded" && (
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="right-2 h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
+                    <SidebarMenuAction className="right-2 hover:bg-transparent h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
                       <ChevronRight className="w-5 h-5 text-gray-900" />
                     </SidebarMenuAction>
                   </CollapsibleTrigger>
@@ -156,7 +158,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                             location.pathname.includes("/groups") &&
                             location.search.includes(`id=${group.id}`)
                           }
-                          className="h-8"
+                          className="h-8 hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10"
                         >
                           <Link
                             to={`/groups/group/view?id=${group.id}`}
@@ -174,6 +176,12 @@ export default function AppSidebar({ user, wishlists, groups }) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="mt-auto group-data-[collapsible=icon]:px-0 ">
+        <SidebarMenu className="p-2 pt-0 transition-all duration-300 group-data-[collapsible=icon]:justify-center">
+          <SidebarTrigger className="size-12 group-data-[collapsible=icon]:size-8 text-gray-900 transition-colors hover:bg-main-theme/10" />
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
