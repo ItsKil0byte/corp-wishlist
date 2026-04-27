@@ -1,3 +1,4 @@
+import Wishlist from "@/components/modals/Wishlist";
 import Wish from "@/components/modals/Wish";
 import PageHeader from "@/components/navigation/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export default function ViewWishlist() {
   const [wishes, setWishes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingWish, setEditingWish] = useState(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const fetchData = async () => {
     if (!wishlistId) {
@@ -87,6 +89,21 @@ export default function ViewWishlist() {
     }
   };
 
+  const handleSaveWishlist = async (wishlistData) => {
+    try {
+      await WishlistService.updateWishlist(
+        wishlist.id,
+        wishlistData.name,
+        wishlistData.color,
+        wishlistData.icon,
+      );
+      setIsSettingsOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Ошибка при сохранении вишлиста:", error);
+    }
+  };
+
   if (!wishlist) {
     return <div>Загрузка...</div>;
   }
@@ -114,7 +131,7 @@ export default function ViewWishlist() {
         </Button>
 
         <Button
-          onClick={() => alert("Функция настроек в разработке")}
+          onClick={() => setIsSettingsOpen(true)}
           className="bg-[#ECBD02] hover:bg-[#dab110] h-12 px-4 text-gray-900 border-2 border-[#D59F00] font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
         >
           <Settings />
@@ -140,6 +157,13 @@ export default function ViewWishlist() {
         onSave={handleSaveWish}
         onDelete={handleDeleteWish}
         data={editingWish}
+      />
+
+      <Wishlist
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onSave={handleSaveWishlist}
+        data={wishlist}
       />
     </div>
   );
