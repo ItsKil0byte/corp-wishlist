@@ -14,7 +14,7 @@ export default function WishCard({ title, description, color, onClick }) {
         backgroundColor: color,
         borderColor: borderColor,
       }}
-      className={`flex flex-col h-full min-h-[200px] p-4 border-2 rounded-lg hover:scale-105 transition-all cursor-pointer overflow-hidden`}
+      className={`flex flex-col h-full min-h-[200px] ring-0 p-4 border-2 rounded-lg hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer overflow-hidden`}
     >
       <div className="" style={{ borderColor: borderColor }}>
         <h3

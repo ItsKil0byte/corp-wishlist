@@ -127,7 +127,7 @@ export default function Wishlist({
           {isEdit && onDelete && (
             <Button
               onClick={onDelete}
-              className="w-full h-12 bg-red-500 hover:bg-red-600 text-gray-900 font-bold border-2 border-red-600 rounded-lg shadow-xs transition-all"
+              className="w-full h-12 bg-red-500 text-gray-900 font-bold border-2 text-base border-red-700 rounded-lg hover:brightness-95 hover:scale-105 transition-all"
             >
               Удалить
             </Button>

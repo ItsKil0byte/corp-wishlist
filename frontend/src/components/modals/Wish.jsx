@@ -20,7 +20,7 @@ export default function Wish({
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [color, setColor] = useState("#ffffff");
+  const [color, setColor] = useState("#defaf5");
   const isEdit = !!data;
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function Wish({
       } else {
         setTitle("");
         setDescription("");
-        setColor("#ffffff");
+        setColor("#defaf5");
       }
     }
   }, [isOpen, data]);
@@ -63,10 +63,10 @@ export default function Wish({
                 value={title}
                 placeholder="Например: iPhone 17 Pro и т.д."
                 onChange={(e) => setTitle(e.target.value)}
-                className="rounded-lg border-2 h-10 border-gray-300 shadow-xs"
+                className="rounded-lg border-2 h-10 border-gray-200"
               />
             </div>
-            <div className="w-16">
+            <div className="w-12">
               <Label htmlFor="wish-color" className="mb-2 block">
                 Цвет
               </Label>
@@ -74,7 +74,7 @@ export default function Wish({
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="w-full h-10 border-2 border-gray-300 rounded-lg shadow-xs"
+                className="w-full h-10 border-2 border-gray-200 rounded-lg"
               />
             </div>
           </div>
@@ -86,7 +86,7 @@ export default function Wish({
               value={description}
               placeholder="Дополнительные детали, ссылки и т.д."
               onChange={(e) => setDescription(e.target.value)}
-              className="rounded-lg border-2 min-h-48 border-gray-300 shadow-xs field-sizing-fixed resize-none"
+              className="rounded-lg border-2 min-h-48 border-gray-200 field-sizing-fixed resize-none"
             />
           </div>
         </div>
@@ -95,13 +95,13 @@ export default function Wish({
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-100 shadow-xs rounded-lg transition-all"
+              className="flex-1 border-2 border-gray-200 text-gray-900 text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
             >
               Отмена
             </Button>
             <Button
               onClick={handleSave}
-              className="flex-1 bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg shadow-xs"
+              className="flex-1 bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
             >
               {isEdit ? "Сохранить" : "Добавить"}
             </Button>
@@ -109,7 +109,7 @@ export default function Wish({
           {isEdit && onDelete && (
             <Button
               onClick={onDelete}
-              className="w-full h-12 bg-red-500 hover:bg-red-600 text-gray-900 font-bold border-2 border-red-600 rounded-lg shadow-xs transition-all"
+              className="w-full h-12 bg-red-500 text-gray-900 font-bold border-2 text-base border-red-700 rounded-lg hover:brightness-95 hover:scale-105 transition-all"
             >
               Удалить
             </Button>

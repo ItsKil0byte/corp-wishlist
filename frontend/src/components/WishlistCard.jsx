@@ -8,7 +8,7 @@ export default function WishlistCard({ id, name, icon, wishCount }) {
   return (
     <Card
       onClick={() => navigate(`/wishlists/wishlist/view?id=${id}`)}
-      className="p-6 bg-main-theme-lite ring-2 ring-main-theme-lite-border flex flex-row items-center gap-4 cursor-pointer transition-all rounded-lg active:scale-95 hover:-translate-y-1"
+      className="p-6 bg-main-theme-lite ring-2 ring-main-theme-lite-border flex flex-row items-center gap-4 cursor-pointer transition-all rounded-lg active:scale-95 hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="flex items-center justify-center size-16 rounded-full bg-main-theme border-2 border-main-theme-border text-xl shrink-0">
         {icon || name[0].toUpperCase()}

@@ -144,7 +144,7 @@ export default function ViewWishlist() {
       >
         <Button
           onClick={() => openAddModal()}
-          className="bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
+          className="bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
         >
           <Sparkle />
           Добавить
@@ -152,7 +152,7 @@ export default function ViewWishlist() {
 
         <Button
           onClick={handleShareWishlist}
-          className="bg-[#02A2EC] hover:bg-[#0098df] h-12 px-4 text-gray-900 border-2 border-[#007CD5] font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
+          className="bg-[#02A2EC] border-2 border-[#007CD5] text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
         >
           <Share2 />
           Поделиться
@@ -160,7 +160,7 @@ export default function ViewWishlist() {
 
         <Button
           onClick={() => setIsSettingsOpen(true)}
-          className="bg-[#ECBD02] hover:bg-[#dab110] h-12 px-4 text-gray-900 border-2 border-[#D59F00] font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
+          className="bg-[#f5c60c] border-2 border-[#dab110] text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
         >
           <Settings />
           Настройки
