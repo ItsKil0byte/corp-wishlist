@@ -58,7 +58,7 @@ export default function ViewSharedWishlist() {
   }
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gray-50 py-4 px-4 font-sans">
+    <div className="min-h-screen overflow-y-auto bg-gray-50 p-4 font-sans">
       <div className="max-w-7xl mx-auto flex flex-col gap-4">
         <header className="bg-white rounded-lg border-2 border-gray-200 p-6 sm:p-8 flex items-center gap-5">
           <div className="size-16 rounded-full bg-main-theme-lite flex items-center justify-center text-3xl shrink-0">
