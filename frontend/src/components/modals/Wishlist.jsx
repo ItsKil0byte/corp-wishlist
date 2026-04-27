@@ -108,20 +108,30 @@ export default function Wishlist({
             </Popover>
           </div>
         </div>
-        <DialogFooter className="flex gap-2 sm:gap-4 sm:flex-row pt-0 bg-white border-none">
-          <Button
-            onClick={onClose}
-            variant="outline"
-            className="w-full sm:flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200 shadow-xs rounded-lg transition-all"
-          >
-            Отмена
-          </Button>
-          <Button
-            onClick={handleSave}
-            className="w-full sm:flex-1 sm:w-auto bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg shadow-xs"
-          >
-            {isEdit ? "Сохранить" : "Создать"}
-          </Button>
+        <DialogFooter className="flex flex-col gap-4 pt-0 bg-white border-none sm:flex-col">
+          <div className="flex gap-4">
+            <Button
+              onClick={onClose}
+              variant="outline"
+              className="flex-1 h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-100 shadow-xs rounded-lg transition-all"
+            >
+              Отмена
+            </Button>
+            <Button
+              onClick={handleSave}
+              className="flex-1 bg-main-theme hover:bg-main-theme-hover h-12 px-4 text-gray-900 border-2 border-main-theme-border font-bold rounded-lg transition-all text-lg shadow-xs"
+            >
+              {isEdit ? "Сохранить" : "Добавить"}
+            </Button>
+          </div>
+          {isEdit && onDelete && (
+            <Button
+              onClick={onDelete}
+              className="w-full h-12 bg-red-500 hover:bg-red-600 text-gray-900 font-bold border-2 border-red-600 rounded-lg shadow-xs transition-all"
+            >
+              Удалить
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

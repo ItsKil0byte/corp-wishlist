@@ -104,6 +104,17 @@ export default function ViewWishlist() {
     }
   };
 
+  const handleDeleteWishlist = async () => {
+    try {
+      await WishlistService.deleteWishlist(wishlist.id);
+      setIsSettingsOpen(false);
+      fetchWishlists();
+      navigate("/wishlists");
+    } catch (error) {
+      console.error("Ошибка при удалении вишлиста:", error);
+    }
+  };
+
   if (!wishlist) {
     return <div>Загрузка...</div>;
   }
@@ -163,6 +174,7 @@ export default function ViewWishlist() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         onSave={handleSaveWishlist}
+        onDelete={handleDeleteWishlist}
         data={wishlist}
       />
     </div>
