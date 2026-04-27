@@ -4,7 +4,9 @@ import PageHeader from "@/components/navigation/PageHeader";
 import { Button } from "@/components/ui/button";
 import WishCard from "@/components/WishCard";
 import WishlistService from "@/services/WishlistService";
+import LinkService from "@/services/LinkService";
 import WishService from "@/services/WishService";
+import toast from "react-hot-toast";
 import { Settings, Share2, Sparkle } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -115,6 +117,21 @@ export default function ViewWishlist() {
     }
   };
 
+  const handleShareWishlist = async () => {
+    try {
+      const linkInfo = await LinkService.getLinkInfo(
+        "WISHLIST_SHARE",
+        wishlistId,
+      );
+      const link = `${origin}/link?start_param=${linkInfo.token}`;
+      navigator.clipboard.writeText(link);
+      toast.success("Ссылка скопирована в буфер обмена!");
+    } catch (error) {
+      console.error("Ошибка при копировании ссылки:", error);
+      toast.error("Ошибка при копировании ссылки");
+    }
+  };
+
   if (!wishlist) {
     return <div>Загрузка...</div>;
   }
@@ -134,7 +151,7 @@ export default function ViewWishlist() {
         </Button>
 
         <Button
-          onClick={() => alert("Функция поделиться в разработке")}
+          onClick={handleShareWishlist}
           className="bg-[#02A2EC] hover:bg-[#0098df] h-12 px-4 text-gray-900 border-2 border-[#007CD5] font-bold rounded-lg transition-all text-lg sm:w-auto w-full"
         >
           <Share2 />
