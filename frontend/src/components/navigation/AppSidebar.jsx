@@ -55,8 +55,8 @@ export default function AppSidebar({ user, wishlists, groups }) {
                   <div className="flex flex-col animate-in fade-in duration-300">
                     <span className="font-bold text-gray-900 leading-tight truncate">
                       {user
-                        ? `${user.firstName} ${user.lastName || ""}`
-                        : "..."}
+                        ? `${(user.firstName && user.lastName) || "Пользователь"} ${user.lastName || ""}`
+                        : "Пользоаватель"}
                     </span>
                     <span className="text-sm text-gray-500 leading-tight truncate">
                       @{user?.username || "..."}
