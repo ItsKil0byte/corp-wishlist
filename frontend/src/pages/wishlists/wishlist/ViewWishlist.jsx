@@ -132,8 +132,13 @@ export default function ViewWishlist() {
     }
   };
 
+  // Заглушка
   if (!wishlist) {
-    return <div>Загрузка...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin text-main-theme text-4xl">🎁</div>
+      </div>
+    );
   }
 
   return (
