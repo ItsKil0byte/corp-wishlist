@@ -61,6 +61,10 @@ public class User implements UserDetails {
             .collect(Collectors.toSet());
     }
 
+    public String getProfilePicUrl() {
+        return this.photo_url != null ? "/uploads/" + this.photo_url : null;
+    }
+
     @Override
     public String getPassword() {
         return null;

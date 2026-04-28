@@ -38,6 +38,9 @@ services:
             - .env 
         environment:
             SPRING_PROFILES_ACTIVE: postgres
+            UPLOAD_DIR: ${UPLOAD_DIR}
+        volumes:
+          - wishlist-images:/data/uploads
         depends_on:
             postgres:
                 condition: service_healthy
@@ -95,3 +98,4 @@ services:
 volumes:
     data:
     cloudpub-config:
+    wishlist-images:
