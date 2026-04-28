@@ -1,83 +1,63 @@
-import React, {useEffect, useState} from "react";
-import FlatList from "../../components/lists/FlatList.jsx";
-import GroupService from "../../services/GroupService.js";
-import Loading from "../Loading.jsx";
-import {useNavigate} from "react-router-dom";
-import PlusButton from "../../components/buttons/PlusButton.jsx";
-// import Storage from "../../store/Storage.js"; - в дальнейшем полностью убрать из проекта
-import getNumeralEnding from "../../utils/getNumeralEnding.js";
+import React, { useState } from "react";
+import PageHeader from "@/components/navigation/PageHeader.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { UserPlus } from "lucide-react";
+import GroupCard from "@/components/GroupCard.jsx";
+import GroupModal from "@/components/modals/GroupModal.jsx";
+import GroupService from "@/services/GroupService.js";
+import { useOutletContext } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const usedStorage = sessionStorage;
-const storageKey = 'groups';
+export default function Groups() {
+    const { groups, fetchGroups } = useOutletContext();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-function Groups() {
-    const [groups, setGroups] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    const handleSaveGroup = async (groupData) => {
+        const tId = toast.loading("Создание группы...");
+        try {
+            await GroupService.addGroup(groupData.name, groupData.icon);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const localGroups = usedStorage.getItem(storageKey);
+            await fetchGroups();
 
-            if (localGroups === null) {
-                let data = await GroupService.getGroups();
+            sessionStorage.removeItem("groups");
 
-                //  FIX | Реализация создания начальной группы будет перенесено на бэк
-                //
-                //  if (data && data.length === 0) {
-                //      const canCreatePlaceholderGroup = await Storage.getItem("canCreatePlaceholderGroup");
-                //      if (canCreatePlaceholderGroup === null) {
-                //      await GroupService.addGroup("Одногруппники", "🥳")
-                //      data = await GroupService.getGroups();
-                //
-                //      await Storage.setItem("canCreatePlaceholderGroup", "false");
-                //      }
-                //  }
-
-                usedStorage.setItem(storageKey, JSON.stringify(data));
-                setGroups(data);
-            } else {
-                setGroups(JSON.parse(usedStorage.getItem(storageKey)));
-            }
-
-            setLoading(false);
+            toast.success("Группа успешно создана!", { id: tId });
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error("Ошибка при создании группы:", error);
+            toast.error("Не удалось создать группу", { id: tId });
         }
+    };
 
-        fetchData();
-    }, [loading]);
+    return (
+        <div className="p-4">
+            <PageHeader title="Мои группы">
+                <Button
+                    onClick={() => setIsModalOpen(true)}
+                    className="bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+                >
+                    <UserPlus className="size-5" />
+                    Создать группу
+                </Button>
+            </PageHeader>
 
-    const renderGroup = (item, index) => {
-        return (
-            <li className="w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 bg-main-theme-lite rounded-[0.625rem] list-none list-image-none"
-                key={index}
-                onClick={() => {navigate(`/groups/group/view?id=${item.id}`)}}
-            >
-                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                    <div className="text-[1.1875rem] truncate">
-                        {item.name}
-                    </div>
-                    <div className="text-[0.9375rem] truncate">
-                        {item.members.length} {`участник${getNumeralEnding(item.members.length)}`}
-                    </div>
-                </div>
-            </li>
-        )
-    }
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                {groups.map((group) => (
+                    <GroupCard
+                        key={group.id}
+                        id={group.id}
+                        name={group.name}
+                        icon={group.icon}
+                        memberCount={group.members.length}
+                    />
+                ))}
+            </div>
 
-    if (loading) {
-        return <Loading message="Загружаю группы..." />;
-    }
-
-	return (
-        <div className="w-full h-full flex px-8 pt-8 overflow-hidden relative">
-            <FlatList items={groups} render={renderGroup} className={"w-full h-full"}></FlatList>
-            <PlusButton className={"absolute right-5 bottom-5"}
-                onClick={() => navigate("/groups/create")}/>
+            <GroupModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSaveGroup}
+            />
         </div>
     );
 }
-
-export default Groups;
