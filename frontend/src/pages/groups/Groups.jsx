@@ -28,7 +28,7 @@ export default function Groups() {
             toast.error("Не удалось создать группу", { id: tId });
         }
     };
-
+    
     return (
         <div className="p-4">
             <PageHeader title="Мои группы">
@@ -48,7 +48,7 @@ export default function Groups() {
                         id={group.id}
                         name={group.name}
                         icon={group.icon}
-                        memberCount={group.members.length}
+                        members={group.members}
                     />
                 ))}
             </div>
