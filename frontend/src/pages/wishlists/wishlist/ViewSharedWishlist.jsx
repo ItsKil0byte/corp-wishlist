@@ -82,6 +82,7 @@ export default function ViewSharedWishlist() {
                   title={wish.title}
                   description={wish.description}
                   color={wish.color}
+                  imageUrls={wish.imageUrls}
                 />
               </div>
             ))}

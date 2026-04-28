@@ -58,25 +58,52 @@ export default function ViewWishlist() {
   };
 
   const handleSaveWish = async (wishData) => {
+    const tId = toast.loading("Сохраняем желание...");
     try {
+      let savedWish;
+
       if (editingWish) {
-        await WishService.updateWish(
+        savedWish = await WishService.updateWish(
           editingWish.id,
           wishData.title,
           wishData.description,
           wishData.color,
         );
       } else {
-        await WishService.addWish(
+        savedWish = await WishService.addWish(
           wishlistId,
           wishData.title,
           wishData.description,
           wishData.color,
         );
       }
+
+      // ID желания
+      const wishId = savedWish?.id || editingWish?.id;
+
+      if (
+        editingWish &&
+        editingWish.imageUrls &&
+        editingWish.imageUrls.length > 0
+      ) {
+        if (wishData.isImageCleared || wishData.imageFile) {
+          const oldUrl = editingWish.imageUrls[0];
+          const filename = oldUrl.split("/").pop();
+
+          await WishService.deleteImage(wishId, filename);
+        }
+      }
+
+      if (wishData.imageFile && wishId) {
+        toast.loading("Загружаем картинки...", { id: tId });
+        await WishService.uploadImages(wishId, [wishData.imageFile]);
+      }
+
+      toast.success("Успешно!", { id: tId });
       setIsModalOpen(false);
       fetchData();
     } catch (error) {
+      toast.error("Проищошла ошибка!", { id: tId });
       console.error("Ошибка при сохранении желания:", error);
     }
   };
@@ -86,6 +113,7 @@ export default function ViewWishlist() {
       await WishService.deleteWish(editingWish.id);
       setIsModalOpen(false);
       fetchData();
+      toast.success("Желание удалено");
     } catch (error) {
       console.error("Ошибка при удалении желания:", error);
     }
@@ -101,8 +129,10 @@ export default function ViewWishlist() {
       );
       setIsSettingsOpen(false);
       fetchData();
+      toast.success("Настройки сохранены");
     } catch (error) {
       console.error("Ошибка при сохранении вишлиста:", error);
+      toast.error("Ошибка при сохранении настроек");
     }
   };
 
@@ -112,8 +142,10 @@ export default function ViewWishlist() {
       setIsSettingsOpen(false);
       fetchWishlists();
       navigate("/wishlists");
+      toast.success("Вишлист удален");
     } catch (error) {
       console.error("Ошибка при удалении вишлиста:", error);
+      toast.error("Ошибка при удалении вишлиста");
     }
   };
 
@@ -179,6 +211,7 @@ export default function ViewWishlist() {
             title={wish.title}
             description={wish.description}
             color={wish.color}
+            imageUrls={wish.imageUrls}
             onClick={() => openEditModal(wish)}
           />
         ))}
