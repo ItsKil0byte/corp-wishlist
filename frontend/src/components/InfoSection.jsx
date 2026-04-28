@@ -1,68 +1,77 @@
-import React, {useState} from 'react';
-import {GoPencil} from "react-icons/go";
-import {IoCheckmark} from "react-icons/io5";
-import UserInfoService from "../services/UserInfoService.js";
+import { useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Pencil, Check, X } from "lucide-react";
+import UserInfoService from "@/services/UserInfoService";
 import toast from "react-hot-toast";
 
-const InfoSection = ({ title, info, placeholder, userInfo, setUserInfo, type, canBeEdited = false }) => {
+export default function InfoSection({ title, value, type, user, fetchUser }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [value, setValue] = React.useState(info);
-    // const [loading, setLoading] = React.useState(false);
+    const [text, setText] = useState(value || "");
 
-    const renderForm = () => {
-        return isEditing ? (
-            <textarea rows={5}
-                      className={"w-full h-full text-main-theme-primary text-start p-2 outline-main-theme rounded-2xl resize-y"}
-                      value={value?.toString()}
-                      placeholder={placeholder}
-                      onChange={e => setValue(e.target.value)}/>
-
-        ) : (
-            <span className={"w-full h-full text-main-theme-primary text-start mb-2"}>
-                {info ? info : placeholder}
-            </span>
-        )
-    }
-
-    const renderButton = () => {
-        return !isEditing
-                ? <GoPencil className={`w-6 h-6 absolute top-[1.125rem] right-[1.125rem]`} onClick={onEditClick}/>
-                : <IoCheckmark className={`w-6 h-6 absolute top-[1.125rem] right-[1.125rem]`} onClick={onConfirmClick} />
-    }
-
-    const onEditClick = () => {
-        setIsEditing(true);
-    }
-
-    const onConfirmClick = async () => {
-        setIsEditing(true);
-        const tID = toast.loading("Сохранение")
-
-        const newInfo = {
-            ...userInfo,
-            [type]: value
+    const handleSave = async () => {
+        const tId = toast.loading("Сохранение...");
+        try {
+            await UserInfoService.updateInfo({ ...user, [type]: text });
+            await fetchUser();
+            setIsEditing(false);
+            toast.success(`${title} обновлены!`, { id: tId });
+        } catch (e) {
+            toast.error("Ошибка при сохранении", { id: tId });
         }
-
-        const updInfo = await UserInfoService.updateInfo(newInfo)
-
-        setUserInfo(updInfo)
-        setIsEditing(false);
-        toast.success(`${title} обновлены`, {
-            id: tID
-        })
-    }
+    };
 
     return (
-        <div className={"w-full h-fit max-h-[35rem] flex flex-col items-center overflow-clip p-[1.125rem] bg-main-theme-lite rounded-[1.25rem] mb-8 relative"}>
-            {
-                canBeEdited && renderButton()
-            }
-            <span className={"w-full text-start text-[1.25rem] mb-2"}>
-                {title}
-            </span>
-            { renderForm() }
-        </div>
-    );
-};
+        <Card className="border-2 border-gray-100 shadow-sm relative overflow-hidden group">
+            <CardHeader className="flex flex-row items-center justify-between pb-3 space-y-0">
+                <CardTitle className="text-lg font-bold text-gray-900">{title}</CardTitle>
 
-export default InfoSection;
+                {!isEditing ? (
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsEditing(true)}
+                        className="hover:bg-main-theme/10 text-main-theme"
+                    >
+                        <Pencil className="size-4" />
+                    </Button>
+                ) : (
+                    <div className="flex gap-1 animate-in fade-in zoom-in duration-200">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => { setIsEditing(false); setText(value || ""); }}
+                            className="text-gray-400"
+                        >
+                            <X className="size-4" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={handleSave}
+                            className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                        >
+                            <Check className="size-4" />
+                        </Button>
+                    </div>
+                )}
+            </CardHeader>
+
+            <CardContent>
+                {isEditing ? (
+                    <Textarea
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        className="min-h-32 border-2 border-gray-200 focus-visible:ring-main-theme resize-none"
+                        placeholder={`Расскажите про ваши ${title.toLowerCase()}...`}
+                    />
+                ) : (
+                    <p className={`text-base leading-relaxed whitespace-pre-wrap ${!value ? "text-gray-400 italic" : "text-gray-600"}`}>
+                        {value || "Не указано (нажмите на карандаш, чтобы добавить)"}
+                    </p>
+                )}
+            </CardContent>
+        </Card>
+    );
+}
