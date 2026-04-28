@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.serp.corpwish.DTO.TelegramUser;
 import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.User;
@@ -14,6 +15,7 @@ import ru.serp.corpwish.repository.UserRepository;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final FileService fileService;
 
     @Override
     public UserDetails loadUserByUsername(String userIDStr) throws UsernameNotFoundException {
@@ -45,6 +47,28 @@ public class UserServiceImpl implements UserService {
         return convertToUserInfo(newUserInfo);
     }
 
+    @Override
+    public UserInfo uploadAvatar(Long userId, MultipartFile file) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Can not upload avatar - No such user"));
+        if (user.getPhoto_url() != null) {
+            fileService.delete(user.getPhoto_url());
+        }
+        user.setPhoto_url(fileService.store(file));
+        return convertToUserInfo(userRepository.save(user));
+    }
+
+    @Override
+    public void deleteAvatar(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Can not upload avatar - No such user"));
+        if (user.getPhoto_url() != null) {
+            fileService.delete(user.getPhoto_url());
+            user.setPhoto_url(null);
+            userRepository.save(user);
+        }
+    }
+
     private User updateUser(User user, UserInfo newUserInfo){
         user.setTelegramId(newUserInfo.getTelegramId());
         user.setUsername(newUserInfo.getUsername());
@@ -65,7 +89,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setUsername(user.getLogin());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
-        userInfo.setPhoto_url(user.getPhoto_url());
+        userInfo.setPhoto_url(user.getProfilePicUrl());
         userInfo.setInterests(user.getInterests());
         userInfo.setHobbies(user.getHobbies());
 

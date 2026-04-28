@@ -30,6 +30,12 @@ app:
 telegram:
   bot_token: ${BOT_TOKEN}
 
+app:
+  storage:
+    path: ${UPLOAD_DIR:./uploads}
+    allowed-extensions: jpg,jpeg,png,webp
+    max-size-mb: 5
+
 management:
   endpoints:
     web:

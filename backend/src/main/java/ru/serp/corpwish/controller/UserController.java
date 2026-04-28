@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.serp.corpwish.DTO.TelegramUser;
 import ru.serp.corpwish.DTO.UserInfo;
 import ru.serp.corpwish.entity.User;
@@ -45,5 +46,18 @@ public class UserController {
         UserInfo userInfo = userService.updateUserInfo(user.getUserId(), newUserInfo);
 
         return ResponseEntity.ok(userInfo);
+    }
+
+    @PostMapping("/{userId}/avatar")
+    public ResponseEntity<UserInfo> uploadAvatar(
+            @PathVariable Long userId,
+            @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(userService.uploadAvatar(userId, file));
+    }
+
+    @DeleteMapping("/{userId}/avatar")
+    public ResponseEntity<Void> deleteAvatar(@PathVariable Long userId) {
+        userService.deleteAvatar(userId);
+        return ResponseEntity.noContent().build();
     }
 }
