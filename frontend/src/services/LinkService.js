@@ -21,7 +21,16 @@ export default class LinkService {
   }
 
   static async joinToGroup(token) {
-    const { data } = await axios.post(`${URL}/public/link/${token}/join`);
-    return data;
+      const jwtToken = localStorage.getItem("token");
+
+      const { data } = await axios.post(
+          `${URL}/public/link/${token}/join`,
+          {},
+          {
+              headers: {
+                  Authorization: `Bearer ${jwtToken}`
+              }
+          }
+      );    return data;
   }
 }
