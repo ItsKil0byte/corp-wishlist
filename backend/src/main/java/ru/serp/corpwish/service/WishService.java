@@ -3,6 +3,7 @@ package ru.serp.corpwish.service;
 import org.springframework.data.domain.Pageable;
 import ru.serp.corpwish.DTO.CreateWishRequest;
 import ru.serp.corpwish.DTO.WishDto;
+import ru.serp.corpwish.entity.Wish;
 
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface WishService {
     WishDto updateWish(Long ownerId, Long wishId, CreateWishRequest wishRequest);
 
     void deleteWish(Long ownerId, Long wishId);
+
+    WishDto addImages(Long wishId, List<String> filenames);
+
+    void removeImage(Long wishId, String filename);
 }

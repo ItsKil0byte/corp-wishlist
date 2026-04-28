@@ -5,11 +5,22 @@ spring:
     profiles:
         default: dev
 
+    servlet:
+      multipart:
+        max-file-size: 5MB
+        max-request-size: 5MB
+
 jwt:
   secret: "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=" #Тестовый ключ, TODO() заменить в дальнейшем на нормальный
 
 telegram:
   bot_token: ${BOT_TOKEN}
+
+app:
+  storage:
+    path: ${UPLOAD_DIR:./uploads}
+    allowed-extensions: jpg,jpeg,png,webp
+    max-size-mb: 5
 
 management:
   endpoints:

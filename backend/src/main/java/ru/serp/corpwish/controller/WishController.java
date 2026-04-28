@@ -6,9 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.serp.corpwish.DTO.CreateWishRequest;
 import ru.serp.corpwish.DTO.WishDto;
 import ru.serp.corpwish.entity.User;
+import ru.serp.corpwish.entity.Wish;
+import ru.serp.corpwish.service.FileService;
 import ru.serp.corpwish.service.WishService;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 public class WishController {
 
     private final WishService wishService;
+    private final FileService fileService;
 
     @GetMapping
     public ResponseEntity<List<WishDto>> getWishes(
@@ -88,6 +92,29 @@ public class WishController {
                 owner.getUserId(),
                 wishId
         );
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{wishId}/images")
+    public ResponseEntity<WishDto> uploadImages(
+            @PathVariable Long wishId,
+            @RequestParam("files") List<MultipartFile> files) {
+
+        List<String> saved = files.stream()
+                .map(fileService::store)
+                .toList();
+
+        WishDto updated = wishService.addImages(wishId, saved);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{wishId}/images/{filename}")
+    public ResponseEntity<Void> deleteImage(
+            @PathVariable Long wishId,
+            @PathVariable String filename) {
+
+        fileService.delete(filename);
+        wishService.removeImage(wishId, filename);
         return ResponseEntity.noContent().build();
     }
 }
