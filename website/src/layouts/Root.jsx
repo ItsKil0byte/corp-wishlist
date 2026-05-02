@@ -9,7 +9,7 @@ export default function Root() {
             CorpWishlist
           </span>
           <a
-            href={"#" || import.meta.env.VITE_APP_URL}
+            href={import.meta.env.VITE_APP_URL || "localhost:3000"}
             className="text-sm text-gray-600 hover:text-main-theme"
           >
             Войти в приложение →
