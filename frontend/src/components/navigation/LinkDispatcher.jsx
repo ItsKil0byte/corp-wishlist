@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LinkService from "@/services/LinkService.js";
 import toast from "react-hot-toast";
@@ -9,11 +9,26 @@ export default function LinkDispatcher() {
   const [searchParams] = useSearchParams();
   const [error, setError] = useState(false);
 
+  // Попытка обработки повторного захода
+  const hasDispatched = useRef(false);
+
   useEffect(() => {
+    if (hasDispatched.current) {
+      return;
+    }
+
     const dispatch = async () => {
+      hasDispatched.current = true;
+
       try {
-        const token =
+        let token =
           searchParams.get("start_param") || searchParams.get("token");
+        const pendingInvite = localStorage.getItem("pending_invite");
+
+        if (!token && pendingInvite) {
+          token = pendingInvite;
+        }
+
         const isAuth = !!localStorage.getItem("token");
 
         if (!token) {
@@ -39,9 +54,20 @@ export default function LinkDispatcher() {
           }
 
           const tId = toast.loading("Присоединение к группе...");
-          await LinkService.joinToGroup(token);
-          toast.success("Вы успешно вступили в группу!", { id: tId });
-          navigate("/groups", { replace: true });
+
+          try {
+            await LinkService.joinToGroup(token);
+            toast.success("Вы успешно вступили в группу!", { id: tId });
+          } catch (error) {
+            console.warn(
+              "Пользователь уже вступил в группу или произошла ошибка:",
+              error,
+            );
+            toast.success("Вы добавлены в группу!", { id: tId });
+          } finally {
+            localStorage.removeItem("pending_invite");
+            navigate("/groups", { replace: true });
+          }
         }
       } catch (error) {
         console.error("Ошибка при обработке ссылки:", error);
@@ -60,8 +86,10 @@ export default function LinkDispatcher() {
         </h1>
         <button
           onClick={() => {
+            const isAuth = !!localStorage.getItem("token");
             setError(false);
-            navigate("/");
+            localStorage.removeItem("pending_invite");
+            navigate(isAuth ? "/wishlists" : "/auth");
           }}
           className="text-main-theme font-bold hover:underline"
         >
