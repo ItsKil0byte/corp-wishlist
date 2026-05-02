@@ -54,7 +54,7 @@ export default function Wishlist({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] ring-0 border-2 rounded-lg p-6 border-gray-300">
+      <DialogContent className="rounded-lg border-2 border-gray-300 p-6 ring-0 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             {isEdit ? "Редактировать вишлист" : "Создать новый вишлист"}
@@ -69,20 +69,20 @@ export default function Wishlist({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Например: День рождения, Новый год и т.д."
-              className="rounded-lg border-2 h-12 border-gray-200"
+              className="h-12 rounded-lg border-2 border-gray-200"
             />
 
             <Popover open={iconPickerOpen} onOpenChange={setIconPickerOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="size-10 rounded-full flex items-center justify-center border-2 border-gray-200 hover:border-main-theme-border transition-colors hover:bg-main-theme-lite shrink-0"
+                  className="hover:border-main-theme-border hover:bg-main-theme-lite flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-gray-200 transition-colors"
                 >
                   {icon}
                 </Button>
               </PopoverTrigger>
               <PopoverContent
-                className="w-fit p-2 rounded-lg ring-0 border-2 border-gray-200"
+                className="w-fit rounded-lg border-2 border-gray-200 p-2 ring-0"
                 align="end"
               >
                 <div className="grid grid-cols-4 gap-2">
@@ -90,10 +90,10 @@ export default function Wishlist({
                     <Button
                       key={emoji}
                       variant="ghost"
-                      className={`size-10 rounded-full flex items-center justify-center ${
+                      className={`flex size-10 items-center justify-center rounded-full ${
                         icon === emoji
-                          ? "border-2 border-main-theme-border shadow-sm"
-                          : "border-2 border-gray-300 hover:border-main-theme-border hover:bg-main-theme-lite transition-colors"
+                          ? "border-main-theme-border border-2 shadow-sm"
+                          : "hover:border-main-theme-border hover:bg-main-theme-lite border-2 border-gray-300 transition-colors"
                       }`}
                       onClick={() => {
                         setIcon(emoji);
@@ -108,18 +108,18 @@ export default function Wishlist({
             </Popover>
           </div>
         </div>
-        <DialogFooter className="flex flex-col gap-4 pt-0 bg-white border-none sm:flex-col">
+        <DialogFooter className="flex flex-col gap-4 border-none bg-white pt-0 sm:flex-col">
           <div className="flex gap-4">
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 border-2 border-gray-200 text-gray-900 text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
+              className="h-12 flex-1 border-2 border-gray-200 px-4 text-base text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               Отмена
             </Button>
             <Button
               onClick={handleSave}
-              className="flex-1 bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
+              className="bg-main-theme border-main-theme-border h-12 flex-1 border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               {isEdit ? "Сохранить" : "Добавить"}
             </Button>
@@ -127,7 +127,7 @@ export default function Wishlist({
           {isEdit && onDelete && (
             <Button
               onClick={onDelete}
-              className="w-full h-12 bg-red-500 text-gray-900 font-bold border-2 text-base border-red-700 rounded-lg hover:brightness-95 hover:scale-105 transition-all"
+              className="h-12 w-full rounded-lg border-2 border-red-700 bg-red-500 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               Удалить
             </Button>

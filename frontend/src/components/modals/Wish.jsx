@@ -84,7 +84,7 @@ export default function Wish({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-white rounded-lg p-6 w-full max-w-md mx-auto">
+      <DialogContent className="mx-auto w-full max-w-md rounded-lg bg-white p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             {isEdit ? "Редактировать желание" : "Добавить желание"}
@@ -103,15 +103,15 @@ export default function Wish({
             />
 
             {imagePreview ? (
-              <div className="relative w-full h-32 rounded-lg overflow-hidden border-2 border-gray-200 group">
+              <div className="group relative h-32 w-full overflow-hidden rounded-lg border-2 border-gray-200">
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
                 <Button
                   onClick={clearImage}
-                  className="absolute top-2 right-2 bg-red-500 hover:brightness-95 text-gray-900 border-2 border-red-700 p-1.5 rounded-md hover:scale-105 transition-all"
+                  className="absolute top-2 right-2 rounded-md border-2 border-red-700 bg-red-500 p-1.5 text-gray-900 transition-all hover:scale-105 hover:brightness-95"
                 >
                   <X className="size-4 text-white" />
                 </Button>
@@ -119,9 +119,9 @@ export default function Wish({
             ) : (
               <Button
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full h-24 border-2 border-dashed bg-white border-gray-300 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:hover:brightness-95 transition-all hover:scale-105"
+                className="flex h-24 w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white text-gray-500 transition-all hover:scale-105 hover:hover:brightness-95"
               >
-                <ImagePlus className="size-8 mb-1 text-gray-400" />
+                <ImagePlus className="mb-1 size-8 text-gray-400" />
                 <span className="text-sm font-medium">Загрузить фото</span>
               </Button>
             )}
@@ -136,7 +136,7 @@ export default function Wish({
                 value={title}
                 placeholder="Например: iPhone 17 Pro и т.д."
                 onChange={(e) => setTitle(e.target.value)}
-                className="rounded-lg border-2 h-10 border-gray-200"
+                className="h-10 rounded-lg border-2 border-gray-200"
               />
             </div>
             <div className="w-12">
@@ -147,7 +147,7 @@ export default function Wish({
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
-                className="w-full h-10 border-2 border-gray-200 rounded-lg"
+                className="h-10 w-full rounded-lg border-2 border-gray-200"
               />
             </div>
           </div>
@@ -159,22 +159,22 @@ export default function Wish({
               value={description}
               placeholder="Дополнительные детали, ссылки и т.д."
               onChange={(e) => setDescription(e.target.value)}
-              className="rounded-lg border-2 min-h-48 border-gray-200 field-sizing-fixed resize-none"
+              className="field-sizing-fixed min-h-48 resize-none rounded-lg border-2 border-gray-200"
             />
           </div>
         </div>
-        <DialogFooter className="flex flex-col gap-4 pt-0 bg-white border-none sm:flex-col">
+        <DialogFooter className="flex flex-col gap-4 border-none bg-white pt-0 sm:flex-col">
           <div className="flex gap-4">
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 border-2 border-gray-200 text-gray-900 text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
+              className="h-12 flex-1 border-2 border-gray-200 px-4 text-base text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               Отмена
             </Button>
             <Button
               onClick={handleSave}
-              className="flex-1 bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all"
+              className="bg-main-theme border-main-theme-border h-12 flex-1 border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               {isEdit ? "Сохранить" : "Добавить"}
             </Button>
@@ -182,7 +182,7 @@ export default function Wish({
           {isEdit && onDelete && (
             <Button
               onClick={onDelete}
-              className="w-full h-12 bg-red-500 text-gray-900 font-bold border-2 text-base border-red-700 rounded-lg hover:brightness-95 hover:scale-105 transition-all"
+              className="h-12 w-full rounded-lg border-2 border-red-700 bg-red-500 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95"
             >
               Удалить
             </Button>

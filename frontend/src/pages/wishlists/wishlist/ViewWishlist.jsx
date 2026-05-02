@@ -167,8 +167,8 @@ export default function ViewWishlist() {
   // Заглушка
   if (!wishlist) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin text-main-theme text-4xl">🎁</div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-main-theme animate-spin text-4xl">🎁</div>
       </div>
     );
   }
@@ -181,7 +181,7 @@ export default function ViewWishlist() {
       >
         <Button
           onClick={() => openAddModal()}
-          className="bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+          className="bg-main-theme border-main-theme-border h-12 w-full border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
         >
           <Sparkle />
           Добавить
@@ -189,7 +189,7 @@ export default function ViewWishlist() {
 
         <Button
           onClick={handleShareWishlist}
-          className="bg-[#02A2EC] border-2 border-[#007CD5] text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+          className="h-12 w-full border-2 border-[#007CD5] bg-[#02A2EC] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
         >
           <Share2 />
           Поделиться
@@ -197,14 +197,14 @@ export default function ViewWishlist() {
 
         <Button
           onClick={() => setIsSettingsOpen(true)}
-          className="bg-[#f5c60c] border-2 border-[#dab110] text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+          className="h-12 w-full border-2 border-[#dab110] bg-[#f5c60c] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
         >
           <Settings />
           Настройки
         </Button>
       </PageHeader>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {wishes.map((wish) => (
           <WishCard
             key={wish.id}

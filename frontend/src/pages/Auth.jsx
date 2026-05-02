@@ -58,14 +58,14 @@ export default function Auth() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-main-theme-lite flex items-center justify-center overflow-hidden">
+    <div className="bg-main-theme-lite relative flex min-h-screen w-full items-center justify-center overflow-hidden">
       {/* TODO: Заменить на что-нибудь */}
       <div className="absolute inset-0 z-0 opacity-40">
         <FallingGifts />
       </div>
 
-      <Card className="relative w-full max-w-[380px] shadow-xl border bg-white">
-        <CardHeader className="text-center py-4">
+      <Card className="relative w-full max-w-[380px] border bg-white shadow-xl">
+        <CardHeader className="py-4 text-center">
           <CardTitle className="text-3xl font-black text-gray-900">
             {isLogin ? "Вход" : "Регистрация"}
           </CardTitle>
@@ -74,7 +74,7 @@ export default function Auth() {
         <form onSubmit={handleSubmit}>
           <CardContent ref={parent} className="space-y-5 px-6">
             <div className="space-y-2">
-              <Label htmlFor="login" className="text-gray-900 font-medium">
+              <Label htmlFor="login" className="font-medium text-gray-900">
                 Логин
               </Label>
               <Input
@@ -84,12 +84,12 @@ export default function Auth() {
                 id="login"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
-                className="h-10 text-base px-4 rounded-lg border-2"
+                className="h-10 rounded-lg border-2 px-4 text-base"
                 disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-900 font-medium">
+              <Label htmlFor="password" className="font-medium text-gray-900">
                 Пароль
               </Label>
               <Input
@@ -99,7 +99,7 @@ export default function Auth() {
                 placeholder="Введите пароль"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-10 text-base px-4 rounded-lg border-2"
+                className="h-10 rounded-lg border-2 px-4 text-base"
                 disabled={isLoading}
               />
             </div>
@@ -107,7 +107,7 @@ export default function Auth() {
               <div className="space-y-2">
                 <Label
                   htmlFor="confirmPassword"
-                  className="text-gray-900 font-medium"
+                  className="font-medium text-gray-900"
                 >
                   Подтвердите пароль
                 </Label>
@@ -118,17 +118,17 @@ export default function Auth() {
                   placeholder="Подтвердите пароль"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="h-10 text-base px-4 rounded-lg border-2"
+                  className="h-10 rounded-lg border-2 px-4 text-base"
                   disabled={isLoading}
                 />
               </div>
             )}
           </CardContent>
 
-          <CardFooter className="flex flex-col gap-4 px-6 pt-6 pb-6 bg-white border-none">
+          <CardFooter className="flex flex-col gap-4 border-none bg-white px-6 pt-6 pb-6">
             <Button
               type="submit"
-              className="w-full bg-main-theme hover:bg-main-theme-hover border-2 border-main-theme-border text-gray-900 font-bold text-base h-12"
+              className="bg-main-theme hover:bg-main-theme-hover border-main-theme-border h-12 w-full border-2 text-base font-bold text-gray-900"
               disabled={isLoading}
             >
               {isLogin ? "Войти" : "Зарегистрироваться"}
@@ -136,7 +136,7 @@ export default function Auth() {
             <Button
               type="button"
               variant="secondary"
-              className="w-full h-12 text-gray-900 font-semibold text-base border-2 border-gray-200 hover:bg-gray-200"
+              className="h-12 w-full border-2 border-gray-200 text-base font-semibold text-gray-900 hover:bg-gray-200"
               onClick={() => {
                 setIsLogin(!isLogin);
                 setLogin("");

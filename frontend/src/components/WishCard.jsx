@@ -27,15 +27,15 @@ export default function WishCard({
         backgroundColor: color,
         borderColor: borderColor,
       }}
-      className={`flex flex-col h-full min-h-[200px] ring-0 p-4 border-2 rounded-lg hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer overflow-hidden`}
+      className={`flex h-full min-h-[200px] cursor-pointer flex-col overflow-hidden rounded-lg border-2 p-4 ring-0 transition-all hover:-translate-y-1 hover:shadow-lg`}
     >
-      <div className="relative h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden shrink-0">
+      <div className="relative flex h-48 w-full shrink-0 items-center justify-center overflow-hidden bg-gray-100">
         {image ? (
           <img
             src={image}
             alt={title}
             style={{ borderColor: borderColor }}
-            className="w-full h-full object-cover transition-transform duration-500 border-2"
+            className="h-full w-full border-2 object-cover transition-transform duration-500"
           />
         ) : (
           <div
@@ -43,22 +43,22 @@ export default function WishCard({
             style={{ backgroundColor: color }}
           />
         )}
-        {!image && <ImageIcon className="size-8 text-gray-900 z-10" />}
+        {!image && <ImageIcon className="z-10 size-8 text-gray-900" />}
       </div>
 
       <div className="" style={{ borderColor: borderColor }}>
         <h3
-          className={`font-bold text-lg wrap-break-word leading-tight ${contrastColor}`}
+          className={`text-lg leading-tight font-bold wrap-break-word ${contrastColor}`}
         >
           {title}
         </h3>
       </div>
 
-      <hr className="border " style={{ borderColor: borderColor }} />
+      <hr className="border" style={{ borderColor: borderColor }} />
 
       <div className="flex-1">
         <p
-          className={`text-sm line-clamp-5 leading-relaxed whitespace-pre-wrap wrap-break-word ${contrastColor}`}
+          className={`line-clamp-5 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap ${contrastColor}`}
         >
           {description}
         </p>

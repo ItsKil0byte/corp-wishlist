@@ -57,14 +57,14 @@ export default function Shell() {
   return (
     <TooltipProvider>
       <SidebarProvider>
-        <div className="flex h-screen w-full bg-gray-50 font-sans overflow-hidden p-4">
+        <div className="flex h-screen w-full overflow-hidden bg-gray-50 p-4 font-sans">
           <AppSidebar user={user} wishlists={wishlists} groups={groups} />
 
-          <main className="relative flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 p-2 overflow-y-auto bg-white rounded-lg border-2 border-gray-200">
+          <main className="relative flex flex-1 flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto rounded-lg border-2 border-gray-200 bg-white p-2">
               <Outlet context={contextValue} />
 
-              <SidebarTrigger className="fixed bottom-8 left-8 size-16 rounded-lg bg-main-theme border-2 border-main-theme-border hover:bg-main-theme hover:brightness-95 md:hidden" />
+              <SidebarTrigger className="bg-main-theme border-main-theme-border hover:bg-main-theme fixed bottom-8 left-8 size-16 rounded-lg border-2 hover:brightness-95 md:hidden" />
             </div>
           </main>
         </div>

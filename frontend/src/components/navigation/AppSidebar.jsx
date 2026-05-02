@@ -41,10 +41,10 @@ export default function AppSidebar({ user, wishlists, groups }) {
               asChild
               tooltip="Профиль"
               isActive={location.pathname.startsWith("/profile")}
-              className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 transition-all duration-300 h-16 w-full group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center"
+              className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 h-16 w-full text-gray-900 transition-all duration-300 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
             >
               <Link to="/profile">
-                <Avatar className="bg-main-theme after:border-2 transition-all duration-300 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6 h-12 w-12 shrink-0">
+                <Avatar className="bg-main-theme h-12 w-12 shrink-0 transition-all duration-300 group-data-[collapsible=icon]:h-6 group-data-[collapsible=icon]:w-6 after:border-2">
                   <AvatarImage src={user?.photo_url} />
                   <AvatarFallback className="bg-main-theme text-gray-900">
                     <User className="size-8! transition-all duration-300 group-data-[collapsible=icon]:size-4!" />
@@ -52,13 +52,13 @@ export default function AppSidebar({ user, wishlists, groups }) {
                 </Avatar>
 
                 {state === "expanded" && (
-                  <div className="flex flex-col animate-in fade-in duration-300">
-                    <span className="font-bold text-gray-900 leading-tight truncate">
+                  <div className="animate-in fade-in flex flex-col duration-300">
+                    <span className="truncate leading-tight font-bold text-gray-900">
                       {user
                         ? `${(user.firstName && user.lastName) || "Пользователь"} ${user.lastName || ""}`
                         : "Пользоаватель"}
                     </span>
-                    <span className="text-sm text-gray-500 leading-tight truncate">
+                    <span className="truncate text-sm leading-tight text-gray-500">
                       @{user?.username || "..."}
                     </span>
                   </div>
@@ -71,7 +71,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
 
       <SidebarContent>
         <SidebarGroup className="pt-0">
-          <SidebarGroupLabel className="text-gray-900 font-bold text-base">
+          <SidebarGroupLabel className="text-base font-bold text-gray-900">
             Навигация
           </SidebarGroupLabel>
 
@@ -83,24 +83,24 @@ export default function AppSidebar({ user, wishlists, groups }) {
                   asChild
                   tooltip="Мои вишлисты"
                   isActive={location.pathname.startsWith("/wishlists")}
-                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 h-11 px-3"
+                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 h-11 px-3 text-gray-900"
                 >
                   <Link to="/wishlists">
-                    <Gift className="w-6 h-6 shrink-0" />
-                    <span className="font-semibold text-sm">Мои вишлисты</span>
+                    <Gift className="h-6 w-6 shrink-0" />
+                    <span className="text-sm font-semibold">Мои вишлисты</span>
                   </Link>
                 </SidebarMenuButton>
 
                 {state === "expanded" && (
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="right-2 hover:bg-transparent h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
-                      <ChevronRight className="w-5 h-5 text-gray-900" />
+                    <SidebarMenuAction className="right-2 h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 hover:bg-transparent">
+                      <ChevronRight className="h-5 w-5 text-gray-900" />
                     </SidebarMenuAction>
                   </CollapsibleTrigger>
                 )}
 
                 <CollapsibleContent>
-                  <SidebarMenuSub className="ml-6 border-l-2 border-main-theme/20 mr-0 pr-0">
+                  <SidebarMenuSub className="border-main-theme/20 mr-0 ml-6 border-l-2 pr-0">
                     {wishlists.map((wishlist) => (
                       <SidebarMenuSubItem key={wishlist.id}>
                         <SidebarMenuSubButton
@@ -109,7 +109,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                             location.pathname.includes("/wishlists") &&
                             location.search.includes(`id=${wishlist.id}`)
                           }
-                          className="h-8 hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10"
+                          className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 h-8"
                         >
                           <Link
                             to={`/wishlists/wishlist/view?id=${wishlist.id}`}
@@ -132,24 +132,24 @@ export default function AppSidebar({ user, wishlists, groups }) {
                   asChild
                   tooltip="Мои группы"
                   isActive={location.pathname.startsWith("/groups")}
-                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 text-gray-900 h-11 px-3"
+                  className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 h-11 px-3 text-gray-900"
                 >
                   <Link to="/groups">
-                    <Users className="w-6 h-6 shrink-0" />
-                    <span className="font-semibold text-sm">Мои группы</span>
+                    <Users className="h-6 w-6 shrink-0" />
+                    <span className="text-sm font-semibold">Мои группы</span>
                   </Link>
                 </SidebarMenuButton>
 
                 {state === "expanded" && (
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuAction className="right-2 hover:bg-transparent h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90">
-                      <ChevronRight className="w-5 h-5 text-gray-900" />
+                    <SidebarMenuAction className="right-2 h-8 w-8 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 hover:bg-transparent">
+                      <ChevronRight className="h-5 w-5 text-gray-900" />
                     </SidebarMenuAction>
                   </CollapsibleTrigger>
                 )}
 
                 <CollapsibleContent>
-                  <SidebarMenuSub className="ml-6 border-l-2 border-main-theme/20 mr-0 pr-0">
+                  <SidebarMenuSub className="border-main-theme/20 mr-0 ml-6 border-l-2 pr-0">
                     {groups.map((group) => (
                       <SidebarMenuSubItem key={group.id}>
                         <SidebarMenuSubButton
@@ -158,7 +158,7 @@ export default function AppSidebar({ user, wishlists, groups }) {
                             location.pathname.includes("/groups") &&
                             location.search.includes(`id=${group.id}`)
                           }
-                          className="h-8 hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10"
+                          className="hover:bg-main-theme/10 data-[active=true]:bg-main-theme/10 active:bg-main-theme/10 h-8"
                         >
                           <Link
                             to={`/groups/group/view?id=${group.id}`}
@@ -177,9 +177,9 @@ export default function AppSidebar({ user, wishlists, groups }) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="mt-auto group-data-[collapsible=icon]:px-0 ">
+      <SidebarFooter className="mt-auto group-data-[collapsible=icon]:px-0">
         <SidebarMenu className="p-2 pt-0 transition-all duration-300 group-data-[collapsible=icon]:justify-center">
-          <SidebarTrigger className="size-12 group-data-[collapsible=icon]:size-8 text-gray-900 transition-colors hover:bg-main-theme/10" />
+          <SidebarTrigger className="hover:bg-main-theme/10 size-12 text-gray-900 transition-colors group-data-[collapsible=icon]:size-8" />
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

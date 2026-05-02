@@ -80,8 +80,8 @@ export default function LinkDispatcher() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
-        <h1 className="text-xl font-bold text-gray-900 mb-4">
+      <div className="flex h-screen flex-col items-center justify-center bg-gray-50">
+        <h1 className="mb-4 text-xl font-bold text-gray-900">
           Ссылка устарела или недействительна
         </h1>
         <button
@@ -100,9 +100,9 @@ export default function LinkDispatcher() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
-      <Loader2 className="h-10 w-10 text-main-theme animate-spin mb-4" />
-      <p className="text-gray-500 font-medium">Обрабатываем ссылку...</p>
+    <div className="flex h-screen flex-col items-center justify-center bg-gray-50">
+      <Loader2 className="text-main-theme mb-4 h-10 w-10 animate-spin" />
+      <p className="font-medium text-gray-500">Обрабатываем ссылку...</p>
     </div>
   );
 }

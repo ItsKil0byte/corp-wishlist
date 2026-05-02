@@ -18,24 +18,24 @@ export default function Profile() {
 
   if (!user)
     return (
-      <div className="p-8 text-center animate-pulse text-gray-400">
+      <div className="animate-pulse p-8 text-center text-gray-400">
         Загрузка профиля...
       </div>
     );
 
   return (
-    <div className="p-4 flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-4">
       <PageHeader title="Мой профиль">
         <Button
-          className="bg-red-500 border-2 border-red-700 text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+          className="h-12 w-full border-2 border-red-700 bg-red-500 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
           onClick={handleLogout}
         >
           Выйти
         </Button>
       </PageHeader>
 
-      <Card className="border-2 border-gray-100 shadow-sm bg-linear-to-br from-main-theme-lite/50 to-white overflow-hidden">
-        <CardContent className="pt-8 pb-8 flex flex-col sm:flex-row items-center gap-8">
+      <Card className="from-main-theme-lite/50 overflow-hidden border-2 border-gray-100 bg-linear-to-br to-white shadow-sm">
+        <CardContent className="flex flex-col items-center gap-8 pt-8 pb-8 sm:flex-row">
           <Avatar className="size-32 border-4 border-white shadow-xl">
             <AvatarImage src={user.photo_url} />
             <AvatarFallback className="bg-main-theme text-4xl font-bold text-white uppercase">
@@ -45,20 +45,20 @@ export default function Profile() {
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex flex-col text-center sm:text-left gap-1">
-            <h2 className="text-3xl font-black text-gray-900 tracking-tight">
+          <div className="flex flex-col gap-1 text-center sm:text-left">
+            <h2 className="text-3xl font-black tracking-tight text-gray-900">
               {user.firstName || user.lastName
                 ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
                 : "Пользователь"}
             </h2>
-            <div className="inline-flex items-center justify-center sm:justify-start px-3 py-1 rounded-full bg-main-theme/10 text-main-theme font-bold text-sm w-fit mx-auto sm:mx-0">
+            <div className="bg-main-theme/10 text-main-theme mx-auto inline-flex w-fit items-center justify-center rounded-full px-3 py-1 text-sm font-bold sm:mx-0 sm:justify-start">
               @{user.username || "логин"}
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InfoSection
           title="Хобби"
           type="hobbies"
@@ -75,7 +75,7 @@ export default function Profile() {
         />
       </div>
 
-      <div className="flex flex-col gap-4 mt-4">
+      <div className="mt-4 flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <Gift className="text-main-theme size-6" />
           <h3 className="text-xl font-bold text-gray-900">Мои вишлисты</h3>
@@ -89,28 +89,28 @@ export default function Profile() {
                 onClick={() =>
                   navigate(`/wishlists/wishlist/view?id=${wishlist.id}`)
                 }
-                className="group border-2 border-gray-100 hover:border-main-theme/30 hover:shadow-md transition-all cursor-pointer rounded-xl overflow-hidden"
+                className="group hover:border-main-theme/30 cursor-pointer overflow-hidden rounded-xl border-2 border-gray-100 transition-all hover:shadow-md"
               >
-                <CardContent className="p-4 flex items-center justify-between">
+                <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
-                    <div className="size-12 rounded-lg bg-main-theme-lite flex items-center justify-center text-2xl border border-main-theme-lite-border">
+                    <div className="bg-main-theme-lite border-main-theme-lite-border flex size-12 items-center justify-center rounded-lg border text-2xl">
                       {wishlist.icon || "🎁"}
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold text-gray-900 group-hover:text-main-theme transition-colors">
+                      <span className="group-hover:text-main-theme font-bold text-gray-900 transition-colors">
                         {wishlist.name}
                       </span>
-                      <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                      <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
                         желаний ({wishlist.wishes.length})
                       </span>
                     </div>
                   </div>
-                  <ChevronRight className="text-gray-300 group-hover:text-main-theme transition-colors size-5" />
+                  <ChevronRight className="group-hover:text-main-theme size-5 text-gray-300 transition-colors" />
                 </CardContent>
               </Card>
             ))
           ) : (
-            <p className="text-gray-400 italic p-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
+            <p className="rounded-xl border-2 border-dashed border-gray-100 p-4 text-center text-gray-400 italic">
               У вас пока нет вишлистов
             </p>
           )}

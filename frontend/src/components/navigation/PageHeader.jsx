@@ -5,7 +5,7 @@ import { Separator } from "../ui/separator";
 export default function PageHeader({ title, children, onBack }) {
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+      <div className="mb-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2">
           {onBack && (
             <Button
@@ -17,7 +17,7 @@ export default function PageHeader({ title, children, onBack }) {
             </Button>
           )}
 
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             {title}
           </h1>
         </div>

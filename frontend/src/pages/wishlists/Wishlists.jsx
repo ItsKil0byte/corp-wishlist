@@ -30,14 +30,14 @@ export default function Wishlists() {
       <PageHeader title="Мои вишлисты">
         <Button
           onClick={() => setIsModalOpen(true)}
-          className="bg-main-theme border-2 border-main-theme-border text-gray-900 font-bold text-base px-4 h-12 hover:brightness-95 hover:scale-105 transition-all w-full sm:w-auto"
+          className="bg-main-theme border-main-theme-border h-12 w-full border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
         >
           <Sparkles />
           Создать новый вишлист
         </Button>
       </PageHeader>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {wishlists.map((wishlist) => (
           <WishlistCard
             key={wishlist.id}
