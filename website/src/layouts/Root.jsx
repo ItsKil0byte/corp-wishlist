@@ -1,21 +1,10 @@
+import Header from "@/components/landing/Header";
 import { Outlet } from "react-router-dom";
 
 export default function Root() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <header className="border-b-2 border-gray-100 px-6 py-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <span className="font-bold text-main-theme text-xl">
-            CorpWishlist
-          </span>
-          <a
-            href={import.meta.env.VITE_APP_URL || "localhost:3000"}
-            className="text-sm text-gray-600 hover:text-main-theme"
-          >
-            Войти в приложение →
-          </a>
-        </div>
-      </header>
+      <Header />
 
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8">
         <Outlet />
