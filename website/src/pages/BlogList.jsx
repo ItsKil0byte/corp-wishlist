@@ -3,7 +3,7 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useList } from "@/hooks/useBlog";
-import { Calendar } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -100,7 +100,30 @@ export default function BlogList() {
           </div>
         )}
 
-        {/* TODO: Пагинация */}
+        {data && !loading && (
+          <div className="flex justify-center items-center gap-6 pt-8">
+            <Button
+              variant="outline"
+              disabled={page <= 0}
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              className="gap-2 h-12 px-8"
+            >
+              <ArrowLeft className="size-4" /> Назад
+            </Button>
+            <span className="text-sm font-medium text-gray-500">
+              Страница {page}
+            </span>
+            {/* TODO: Продумать условие для перехода вперёд */}
+            <Button
+              variant="outline"
+              disabled={false}
+              onClick={() => setPage((p) => p + 1)}
+              className="gap-2 h-12 px-8"
+            >
+              Далее <ArrowRight />
+            </Button>
+          </div>
+        )}
       </section>
     </div>
   );
