@@ -14,7 +14,7 @@ export default function BlogList() {
   const [page, setPage] = useState(0);
   const { data, loading, error } = useList(page, 5);
 
-  // console.log(data);
+  console.log(data);
 
   const getContentPreview = (html) => {
     if (!html) {
@@ -24,6 +24,14 @@ export default function BlogList() {
       html.replace(/<[^>]*>/g, "").slice(0, 150) +
       (html.length > 150 ? "..." : "")
     );
+  };
+
+  const getFormatDate = (date) => {
+    return new Intl.DateTimeFormat("ru-RU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(date));
   };
 
   if (error) {
@@ -82,7 +90,7 @@ export default function BlogList() {
                     <div className="flex items-center gap-2 text-sm text-gray-500">
                       <Calendar className="size-4" />
                       <time dateTime={post.published_at}>
-                        {post.published_at}
+                        {getFormatDate(post.published_at)}
                       </time>
                     </div>
                     <CardTitle className="line-clamp-2 text-xl group-hover:text-main-theme transition-colors">
