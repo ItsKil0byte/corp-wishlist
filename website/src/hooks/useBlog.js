@@ -66,6 +66,7 @@ export default function usePost(slug) {
       })
       .finally(() => {
         isMounted = false;
+        setLoading(false);
       });
   }, [slug]);
 
