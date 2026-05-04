@@ -48,6 +48,19 @@ services:
             - "8080:8080"
         restart: unless-stopped
 
+    website:
+        build:
+            context: ./website
+            dockerfile: Dockerfile
+            args:
+                VITE_API_URL: ${API_URL}
+                VITE_APP_URL: ${APP_URL}
+        ports:
+            - "8081:80"
+        restart: unless-stopped
+        depends_on:
+            - backend
+
     pgadmin:
         image: dpage/pgadmin4
         environment:
