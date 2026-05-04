@@ -41,7 +41,7 @@ $api.interceptors.response.use(
     if (error.response?.status === 401) {
       console.warn("Сессия истекла. Выполняем выход...");
 
-      usedStorage.removeItem(token);
+      usedStorage.removeItem("token");
 
       window.location.href = "/auth";
     }
