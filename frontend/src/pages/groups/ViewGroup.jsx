@@ -1,94 +1,122 @@
-import React from 'react';
-import Header from "../../components/navigation/Header.jsx";
-import {useNavigate, useSearchParams} from "react-router-dom";
-import TileList from "../../components/lists/TileList.jsx";
+import React, { useEffect, useState } from "react";
+import {
+  useSearchParams,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
+import PageHeader from "@/components/navigation/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Share2, Settings, UserPlus } from "lucide-react";
+import MemberCard from "@/components/MemberCard";
+import GroupModal from "@/components/modals/GroupModal";
+import LinkService from "@/services/LinkService";
+import GroupService from "@/services/GroupService";
 import toast from "react-hot-toast";
-import WebApp from "@twa-dev/sdk";
-import LinkService from "../../services/LinkService.js";
 
-const ViewGroup = () => {
-    const navigate = useNavigate();
-    const [searchParams, _] = useSearchParams()
-    const group = JSON.parse(
-        sessionStorage.getItem("groups")).find(group => group.id === Number(searchParams.get("id"))
-    )
+export default function ViewGroup() {
+  const [searchParams] = useSearchParams();
+  const groupId = searchParams.get("id");
+  const navigate = useNavigate();
+  const { groups, fetchGroups } = useOutletContext();
 
-    const groupIsEmpty = group.members.length === 0
+  const [group, setGroup] = useState(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-    const renderUserProfile = (item, index) => {
-        return (
-            <div key={index}
-                 className={`w-full h-full flex flex-col justify-center items-center mb-6`}
-                 onClick={() => {navigate(`/profile/others?id=${item.userId}&from=${group.id}`)}}
-            >
-                <div className={`w-[6.25rem] h-[6.25rem] flex items-center justify-center overflow-clip mb-2 bg-main-theme-lite rounded-[50%]`}>
-                    {item.photo_url ? (
-                        <img className={"w-full h-full object-cover"} alt={"аватар"} src={item.photo_url} />
-                    ) : (
-                        <span className="text-4xl font-bold text-main-theme uppercase">
-                            {item.username?.[0] || '?'}
-                        </span>
-                    )}
-                </div>
-                {/*<span>{`${item.first_name} ${item.last_name}`}</span>*/}
-                <span>{`@${item.username}`}</span>
-            </div>
-        )
+  useEffect(() => {
+    if (!groupId) {
+      navigate("/groups");
+      return;
     }
-
-    const onShare = async () => {
-        const linkInfo = await LinkService.getLinkInfo("GROUP_INVITE", group.id);
-
-        const origin = window.location.origin;
-        const link = `${origin}/link?start_param=${linkInfo.token}`;
-
-        await navigator.clipboard.writeText(link);
-        toast.success("Ссылка скопирована");
+    const currentGroup = groups.find((g) => g.id === Number(groupId));
+    if (currentGroup) {
+      setGroup(currentGroup);
     }
+  }, [groupId, groups, navigate]);
 
-    return (
-        <>
-            <Header hasBackButton={true}
-                    hasText={true}
-                    hasEditButton={true}
-                    hasShareButton={true}
-                    onBack={() => navigate("/groups")}
-                    text={group.icon ? `${group.icon} ${group.name}` : group.name}
-                    onShare={() => onShare()}
-                    onEdit={() => navigate(`/groups/group/edit?id=${searchParams.get("id")}`)}/>
-            {
-                groupIsEmpty && (
-                    <div className="w-fit h-fit absolute top-12 right-6">
-                        <svg width="73"
-                             height="208"
-                             viewBox="0 0 73 208"
-                             fill="none"
-                             xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path d="M0.295617 202.529C41.5004 172.029 52.9754 86.5291 66.5771 4.90671" stroke="#707579"/>
-                            <line y1="-0.5" x2="18.7404" y2="-0.5" transform="matrix(-0.2783 -0.960494 0.966332 -0.257299 72.7953 22.0293)" stroke="#707579"/>
-                            <line y1="-0.5" x2="20.3152" y2="-0.5" transform="matrix(-0.616202 0.787588 -0.811927 -0.583759 66.5366 4.0293)" stroke="#707579"/>
-                        </svg>
-                    </div>
-                )
-            }
-            <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll"}>
-                {
-                    groupIsEmpty ? (
-                            <div className="absolute grow inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                <div className="text-center font-bold text-2xl text-black max-w-[300px]">
-                                    <p>Группа создана!</p>
-                                    <p>Самое время пригласить</p>
-                                    <p>новых участников</p>
-                                </div>
-                            </div>
-                    ) : (
-                        <TileList items={group.members} render={renderUserProfile} className={"w-full grid-cols-2 min-[30rem]:grid-cols-3"} />
-                    )
-                }
-            </div>
-        </>
-    );
-};
+  const handleShare = async () => {
+    const tId = toast.loading("Генерируем ссылку...");
+    try {
+      const linkInfo = await LinkService.getLinkInfo("GROUP_INVITE", groupId);
+      const link = `${window.location.origin}/link?start_param=${linkInfo.token}`;
+      await navigator.clipboard.writeText(link);
+      toast.success("Ссылка скопирована!", { id: tId });
+    } catch (error) {
+      toast.error("Ошибка при создании ссылки", { id: tId });
+    }
+  };
 
-export default ViewGroup;
+  const handleUpdateGroup = async (groupData) => {
+    try {
+      await GroupService.updateGroup(groupId, groupData.name, groupData.icon);
+      await fetchGroups();
+      setIsSettingsOpen(false);
+      toast.success("Данные группы обновлены");
+    } catch (error) {
+      toast.error("Ошибка при обновлении");
+      console.error(error);
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    if (!window.confirm("Вы уверены, что хотите удалить группу?")) return;
+    try {
+      await GroupService.deleteGroup(groupId);
+      await fetchGroups();
+      navigate("/groups");
+      toast.success("Группа удалена");
+    } catch (error) {
+      toast.error("Ошибка при удалении");
+      console.error(error);
+    }
+  };
+
+  if (!group)
+    return <div className="animate-pulse p-8 text-center">Загрузка...</div>;
+
+  return (
+    <div className="p-4">
+      <PageHeader
+        title={`${group.icon || "👥"} ${group.name}`}
+        onBack={() => navigate("/groups")}
+      >
+        <Button
+          onClick={handleShare}
+          className="h-12 w-full border-2 border-[#007CD5] bg-[#02A2EC] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Share2 className="size-5" />
+          Пригласить
+        </Button>
+
+        <Button
+          onClick={() => setIsSettingsOpen(true)}
+          className="h-12 w-full border-2 border-[#dab110] bg-[#f5c60c] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Settings className="size-5" />
+          Настройки
+        </Button>
+      </PageHeader>
+
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        {group.members.map((member) => (
+          <MemberCard key={member.userId} user={member} groupId={groupId} />
+        ))}
+
+        <div
+          onClick={handleShare}
+          className="hover:border-main-theme hover:text-main-theme flex min-h-[160px] cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 p-4 text-gray-400 transition-all"
+        >
+          <UserPlus className="size-8" />
+          <span className="text-xs font-bold uppercase">Добавить</span>
+        </div>
+      </div>
+
+      <GroupModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onSave={handleUpdateGroup}
+        onDelete={handleDeleteGroup}
+        data={group}
+      />
+    </div>
+  );
+}

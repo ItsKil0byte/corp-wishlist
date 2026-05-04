@@ -1,73 +1,60 @@
-import React, { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
-import WishlistService from "../../services/WishlistService.js";
-import Loading from "../Loading.jsx";
-import FlatList from "../../components/lists/FlatList.jsx";
-import PlusButton from "../../components/buttons/PlusButton.jsx";
+import React, { useState } from "react";
+import WishlistService from "@/services/WishlistService.js";
+import PageHeader from "@/components/navigation/PageHeader.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { Sparkles } from "lucide-react";
+import WishlistCard from "@/components/WishlistCard.jsx";
+import { useOutletContext } from "react-router-dom";
+import Wishlist from "@/components/modals/Wishlist.jsx";
 
-function Wishlists() {
-	const [wishlists, setWishlists] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+export default function Wishlists() {
+  const { wishlists, fetchWishlists } = useOutletContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchWishlists = async () => {
-            let data;
-            const localWishlists = sessionStorage.getItem("wishlists");
-
-            if (localWishlists && localWishlists.length > 0) {
-                data = JSON.parse(localWishlists);
-            } else {
-                data = await WishlistService.getWishlists();
-            }
-
-            // if (data && data.length === 0) {
-            //     await WishlistService.addWishlist("На новый год", "main-theme-lite", "\uD83C\uDF84");
-            //     data = await WishlistService.getWishlists();
-            // }
-
-            sessionStorage.setItem("wishlists", JSON.stringify(data));
-            setWishlists(data);
-            setLoading(false);
-        }
-
-        fetchWishlists();
-    }, []);
-
-    const renderWishlist = (item, index) => {
-        console.log(item);
-
-        return (
-            <li className={`w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 ${"bg-" + item.color} rounded-[0.625rem] list-none list-image-none`}
-                key={index}
-                onClick={() => {navigate(`/wishlists/wishlist/view?id=${item.id}`)}}
-            >
-                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                    <div className="text-[1.1875rem] truncate">
-                        {item.name}
-                    </div>
-                    <div className="text-[0.9375rem] truncate">
-                        {item.wishes.length} {`желаний`}
-                    </div>
-                </div>
-            </li>
-        )
+  const handleSaveWishlist = async (wishlistData) => {
+    try {
+      await WishlistService.addWishlist(
+        wishlistData.name,
+        wishlistData.color,
+        wishlistData.icon,
+      );
+      setIsModalOpen(false);
+      fetchWishlists();
+    } catch (error) {
+      console.error("Ошибка при создании вишлиста:", error);
     }
+  };
 
-    if (loading) {
-        return <Loading message="Загружаю вишлисты..." />;
-    }
+  return (
+    <div className="p-4">
+      <PageHeader title="Мои вишлисты">
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-main-theme border-main-theme-border h-12 w-full border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Sparkles />
+          Создать новый вишлист
+        </Button>
+      </PageHeader>
 
-    return (
-        <div className="w-full flex-1 flex flex-col px-8 pt-8 overflow-hidden relative">
-            <FlatList items={wishlists} render={renderWishlist} className={"w-full flex-1"} />
-            <PlusButton className={"absolute right-5 bottom-5"}
-                        onClick={() => navigate("/wishlists/wishlist/create")}/>
-        </div>
-	);
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {wishlists.map((wishlist) => (
+          <WishlistCard
+            key={wishlist.id}
+            id={wishlist.id}
+            name={wishlist.name}
+            icon={wishlist.icon}
+            wishCount={wishlist.wishes.length}
+          />
+        ))}
+      </div>
+
+      <Wishlist
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveWishlist}
+        onDelete={() => null}
+      />
+    </div>
+  );
 }
-
-export default Wishlists;

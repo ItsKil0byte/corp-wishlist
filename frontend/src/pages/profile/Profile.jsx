@@ -1,78 +1,121 @@
-import React, {useEffect, useState} from 'react';
-import InfoSection from "../../components/InfoSection.jsx";
-import WebApp from "@twa-dev/sdk";
-import UserInfoService from "../../services/UserInfoService.js";
-import Loading from "../Loading.jsx";
+import React from "react";
+import PageHeader from "@/components/navigation/PageHeader";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import InfoSection from "@/components/InfoSection";
+import { User as UserIcon, Gift, ChevronRight, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const Profile = () => {
-    const [userInfo, setUserInfo] = useState({});
-    const [loading, setLoading] = useState(true);
+export default function Profile() {
+  const { user, wishlists, fetchUser } = useOutletContext();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if(loading) {
-                const loadedUser = await UserInfoService.getCurrentUserInfo();
-                setUserInfo(loadedUser);
-                setLoading(false);
-            }
-        }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth");
+  };
 
-        fetchData();
-    }, [loading]);
-
-    if (loading) {
-        return <Loading message={"Загружаю профиль..."}/>;
-    }
-
+  if (!user)
     return (
-        <div className={"w-full grow flex flex-col items-center overflow-y-scroll"}>
-            <div className={"w-full px-9 my-4 grow flex flex-col items-center max-w-[31.5rem]"}>
-                <section id="profile" className={"w-full max-w-[17.5rem] grid grid-cols-2 max-[22.5rem]:grid-cols-1 max-[22.5rem]:grid-rows-2 gap-6 mb-8"}>
-                    <div id={"avatar"} className={"w-full h-full flex justify-center items-center"}>
-                        <div className={`w-[8.125rem] h-[8.125rem] flex justify-center items-center overflow-clip mb-2 bg-main-theme-lite rounded-[50%]`}>
-                            {
-                                userInfo.photo_url ? (
-                                    <img className={"w-full h-full object-cover"} alt={"аватар"} src={userInfo.photo_url}/>
-                                ) : (
-                                    <span className="text-4xl font-bold text-main-theme uppercase">
-                                        {userInfo.username?.[0] || '?'}
-                                    </span>
-                                )
-                            }
-                        </div>
-                    </div>
-                    <div id={"info"} className={"h-[6rem] flex flex-col justify-around"}>
-                        <div className={"w-full flex flex-col items-center"}>
-                            <span className={"w-full text-start text-[1.0625rem]"}>
-                                {userInfo.firstName || ""}
-                            </span>
-                            <span className={"w-full text-start text-[1.0625rem]"}>
-                                {userInfo.lastName || ""}
-                            </span>
-                        </div>
-                        <span className={"w-full text-start text-[0.8125rem]"}>
-                            {userInfo.username ? `@${userInfo.username}` : ""}
-                        </span>
-                    </div>
-                </section>
-                <InfoSection title={"Хобби"}
-                             info={userInfo.hobbies}
-                             placeholder={"Не указано"}
-                             canBeEdited={true}
-                             userInfo={userInfo}
-                             setUserInfo={setUserInfo}
-                             type={'hobbies'}/>
-
-                <InfoSection title={"Интересы"}
-                             info={userInfo.interests}
-                             placeholder={"Не указано"}
-                             canBeEdited={true}
-                             userInfo={userInfo}
-                             setUserInfo={setUserInfo}
-                             type={'interests'}/>
-            </div>
-        </div>
+      <div className="animate-pulse p-8 text-center text-gray-400">
+        Загрузка профиля...
+      </div>
     );
-};
 
-export default Profile;
+  return (
+    <div className="flex flex-col gap-6 p-4">
+      <PageHeader title="Мой профиль">
+        <Button
+          className="h-12 w-full border-2 border-red-700 bg-red-500 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+          onClick={handleLogout}
+        >
+          Выйти
+        </Button>
+      </PageHeader>
+
+      <Card className="from-main-theme-lite/50 overflow-hidden border-2 border-gray-100 bg-linear-to-br to-white shadow-sm">
+        <CardContent className="flex flex-col items-center gap-8 pt-8 pb-8 sm:flex-row">
+          <Avatar className="size-32 border-4 border-white shadow-xl">
+            <AvatarImage src={user.photo_url} />
+            <AvatarFallback className="bg-main-theme text-4xl font-bold text-white uppercase">
+              {user.firstName
+                ? user.firstName[0]
+                : user.username?.[0] || <UserIcon className="size-12" />}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex flex-col gap-1 text-center sm:text-left">
+            <h2 className="text-3xl font-black tracking-tight text-gray-900">
+              {user.firstName || user.lastName
+                ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
+                : "Пользователь"}
+            </h2>
+            <div className="bg-main-theme/10 text-main-theme mx-auto inline-flex w-fit items-center justify-center rounded-full px-3 py-1 text-sm font-bold sm:mx-0 sm:justify-start">
+              @{user.username || "логин"}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <InfoSection
+          title="Хобби"
+          type="hobbies"
+          value={user.hobbies}
+          user={user}
+          fetchUser={fetchUser}
+        />
+        <InfoSection
+          title="Интересы"
+          type="interests"
+          value={user.interests}
+          user={user}
+          fetchUser={fetchUser}
+        />
+      </div>
+
+      <div className="mt-4 flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <Gift className="text-main-theme size-6" />
+          <h3 className="text-xl font-bold text-gray-900">Мои вишлисты</h3>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {wishlists.length > 0 ? (
+            wishlists.map((wishlist) => (
+              <Card
+                key={wishlist.id}
+                onClick={() =>
+                  navigate(`/wishlists/wishlist/view?id=${wishlist.id}`)
+                }
+                className="group hover:border-main-theme/30 cursor-pointer overflow-hidden rounded-xl border-2 border-gray-100 transition-all hover:shadow-md"
+              >
+                <CardContent className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-main-theme-lite border-main-theme-lite-border flex size-12 items-center justify-center rounded-lg border text-2xl">
+                      {wishlist.icon || "🎁"}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="group-hover:text-main-theme font-bold text-gray-900 transition-colors">
+                        {wishlist.name}
+                      </span>
+                      <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        желаний ({wishlist.wishes.length})
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight className="group-hover:text-main-theme size-5 text-gray-300 transition-colors" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <p className="rounded-xl border-2 border-dashed border-gray-100 p-4 text-center text-gray-400 italic">
+              У вас пока нет вишлистов
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
