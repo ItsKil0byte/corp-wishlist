@@ -15,7 +15,7 @@ export default function WishCard({
   // TODO: Переписать на использование компонентов из UI библиотеки
 
   const API_BASE_URL =
-    import.meta.env.VITE_API_URL?.replace("/api", "") ||
+    import.meta.env.VITE_API_URL?.replace(/\/api$/, "") ||
     "http://localhost:8080";
   const image =
     imageUrls && imageUrls.length > 0 ? `${API_BASE_URL}${imageUrls[0]}` : null;
