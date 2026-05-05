@@ -100,19 +100,19 @@ export default function BlogPost() {
         image={data.preview_image}
         url={window.location.href}
       />
-      <article className="max-w-4xl mx-auto space-y-8 pb-16">
+      <article className="max-w-7xl mx-auto space-y-8 pb-16">
         <Link
           to="/blog"
-          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-main-theme transition-colors font-medium"
+          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-main-theme transition-colors font-bold"
         >
           <ArrowLeft className="size-4" /> Вернуться к блогу
         </Link>
 
-        <header className="space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+        <header className="space-y-6">
+          <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
             {data.title}
           </h1>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-400 font-medium">
             <Calendar className="size-4" />
             <time datetime={data.published_at}>
               {getFormatDate(data.published_at)}
