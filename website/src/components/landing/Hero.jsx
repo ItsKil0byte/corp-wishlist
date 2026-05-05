@@ -1,39 +1,28 @@
 import { Button } from "../ui/button";
 
 export default function Hero() {
+  const appUrl = import.meta.env.VITE_APP_URL || "localhost:3000";
+
   return (
-    <section className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-      <div className="w-full nd:w-1/2 text-left">
-        <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-          Вишлист, который <br />
-          <span className="text-main-theme">понимает коллег.</span>
+    <section className="flex flex-col md:flex-row gap-8 md:gap-12 items-center justify-between min-h-[50vh] mt-8 md:mt-16">
+      <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left gap-8">
+        <h1 className="text-4xl md:text-[2.75em] font-black text-gray-900 leading-tight md:leading-[1.15]">
+          <span className="text-main-theme">GiftoYou</span> - бесплатный сервис,
+          помогающий выбирать подарки быстро и просто!
         </h1>
-        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
-          Создавайте вишлисты, делитесь ими со своими коллегами, объединяйтесь в
-          группы и забудьте о выборе подарка в последнюю минуту.
-        </p>
+
         <Button
           asChild
-          size="lg"
-          className="h-14 px-8 text-lg shadow-md hover:scale-105 transition-transform"
+          className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-8 px-12 rounded-lg text-lg shadow-sm transition-all hover:scale-105 active:scale-95"
         >
-          <a
-            href={import.meta.env.VITE_APP_URL || "localhost:3000"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Создать вишлист
-          </a>
+          <a href={appUrl}>Выбрать идеальный подарок</a>
         </Button>
       </div>
+
       <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-        <img
-          src="/mock.jpg"
-          alt="Интерфейс приложения"
-          loading="lazy"
-          decoding="async"
-          className="w-3/4 md:w-full max-w-sm nd:max-w-md h-auto"
-        />
+        <div className="w-full aspect-4/3 max-w-lg bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center text-center">
+          <span className="text-5xl">🎥</span>
+        </div>
       </div>
     </section>
   );
