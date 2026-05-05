@@ -8,10 +8,9 @@ export default function Landing() {
   return (
     <div className="flex flex-col items-center">
       <Header />
-      <main className="w-full max-w-6xl flex flex-col gap-24 px-6">
+      <main className="w-full max-w-7xl flex flex-col gap-16 md:gap-24 px-6">
         <Hero />
         <Features />
-        <Stats />
       </main>
       <Footer />
     </div>
