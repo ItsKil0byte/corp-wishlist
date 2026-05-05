@@ -3,11 +3,11 @@ import { Helmet } from "react-helmet-async";
 export function SEO({ title, description, image, url }) {
   // TODO: Обговорить с Полиной что тут должно быть.
   const pageTitle = title
-    ? `${title} | Корпоративный Вишлист`
-    : "Корпоративный Вишлист";
+    ? `${title} | GiftToYou`
+    : "GiftToYou - бесплатный сервис для выбора подарков";
   const pageDescription =
     description ||
-    "Планируйте подарки, создавайте вишлисты вместе со своими коллегами!";
+    "Бесплатный сервис, который помогает быстро и просто выбирать подарки! Создавайте вишлисты и делитесь ими с друзьями.";
   const pageUrl = url || window.location.href;
 
   return (
