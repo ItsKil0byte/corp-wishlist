@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.serp.corpwish.DTO.TelegramUser;
+import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
