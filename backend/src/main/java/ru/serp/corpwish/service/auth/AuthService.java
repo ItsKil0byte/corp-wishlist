@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramAuthRequest;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
 import ru.serp.corpwish.DTO.auth.web.WebLoginRequest;
 import ru.serp.corpwish.DTO.auth.web.WebRegisterRequest;
 import ru.serp.corpwish.DTO.group.CreateGroupRequest;
@@ -15,33 +13,18 @@ import ru.serp.corpwish.repository.UserRepository;
 import ru.serp.corpwish.service.group.GroupService;
 import ru.serp.corpwish.service.jwt.JWTService;
 import ru.serp.corpwish.service.wishlist.WishlistService;
-import ru.serp.corpwish.validator.TelegramValidator;
 
 @Service
 @RequiredArgsConstructor
 @Transactional // На случай если поймаем ошибку в группах / вишлистах при инициализации
 public class AuthService {
 
-    private final TelegramValidator validator;
     private final UserRepository userRepository;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     private final GroupService groupService;
     private final WishlistService wishlistService;
-
-    public String authenticateWithTelegram(TelegramAuthRequest user) {
-        TelegramUser telegramUser = validator.validate(user.getInitData());
-
-        Long userID = userRepository.findByTelegramId(telegramUser.getId())
-                .orElseGet(() -> {
-                    User newUser = createNewTelegramUser(telegramUser);
-                    initNewUser(newUser.getUserId());
-                    return newUser;
-                }).getUserId();
-
-        return jwtService.generateToken(userID);
-    }
 
     public String registerWithWeb(WebRegisterRequest user) {
         if (userRepository.existsByLogin(user.getLogin())) {
@@ -75,18 +58,6 @@ public class AuthService {
         userRepository.save(newUser);
 
         return newUser;
-    }
-
-    private User createNewTelegramUser(TelegramUser user) {
-        User newUser = new User();
-
-        newUser.setTelegramId(user.getId());
-        newUser.setUsername(user.getUsername());
-        newUser.setPhoto_url(user.getPhoto_url());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-
-        return userRepository.save(newUser);
     }
 
     private void initNewUser(Long userId) {

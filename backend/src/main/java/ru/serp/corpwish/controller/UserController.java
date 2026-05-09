@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.serp.corpwish.DTO.auth.web.UserInfo;
+import ru.serp.corpwish.DTO.user.UserInfo;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.service.user.UserService;
 

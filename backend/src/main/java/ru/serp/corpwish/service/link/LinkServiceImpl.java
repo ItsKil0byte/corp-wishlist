@@ -2,7 +2,7 @@ package ru.serp.corpwish.service.link;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
+import ru.serp.corpwish.DTO.user.UserInfo;
 import ru.serp.corpwish.DTO.group.GroupDto;
 import ru.serp.corpwish.DTO.link.InviteLinkDto;
 import ru.serp.corpwish.DTO.link.PublicLinkDto;
@@ -129,8 +129,8 @@ public class LinkServiceImpl implements LinkService {
                 .entityId(group.getId())
                 .title(group.getName())
                 .users(group.getMembers().stream()
-                        .map(user -> new TelegramUser(
-                                user.getTelegramId(),
+                        .map(user -> new UserInfo(
+                                user.getUserId(),
                                 user.getUsername(),
                                 user.getPhoto_url(),
                                 user.getFirstName(),

@@ -5,8 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
-import ru.serp.corpwish.DTO.auth.web.UserInfo;
+import ru.serp.corpwish.DTO.user.UserInfo;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.UserRepository;
 import ru.serp.corpwish.service.file.FileService;
@@ -71,7 +70,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private User updateUser(User user, UserInfo newUserInfo){
-        user.setTelegramId(newUserInfo.getTelegramId());
         user.setUsername(newUserInfo.getUsername());
         user.setPhoto_url(newUserInfo.getPhoto_url());
         user.setFirstName(newUserInfo.getFirstName());
@@ -86,7 +84,6 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = new UserInfo();
 
         userInfo.setUserId(user.getUserId());
-        userInfo.setTelegramId(user.getTelegramId());
         userInfo.setUsername(user.getLogin());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
@@ -95,20 +92,6 @@ public class UserServiceImpl implements UserService {
         userInfo.setHobbies(user.getHobbies());
 
         return userInfo;
-    }
-
-    private TelegramUser convertToTelegramUser(User user){
-        TelegramUser telegramUser = new TelegramUser();
-
-        telegramUser.setId(user.getUserId());
-        telegramUser.setUsername(user.getUsername());
-        telegramUser.setPhoto_url(user.getPhoto_url());
-        telegramUser.setFirstName(user.getFirstName());
-        telegramUser.setLastName(user.getLastName());
-        telegramUser.setInterests(user.getInterests());
-        telegramUser.setHobbies(user.getHobbies());
-
-        return telegramUser;
     }
 }
 

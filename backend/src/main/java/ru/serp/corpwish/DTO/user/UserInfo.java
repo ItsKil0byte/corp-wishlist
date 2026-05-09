@@ -1,4 +1,4 @@
-package ru.serp.corpwish.DTO.auth.web;
+package ru.serp.corpwish.DTO.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 public class UserInfo {
     @JsonProperty("userId")
     private Long userId;
-
-    @JsonProperty("telegramId")
-    private Long telegramId;
 
     @JsonProperty("username")
     private String username;

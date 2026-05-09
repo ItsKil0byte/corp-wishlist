@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.serp.corpwish.DTO.group.CreateGroupRequest;
 import ru.serp.corpwish.DTO.group.GroupDto;
-import ru.serp.corpwish.DTO.auth.telegram.TelegramUser;
-import ru.serp.corpwish.DTO.auth.web.UserInfo;
+import ru.serp.corpwish.DTO.user.UserInfo;
 import ru.serp.corpwish.entity.Group;
 import ru.serp.corpwish.entity.User;
 import ru.serp.corpwish.repository.GroupRepository;
@@ -168,7 +167,6 @@ public class GroupServiceImpl implements GroupService {
         UserInfo userInfo = new UserInfo();
 
         userInfo.setUserId(user.getUserId());
-        userInfo.setTelegramId(user.getTelegramId());
         userInfo.setUsername(user.getUsername());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
@@ -177,17 +175,5 @@ public class GroupServiceImpl implements GroupService {
         userInfo.setInterests(user.getInterests());
 
         return userInfo;
-    }
-
-    private TelegramUser convertToTelegramUser(User user){
-        TelegramUser telegramUser = new TelegramUser();
-
-        telegramUser.setId(user.getTelegramId());
-        telegramUser.setPhoto_url(user.getPhoto_url());
-        telegramUser.setUsername(user.getUsername());
-        telegramUser.setFirstName(user.getFirstName());
-        telegramUser.setLastName(user.getLastName());
-
-        return telegramUser;
     }
 }
