@@ -19,7 +19,7 @@ spring:
     clean-disabled: true
 
 jwt:
-  secret: "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=" #Тестовый ключ, TODO() заменить в дальнейшем на нормальный
+  secret: ${JWT_SECRET}
 
 app:
   storage:
