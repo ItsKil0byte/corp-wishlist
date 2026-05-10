@@ -2,6 +2,8 @@ package ru.serp.corpwish.controller;
 
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +38,7 @@ public class BlogController {
         return ResponseEntity.ok(blogService.getPostBySlug(slug));
     }
 
-    @PostMapping("/upload-image")
+    @PostMapping(value = "/upload-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> uploadBlogImage(@RequestParam("file") MultipartFile file) {
         String filename = fileService.store(file);
         String url = "/uploads/" + filename;
