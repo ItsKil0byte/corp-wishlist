@@ -1,0 +1,126 @@
+import PostSkeleton from "@/components/PostSkeleton";
+import { SEO } from "@/components/SEO";
+import usePost from "@/hooks/useBlog";
+import DOMPurify from "dompurify";
+import { ArrowLeft, Calendar } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+
+export default function BlogPost() {
+  const { slug } = useParams();
+  const { data, loading, error } = usePost(slug);
+
+  console.log(data);
+
+  const getDescription = (html) => {
+    if (!html) {
+      return "";
+    }
+    return html
+      .replace(/<[^>]*>/g, "")
+      .slice(0, 160)
+      .trim();
+  };
+
+  const getFormatDate = (date) => {
+    return new Intl.DateTimeFormat("ru-RU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(date));
+  };
+
+  if (loading) {
+    return <PostSkeleton />;
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+        <h2 className="text-3xl font-bold text-gray-800">Статья не найдена</h2>
+        <p className="text-gray-600 max-w-md">
+          {error || "Возможно, материал был удалён."}
+        </p>
+        <Link
+          to="/blog"
+          className="text-main-theme hover:underline flex items-center gap-2 font-medium"
+        >
+          <ArrowLeft className="size-4" /> Вернуться к списку статей
+        </Link>
+      </div>
+    );
+  }
+
+  const getSanitizedContent = (html) => {
+    return DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: [
+        "b",
+        "i",
+        "em",
+        "strong",
+        "a",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "img",
+        "br",
+        "span",
+        "div",
+        "figure",
+        "figcaption",
+        "hr",
+      ],
+      ALLOWED_ATTR: ["href", "src", "alt", "title", "class", "style", "target"],
+    });
+  };
+
+  return (
+    <>
+      <SEO
+        title={data.title}
+        description={getDescription(data.content)}
+        image={data.preview_image}
+        url={window.location.href}
+      />
+      <article className="max-w-7xl mx-auto space-y-8 pb-16">
+        <Link
+          to="/blog"
+          className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-main-theme transition-colors font-bold"
+        >
+          <ArrowLeft className="size-4" /> Вернуться к блогу
+        </Link>
+
+        <header className="space-y-6">
+          <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+            {data.title}
+          </h1>
+          <div className="flex items-center gap-2 text-sm text-gray-400 font-medium">
+            <Calendar className="size-4" />
+            <time datetime={data.published_at}>
+              {getFormatDate(data.published_at)}
+            </time>
+          </div>
+        </header>
+
+        <article
+          className="
+            prose prose-neutral dark:prose-invert max-w-none
+            prose-p:text-gray-800 dark:prose-p:text-gray-200
+            prose-headings:font-bold
+            prose-img:w-full prose-img:h-auto prose-img:object-cover prose-img:rounded-xl prose-img:my-8
+            prose-li:marker:text-main-theme
+          "
+          dangerouslySetInnerHTML={{
+            __html: getSanitizedContent(data.content),
+          }}
+        />
+      </article>
+    </>
+  );
+}
