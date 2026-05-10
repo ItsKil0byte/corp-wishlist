@@ -7,12 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.serp.corpwish.DTO.CreateWishRequest;
-import ru.serp.corpwish.DTO.WishDto;
+import ru.serp.corpwish.DTO.wish.CreateWishRequest;
+import ru.serp.corpwish.DTO.wish.WishDto;
 import ru.serp.corpwish.entity.User;
-import ru.serp.corpwish.entity.Wish;
-import ru.serp.corpwish.service.FileService;
-import ru.serp.corpwish.service.WishService;
+import ru.serp.corpwish.service.file.FileService;
+import ru.serp.corpwish.service.wish.WishService;
 
 import java.util.List;
 

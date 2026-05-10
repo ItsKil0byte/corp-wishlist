@@ -26,9 +26,6 @@ public class User implements UserDetails {
     @Column(name = "passwordHash")
     private String passwordHash;
 
-    @Column(name = "telegramId", unique = true)
-    private Long telegramId;
-
     @Column(name = "username")
     private String username;
 

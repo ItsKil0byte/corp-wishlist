@@ -6,12 +6,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.serp.corpwish.DTO.TelegramAuthRequest;
-import ru.serp.corpwish.DTO.TelegramAuthResponse;
-import ru.serp.corpwish.DTO.WebAuthResponse;
-import ru.serp.corpwish.DTO.WebLoginRequest;
-import ru.serp.corpwish.DTO.WebRegisterRequest;
-import ru.serp.corpwish.service.AuthService;
+import ru.serp.corpwish.DTO.auth.web.WebAuthResponse;
+import ru.serp.corpwish.DTO.auth.web.WebLoginRequest;
+import ru.serp.corpwish.DTO.auth.web.WebRegisterRequest;
+import ru.serp.corpwish.service.auth.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,15 +28,6 @@ public class AuthController {
             "inline; filename=auth.html"
         );
         return ResponseEntity.ok().headers(headers).body(resource);
-    }
-
-    @PostMapping("/telegram")
-    public ResponseEntity<TelegramAuthResponse> authenticate(
-        @RequestBody TelegramAuthRequest request
-    ){
-        String token = authService.authenticateWithTelegram(request);
-
-        return ResponseEntity.ok(new TelegramAuthResponse(token));
     }
 
     @PostMapping("/register")
