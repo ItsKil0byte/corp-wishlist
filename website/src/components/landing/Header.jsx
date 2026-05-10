@@ -6,8 +6,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-4 z-50 w-[calc(100%-2rem)] max-w-7xl mx-auto mt-4 bg-main-theme/20 backdrop-blur-md rounded-lg mb-8 md:mb-12 border-2 border-main-theme/50">
-      <div className="mx-auto flex justify-between items-center p-4">
-        <Link to="/" className="flex items-center gap-2 group">
+      <div className="mx-auto flex flex-wrap justify-between items-center p-4 gap-y-4">
+        <Link to="/" className="flex items-center gap-2 group order-1">
           <div className="size-8 text-main-theme group-hover:rotate-12 transition-transform">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@ export default function Header() {
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm font-bold text-gray-900">
+        <nav className="flex items-center justify-center gap-8 text-sm font-bold text-gray-900 w-full md:w-auto order-3 md:order-2">
           <Link to="/ideas" className="hover:text-main-theme transition-colors">
             Идеи подарков
           </Link>
@@ -40,7 +40,7 @@ export default function Header() {
 
         <Button
           asChild
-          className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-6 px-8 rounded-lg text-md shadow-sm transition-all hover:scale-105 active:scale-95"
+          className="order-2 md:order-3 bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-4 px-6 md:py-6 md:px-8 rounded-lg text-sm md:text-md shadow-sm transition-all hover:scale-105 active:scale-95"
         >
           <a href={appUrl}>Войти</a>
         </Button>
