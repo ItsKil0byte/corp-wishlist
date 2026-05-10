@@ -10,8 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.serp.corpwish.service.JWTService;
-import ru.serp.corpwish.service.UserServiceImpl;
+import ru.serp.corpwish.service.jwt.JWTService;
+import ru.serp.corpwish.service.user.UserServiceImpl;
 
 import java.io.IOException;
 

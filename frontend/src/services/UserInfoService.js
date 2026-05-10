@@ -13,32 +13,32 @@ import $api from "../http/index.js";
  * **/
 
 export default class UserInfoService {
-    /**
-     * Обновляет информацию о текущем пользователе. Возвращает обновленную информацию
-     * @param {UserInfo} userInfo
-     * @returns {Promise<UserInfo>}
-     * **/
-    static async updateInfo(userInfo) {
-        const { data } = await $api.put("/userInfo", userInfo);
-        return data;
-    }
+  /**
+   * Обновляет информацию о текущем пользователе. Возвращает обновленную информацию
+   * @param {UserInfo} userInfo
+   * @returns {Promise<UserInfo>}
+   * **/
+  static async updateInfo(userInfo) {
+    const { data } = await $api.put("/userInfo", userInfo);
+    return data;
+  }
 
-    /**
-     * Возвращает информацию о пользователе.
-     * @param {number} userId
-     * @returns {Promise<UserInfo>}
-     * **/
-    static async getInfo(userId) {
-        const { data } = await $api.get(`/userInfo/${userId}`);
-        return data;
-    }
+  /**
+   * Возвращает информацию о пользователе.
+   * @param {number} userId
+   * @returns {Promise<UserInfo>}
+   * **/
+  static async getInfo(userId) {
+    const { data } = await $api.get(`/userInfo/${userId}`);
+    return data;
+  }
 
-    /**
-     * Возвращает информацию о текущем пользователе.
-     * @returns {Promise<UserInfo>}
-     * **/
-    static async getCurrentUserInfo() {
-        const { data } = await $api.get(`/userInfo`);
-        return data;
-    }
+  /**
+   * Возвращает информацию о текущем пользователе.
+   * @returns {Promise<UserInfo>}
+   * **/
+  static async getCurrentUserInfo() {
+    const { data } = await $api.get(`/userInfo`);
+    return data;
+  }
 }

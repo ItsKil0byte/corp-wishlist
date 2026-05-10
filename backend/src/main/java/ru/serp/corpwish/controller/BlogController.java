@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import ru.serp.corpwish.DTO.BlogPostDto;
-import ru.serp.corpwish.service.BlogPostService;
-import ru.serp.corpwish.service.FileService;
+import ru.serp.corpwish.DTO.blog.BlogPostDto;
+import ru.serp.corpwish.service.file.FileService;
+import ru.serp.corpwish.service.blog.BlogPostService;
 
 import java.util.HashMap;
 import java.util.List;

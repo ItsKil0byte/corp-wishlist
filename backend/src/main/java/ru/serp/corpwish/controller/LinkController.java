@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.serp.corpwish.DTO.CreateLinkRequest;
-import ru.serp.corpwish.DTO.InviteLinkDto;
+import ru.serp.corpwish.DTO.link.CreateLinkRequest;
+import ru.serp.corpwish.DTO.link.InviteLinkDto;
 import ru.serp.corpwish.entity.LinkType;
 import ru.serp.corpwish.entity.User;
-import ru.serp.corpwish.service.LinkService;
+import ru.serp.corpwish.service.link.LinkService;
 
 @RestController
 @RequestMapping("/api/links")

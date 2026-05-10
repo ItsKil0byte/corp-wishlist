@@ -21,68 +21,67 @@ import $api from "../http/index.js";
  * **/
 
 export default class WishlistService {
+  /**
+   * Возвращает вишлист текущего пользователя по id
+   * @returns {Promise<Wishlist>}
+   * **/
+  static async getWishlist(wishlistId) {
+    const { data } = await $api.get(`/wishlists/${wishlistId}`);
+    return data;
+  }
 
-    /**
-     * Возвращает вишлист текущего пользователя по id
-     * @returns {Promise<Wishlist>}
-     * **/
-    static async getWishlist(wishlistId) {
-        const { data } = await $api.get(`/wishlists/${wishlistId}`);
-        return data;
-    }
+  /**
+   * Возвращает обновленный вишлист текущего пользователя по id
+   * @returns {Promise<Wishlist>}
+   * **/
+  static async updateWishlist(wishlistId, name, color, icon) {
+    const { data } = await $api.put(`/wishlists/${wishlistId}`, {
+      name,
+      color,
+      icon,
+    });
 
-    /**
-     * Возвращает обновленный вишлист текущего пользователя по id
-     * @returns {Promise<Wishlist>}
-     * **/
-    static async updateWishlist(wishlistId, name, color, icon) {
-        const { data } = await $api.put(`/wishlists/${wishlistId}`, {
-            name,
-            color,
-            icon,
-        });
+    return data;
+  }
 
-        return data;
-    }
+  /**
+   * Удаляет вишлист текущего пользователя по id. Возвращает код статуса запроса
+   * @returns {Promise<Number>}
+   * **/
+  static async deleteWishlist(wishlistId) {
+    const { status } = await $api.delete(`/wishlists/${wishlistId}`);
+    return status;
+  }
 
-    /**
-     * Удаляет вишлист текущего пользователя по id. Возвращает код статуса запроса
-     * @returns {Promise<Number>}
-     * **/
-    static async deleteWishlist(wishlistId) {
-        const { status } = await $api.delete(`/wishlists/${wishlistId}`);
-        return status;
-    }
+  /**
+   * Возвращает список вишлистов текущего пользователя
+   * @returns {Promise<Wishlist[]>}
+   * **/
+  static async getWishlists() {
+    const { data } = await $api.get("/wishlists");
+    return data;
+  }
 
-    /**
-     * Возвращает список вишлистов текущего пользователя
-     * @returns {Promise<Wishlist[]>}
-     * **/
-    static async getWishlists() {
-        const { data } = await $api.get('/wishlists');
-        return data;
-    }
+  /**
+   * Добавляет вишлист текущему пользователю. Возвращает созданный вишлист
+   * @returns {Promise<Wishlist>}
+   * **/
+  static async addWishlist(name, color, icon) {
+    const { data } = await $api.post("/wishlists", {
+      name: name,
+      color: color,
+      icon: icon,
+    });
 
-    /**
-     * Добавляет вишлист текущему пользователю. Возвращает созданный вишлист
-     * @returns {Promise<Wishlist>}
-     * **/
-    static async addWishlist(name, color, icon) {
-        const { data } = await $api.post('/wishlists', {
-            name: name,
-            color: color,
-            icon: icon
-        })
+    return data;
+  }
 
-        return data
-    }
-
-    /**
-     * Возвращает список вишлистов пользователя по его id
-     * @returns {Promise<Wishlist[]>}
-     * **/
-    static async getWishlistsByUserId(userId) {
-        const { data } = await $api.get(`/wishlists/user/${userId}`);
-        return data;
-    }
+  /**
+   * Возвращает список вишлистов пользователя по его id
+   * @returns {Promise<Wishlist[]>}
+   * **/
+  static async getWishlistsByUserId(userId) {
+    const { data } = await $api.get(`/wishlists/user/${userId}`);
+    return data;
+  }
 }

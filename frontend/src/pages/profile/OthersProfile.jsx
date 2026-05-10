@@ -1,105 +1,167 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useSearchParams} from "react-router-dom";
-import UserInfoService from "../../services/UserInfoService.js";
-import Loading from "../Loading.jsx";
-import Header from "../../components/navigation/Header.jsx";
-import InfoSection from "../../components/InfoSection.jsx";
-import FlatList from "../../components/lists/FlatList.jsx";
-import WishlistService from "../../services/WishlistService.js";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import PageHeader from "@/components/navigation/PageHeader";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  User as UserIcon,
+  Gift,
+  ChevronRight,
+  Heart,
+  Palette,
+} from "lucide-react";
+import UserInfoService from "@/services/UserInfoService";
+import WishlistService from "@/services/WishlistService";
+import Loading from "@/pages/Loading";
 
-const OthersProfile = () => {
-    const [searchParams, _] = useSearchParams();
-    const navigate = useNavigate();
-    const userId = searchParams.get("id");
-    const groupId = searchParams.get("from");
-    const [wishlists, setWishlists] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [userInfo, setUserInfo] = useState(null);
+export default function OthersProfile() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if(loading) {
-                const loadedUser = await UserInfoService.getInfo(Number(userId));
-                const userWishlist = await WishlistService.getWishlistsByUserId(userId);
-                console.log(userWishlist);
-                setUserInfo(loadedUser);
-                setWishlists(userWishlist);
-                sessionStorage.setItem("others_wishlists", JSON.stringify(userWishlist));
-                setLoading(false);
-            }
-        }
+  const userId = searchParams.get("id");
+  const groupId = searchParams.get("from");
 
-        fetchData();
-    }, [loading]);
+  const [userInfo, setUserInfo] = useState(null);
+  const [wishlists, setWishlists] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    if (loading) {
-        return <Loading message={"Загружаю профиль..."}/>;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [userData, userWishlists] = await Promise.all([
+          UserInfoService.getInfo(Number(userId)),
+          WishlistService.getWishlistsByUserId(userId),
+        ]);
+        setUserInfo(userData);
+        setWishlists(userWishlists);
+        sessionStorage.setItem(
+          "others_wishlists",
+          JSON.stringify(userWishlists),
+        );
+      } catch (error) {
+        console.error("Ошибка загрузки профиля:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const renderWishlist = (item, index) => {
-        return (
-            <li className={`w-full h-[3.75rem] px-3 flex justify-start items-center gap-2 mb-4 ${"bg-" + item.color} rounded-[0.625rem] list-none list-image-none`}
-                key={index}
-                onClick={() => {navigate(`/wishlists/wishlist/view/others?id=${item.id}&from=${groupId}&user=${userId}`)}}
-            >
-                <div className="w-8 h-8 flex justify-center items-center text-[2rem]">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col flex-1 min-w-0">
-                    <div className="text-[1.1875rem] truncate">
-                        {item.name}
-                    </div>
-                    <div className="text-[0.9375rem] truncate">
-                        {item.wishes.length} {`желаний`}
-                    </div>
-                </div>
-            </li>
-        )
-    }
+    if (userId) fetchData();
+  }, [userId]);
 
+  if (loading) return <Loading message="Загружаю профиль..." />;
+  if (!userInfo)
     return (
-        <>
-            <Header hasBackButton={true} onBack={() => navigate(`/groups/group/view?id=${groupId}`)} />
-            <div className={"w-full grow flex flex-col items-center overflow-y-scroll"}>
-                <div className={"w-full px-9 my-4 grow flex flex-col items-center max-w-[31.5rem]"}>
-                    <section id="profile" className={"w-full max-w-[17.5rem] grid grid-cols-2 max-[22.5rem]:grid-cols-1 max-[22.5rem]:grid-rows-2 gap-6 mb-8"}>
-                        <div id={"avatar"} className={"w-full h-full flex justify-center items-center"}>
-                            <div className={`w-[8.125rem] h-[8.125rem] flex justify-center items-center overflow-clip mb-2 bg-main-theme-lite rounded-[50%]`}>
-                                {
-                                    userInfo.photo_url ? (
-                                        <img className={"w-full h-full object-cover"} alt={"аватар"} src={userInfo.photo_url}/>
-                                    ) : (
-                                        <span className="text-4xl font-bold text-main-theme uppercase">
-                                        {userInfo.username?.[0] || '?'}
-                                    </span>
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div id={"info"} className={"h-[6rem] flex flex-col justify-around"}>
-                            <div className={"w-full flex flex-col items-center"}>
-                                <span className={"w-full text-start text-[1.0625rem]"}>
-                                    {userInfo.first_name || ""}
-                                </span>
-                                <span className={"w-full text-start text-[1.0625rem]"}>
-                                    {userInfo.last_name || ""}
-                                </span>
-                            </div>
-                            <span className={"w-full text-start text-[0.8125rem]"}>
-                                {userInfo.username ? `@${userInfo.username}` : ""}
-                            </span>
-                        </div>
-                    </section>
-                    <InfoSection title={"Хобби"} info={userInfo.hobbies} placeholder={"Не указано"}/>
-                    <InfoSection title={"Интересы"} info={userInfo.interests} placeholder={"Не указано"}/>
-                    <span className={"w-full text-start text-[1.25rem] font-semibold mb-8"}>Вишлисты</span>
-                    <div className={"w-full h-77 flex flex-col items-center mb-8"}>
-                        <FlatList items={wishlists} render={renderWishlist} className={"w-full h-full"} overscroll={false}/>
-                    </div>
-                </div>
-            </div>
-        </>
+      <div className="p-8 text-center text-gray-500">
+        Пользователь не найден
+      </div>
     );
-};
 
-export default OthersProfile;
+  return (
+    <div className="flex flex-col gap-6 p-4">
+      <PageHeader
+        title="Профиль участника"
+        onBack={() => navigate(`/groups/group/view?id=${groupId}`)}
+      />
+
+      <Card className="overflow-hidden border-2 border-gray-100 shadow-sm">
+        <CardContent className="flex flex-col items-center gap-8 pt-8 pb-8 sm:flex-row">
+          <Avatar className="size-32 border-4 border-white shadow-xl">
+            <AvatarImage src={userInfo.photo_url} />
+            <AvatarFallback className="bg-main-theme text-4xl font-bold text-white uppercase">
+              {userInfo.firstName
+                ? userInfo.firstName[0]
+                : userInfo.username?.[0] || <UserIcon />}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex flex-col gap-1 text-center sm:text-left">
+            <h2 className="text-3xl font-black tracking-tight text-gray-900">
+              {userInfo.firstName || userInfo.lastName
+                ? `${userInfo.firstName || ""} ${userInfo.lastName || ""}`.trim()
+                : "Пользователь"}
+            </h2>
+            <div className="bg-main-theme/10 text-main-theme mx-auto inline-flex w-fit items-center justify-center rounded-full px-3 py-1 text-sm font-bold sm:mx-0 sm:justify-start">
+              @{userInfo.username || "логин"}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <Card className="border-2 border-gray-100 shadow-sm">
+          <CardHeader className="flex flex-row items-center gap-2 pb-2">
+            <Heart className="size-5 text-red-400" />
+            <CardTitle className="text-lg font-bold">Хобби</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p
+              className={`text-base ${!userInfo.hobbies ? "text-gray-400 italic" : "text-gray-600"}`}
+            >
+              {userInfo.hobbies || "Пользователь еще не указал свои хобби"}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-gray-100 shadow-sm">
+          <CardHeader className="flex flex-row items-center gap-2 pb-2">
+            <Palette className="size-5 text-blue-400" />
+            <CardTitle className="text-lg font-bold">Интересы</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p
+              className={`text-base ${!userInfo.interests ? "text-gray-400 italic" : "text-gray-600"}`}
+            >
+              {userInfo.interests || "Пользователь еще не указал интересы"}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-4">
+        <div className="flex items-center gap-2 px-1">
+          <Gift className="text-main-theme size-6" />
+          <h3 className="text-xl font-bold text-gray-900">
+            Вишлисты пользователя
+          </h3>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {wishlists.length > 0 ? (
+            wishlists.map((wishlist) => (
+              <Card
+                key={wishlist.id}
+                onClick={() =>
+                  navigate(
+                    `/wishlists/wishlist/view/others?id=${wishlist.id}&from=${groupId}&user=${userId}`,
+                  )
+                }
+                className="group hover:border-main-theme/30 cursor-pointer rounded-xl border-2 border-gray-100 transition-all hover:shadow-md"
+              >
+                <CardContent className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-main-theme-lite border-main-theme-lite-border flex size-12 items-center justify-center rounded-lg border text-2xl">
+                      {wishlist.icon || "🎁"}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="group-hover:text-main-theme font-bold text-gray-900 transition-colors">
+                        {wishlist.name}
+                      </span>
+                      <span className="text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        Желаний ({wishlist.wishes.length})
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight className="group-hover:text-main-theme size-5 text-gray-300 transition-colors" />
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <p className="rounded-xl border-2 border-dashed border-gray-100 p-6 text-center text-gray-400 italic">
+              У этого пользователя пока нет публичных вишлистов
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

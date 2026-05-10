@@ -1,26 +1,39 @@
 import { NavLink } from "react-router-dom";
 
 function FooterNav() {
-	const footerBtnStyle = "flex flex-col justify-center items-center bg-transparent grow rounded-4xl"
+  const footerBtnStyle =
+    "flex flex-col justify-center items-center bg-transparent grow rounded-4xl";
 
-	return (
-		<nav className="h-11 shrink-01 flex flex-row justify-around bg-main-theme-lite rounded-4xl mx-5 my-2 p-0.5">
-			<NavLink
-				to="/wishlists"
-				className={({ isActive }) => footerBtnStyle + (isActive && " bg-white font-bold")}
-			>Вишлисты</NavLink>
+  return (
+    <nav className="shrink-01 bg-main-theme-lite mx-5 my-2 flex h-11 flex-row justify-around rounded-4xl p-0.5">
+      <NavLink
+        to="/wishlists"
+        className={({ isActive }) =>
+          footerBtnStyle + (isActive && " bg-white font-bold")
+        }
+      >
+        Вишлисты
+      </NavLink>
 
-			<NavLink
-				to="/groups"
-				className={({ isActive }) => footerBtnStyle + (isActive && " bg-white font-bold")}
-			>Группы</NavLink>
+      <NavLink
+        to="/groups"
+        className={({ isActive }) =>
+          footerBtnStyle + (isActive && " bg-white font-bold")
+        }
+      >
+        Группы
+      </NavLink>
 
-			<NavLink
-				to="/profile"
-				className={({ isActive }) => footerBtnStyle + (isActive && " bg-white font-bold")}
-			>Профиль</NavLink>
-		</nav>
-	);
+      <NavLink
+        to="/profile"
+        className={({ isActive }) =>
+          footerBtnStyle + (isActive && " bg-white font-bold")
+        }
+      >
+        Профиль
+      </NavLink>
+    </nav>
+  );
 }
 
 export default FooterNav;

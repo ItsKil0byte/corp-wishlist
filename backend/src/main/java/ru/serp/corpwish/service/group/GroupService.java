@@ -1,0 +1,16 @@
+package ru.serp.corpwish.service.group;
+
+import ru.serp.corpwish.DTO.group.CreateGroupRequest;
+import ru.serp.corpwish.DTO.group.GroupDto;
+
+import java.util.List;
+
+public interface GroupService {
+    GroupDto createGroup(Long userId, CreateGroupRequest groupData);
+    GroupDto updateGroup(Long groupId, Long userId, CreateGroupRequest newGroupData);
+    List<GroupDto> getGroups(Long userId);
+    GroupDto getGroup(Long groupId, Long userId);
+    void deleteGroup(Long groupId, Long ownerId);
+    GroupDto leaveGroup(Long groupId, Long userId, Long requesterId);
+    GroupDto joinGroup(Long groupId, Long userId, Long requesterId);
+}

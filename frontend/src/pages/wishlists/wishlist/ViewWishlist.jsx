@@ -1,80 +1,237 @@
-import React from 'react';
-import {useNavigate, useSearchParams} from "react-router-dom";
-import Header from "../../../components/navigation/Header.jsx";
-import TileList from "../../../components/lists/TileList.jsx";
-import WishCard from "../../../components/WishCard.jsx";
-import PlusButton from "../../../components/buttons/PlusButton.jsx";
-import LinkService from "../../../services/LinkService.js";
+import Wishlist from "@/components/modals/Wishlist";
+import Wish from "@/components/modals/Wish";
+import PageHeader from "@/components/navigation/PageHeader";
+import { Button } from "@/components/ui/button";
+import WishCard from "@/components/WishCard";
+import WishlistService from "@/services/WishlistService";
+import LinkService from "@/services/LinkService";
+import WishService from "@/services/WishService";
 import toast from "react-hot-toast";
+import { Settings, Share2, Sparkle } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  useSearchParams,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 
-const ViewWishlist = () => {
-    const navigate = useNavigate();
-    const [searchParams, _] = useSearchParams()
-    const wishlist = JSON.parse(sessionStorage.getItem("wishlists"))?.find(wishlist => wishlist.id === Number(searchParams.get("id")))
+export default function ViewWishlist() {
+  const [searchParams] = useSearchParams();
+  const wishlistId = searchParams.get("id");
+  const navigate = useNavigate();
+  const { fetchWishlists } = useOutletContext();
+  const [wishlist, setWishlist] = useState(null);
+  const [wishes, setWishes] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingWish, setEditingWish] = useState(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-    const wishesIsEmpty = wishlist.wishes.length === 0;
-
-    const renderWish = (item, index) => {
-        return (
-            <div key={index}
-                 className={`w-full h-full flex flex-col justify-center items-center`}
-                 onClick={() => {navigate(`/wishlists/wish/view?id=${item.id}&from=${Number(searchParams.get("id"))}`)}}
-            >
-                <WishCard id={index} name={item.title} description={item.description} color={item.color}/>
-            </div>
-        )
+  const fetchData = async () => {
+    if (!wishlistId) {
+      navigate("/wishlists");
+      return;
     }
-
-    const onShare = async () => {
-        const linkInfo = await LinkService.getLinkInfo("WISHLIST_SHARE", searchParams.get("id"));
-
-        const origin = window.location.origin;
-        const link = `${origin}/link?start_param=${linkInfo.token}`;
-
-        await navigator.clipboard.writeText(link);
-        toast.success("Ссылка скопирована");
+    try {
+      const [wishlistResponse, wishesResponse] = await Promise.all([
+        WishlistService.getWishlist(wishlistId),
+        WishService.getWishes(wishlistId),
+      ]);
+      setWishlist(wishlistResponse);
+      setWishes(wishesResponse);
+    } catch (error) {
+      console.error("Ошибка при загрузке данных:", error);
     }
+  };
 
+  useEffect(() => {
+    fetchData();
+  }, [wishlistId]);
+
+  const openAddModal = () => {
+    setEditingWish(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (wish) => {
+    setEditingWish(wish);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveWish = async (wishData) => {
+    const tId = toast.loading("Сохраняем желание...");
+    try {
+      let savedWish;
+
+      if (editingWish) {
+        savedWish = await WishService.updateWish(
+          editingWish.id,
+          wishData.title,
+          wishData.description,
+          wishData.color,
+        );
+      } else {
+        savedWish = await WishService.addWish(
+          wishlistId,
+          wishData.title,
+          wishData.description,
+          wishData.color,
+        );
+      }
+
+      // ID желания
+      const wishId = savedWish?.id || editingWish?.id;
+
+      if (
+        editingWish &&
+        editingWish.imageUrls &&
+        editingWish.imageUrls.length > 0
+      ) {
+        if (wishData.isImageCleared || wishData.imageFile) {
+          const oldUrl = editingWish.imageUrls[0];
+          const filename = oldUrl.split("/").pop();
+
+          await WishService.deleteImage(wishId, filename);
+        }
+      }
+
+      if (wishData.imageFile && wishId) {
+        toast.loading("Загружаем картинки...", { id: tId });
+        await WishService.uploadImages(wishId, [wishData.imageFile]);
+      }
+
+      toast.success("Успешно!", { id: tId });
+      setIsModalOpen(false);
+      fetchData();
+    } catch (error) {
+      toast.error("Проищошла ошибка!", { id: tId });
+      console.error("Ошибка при сохранении желания:", error);
+    }
+  };
+
+  const handleDeleteWish = async () => {
+    try {
+      await WishService.deleteWish(editingWish.id);
+      setIsModalOpen(false);
+      fetchData();
+      toast.success("Желание удалено");
+    } catch (error) {
+      console.error("Ошибка при удалении желания:", error);
+    }
+  };
+
+  const handleSaveWishlist = async (wishlistData) => {
+    try {
+      await WishlistService.updateWishlist(
+        wishlist.id,
+        wishlistData.name,
+        wishlistData.color,
+        wishlistData.icon,
+      );
+      setIsSettingsOpen(false);
+      fetchData();
+      toast.success("Настройки сохранены");
+    } catch (error) {
+      console.error("Ошибка при сохранении вишлиста:", error);
+      toast.error("Ошибка при сохранении настроек");
+    }
+  };
+
+  const handleDeleteWishlist = async () => {
+    try {
+      await WishlistService.deleteWishlist(wishlist.id);
+      setIsSettingsOpen(false);
+      fetchWishlists();
+      navigate("/wishlists");
+      toast.success("Вишлист удален");
+    } catch (error) {
+      console.error("Ошибка при удалении вишлиста:", error);
+      toast.error("Ошибка при удалении вишлиста");
+    }
+  };
+
+  const handleShareWishlist = async () => {
+    try {
+      const linkInfo = await LinkService.getLinkInfo(
+        "WISHLIST_SHARE",
+        wishlistId,
+      );
+      const link = `${origin}/link?start_param=${linkInfo.token}`;
+      navigator.clipboard.writeText(link);
+      toast.success("Ссылка скопирована в буфер обмена!");
+    } catch (error) {
+      console.error("Ошибка при копировании ссылки:", error);
+      toast.error("Ошибка при копировании ссылки");
+    }
+  };
+
+  // Заглушка
+  if (!wishlist) {
     return (
-        <>
-            <Header hasBackButton={true}
-                    hasText={true}
-                    hasEditButton={true}
-                    hasShareButton={true}
-                    onBack={() => navigate("/wishlists")}
-                    text={wishlist.icon ? `${wishlist.icon} ${wishlist.name}` : wishlist.name}
-                    onShare={() => onShare()}
-                    onEdit={() => navigate(`/wishlists/wishlist/edit?id=${searchParams.get("id")}`)}/>
-            <div className={"w-full grow flex flex-col items-center justify-between overflow-y-scroll relative px-2"}>
-                {
-                    wishesIsEmpty ? (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <div className="text-center font-bold text-2xl text-black max-w-[300px] -mt-20">
-                                <p>Вишлист создан!</p>
-                                <p>Самое время наполнить</p>
-                                <p>его желаниями</p>
-                            </div>
-                            <div className="absolute bottom-10 right-30 flex flex-col items-center">
-                                <div className="text-center font-bold text-2xl text-main-theme-primary leading-tight mb-0 mr-12">
-                                    <p>Добавить</p>
-                                    <p>желание</p>
-                                </div>
-                                <svg width="127" height="50" viewBox="0 0 127 50" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-4">
-                                    <path d="M0.498222 0.0411386C4.99805 54.5412 70.498 56.0412 125.998 35.0415" stroke="#707579"/>
-                                    <line x1="125.455" y1="35.0393" x2="102.455" y2="33.0393" stroke="#707579"/>
-                                    <line x1="125.852" y1="34.8948" x2="111.852" y2="48.8948" stroke="#707579"/>
-                                </svg>
-                            </div>
-                        </div>
-                    ) : (
-                        <TileList items={wishlist.wishes} render={renderWish} className={"w-full grid-cols-2 min-[30rem]:grid-cols-3 gap-2"} />
-                    )
-                }
-                <PlusButton className={"absolute right-5 bottom-5"}
-                            onClick={() => navigate(`/wishlists/wish/create?id=${Number(searchParams.get("id"))}`)} />
-            </div>
-        </>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-main-theme animate-spin text-4xl">🎁</div>
+      </div>
     );
-};
+  }
 
-export default ViewWishlist;
+  return (
+    <div className="p-4">
+      <PageHeader
+        title={`${wishlist.icon} ${wishlist.name}`}
+        onBack={() => navigate("/wishlists")}
+      >
+        <Button
+          onClick={() => openAddModal()}
+          className="bg-main-theme border-main-theme-border h-12 w-full border-2 px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Sparkle />
+          Добавить
+        </Button>
+
+        <Button
+          onClick={handleShareWishlist}
+          className="h-12 w-full border-2 border-[#007CD5] bg-[#02A2EC] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Share2 />
+          Поделиться
+        </Button>
+
+        <Button
+          onClick={() => setIsSettingsOpen(true)}
+          className="h-12 w-full border-2 border-[#dab110] bg-[#f5c60c] px-4 text-base font-bold text-gray-900 transition-all hover:scale-105 hover:brightness-95 sm:w-auto"
+        >
+          <Settings />
+          Настройки
+        </Button>
+      </PageHeader>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        {wishes.map((wish) => (
+          <WishCard
+            key={wish.id}
+            title={wish.title}
+            description={wish.description}
+            color={wish.color}
+            imageUrls={wish.imageUrls}
+            onClick={() => openEditModal(wish)}
+          />
+        ))}
+      </div>
+
+      <Wish
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveWish}
+        onDelete={handleDeleteWish}
+        data={editingWish}
+      />
+
+      <Wishlist
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onSave={handleSaveWishlist}
+        onDelete={handleDeleteWishlist}
+        data={wishlist}
+      />
+    </div>
+  );
+}
