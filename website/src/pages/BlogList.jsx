@@ -14,6 +14,10 @@ export default function BlogList() {
   const [page, setPage] = useState(0);
   const { data, loading, error } = useList(page, 5);
 
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL?.replace(/\/api$/, "") ||
+    "http://localhost:8080";
+
   console.log(data);
 
   const getContentPreview = (html) => {
@@ -112,7 +116,7 @@ export default function BlogList() {
                     <div className="p-3 py-0">
                       <div className="aspect-video w-full overflow-hidden bg-gray-50 rounded-lg">
                         <img
-                          src={post.preview_image}
+                          src={`${API_BASE_URL}${post.preview_image}`}
                           alt={post.title}
                           loading="lazy"
                           decoding="async"

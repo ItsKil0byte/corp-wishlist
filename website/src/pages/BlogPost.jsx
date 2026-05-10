@@ -50,47 +50,35 @@ export default function BlogPost() {
     );
   }
 
-  const cleanContent = DOMPurify.sanitize(data.content, {
-    ALLOWED_TAGS: [
-      "p",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-      "ul",
-      "ol",
-      "li",
-      "strong",
-      "em",
-      "a",
-      "img",
-      "blockquote",
-      "code",
-      "pre",
-      "br",
-      "hr",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "th",
-      "td",
-      "figure",
-      "figcaption",
-    ],
-    ALLOWED_ATTR: [
-      "href",
-      "src",
-      "alt",
-      "class",
-      "target",
-      "rel",
-      "width",
-      "height",
-    ],
-  });
+  const getSanitizedContent = (html) => {
+    return DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: [
+        "b",
+        "i",
+        "em",
+        "strong",
+        "a",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "img",
+        "br",
+        "span",
+        "div",
+        "figure",
+        "figcaption",
+        "hr",
+      ],
+      ALLOWED_ATTR: ["href", "src", "alt", "title", "class", "style", "target"],
+    });
+  };
 
   return (
     <>
@@ -120,21 +108,17 @@ export default function BlogPost() {
           </div>
         </header>
 
-        {data.preview_image && (
-          <figure className="w-full aspect-video rounded-lg overflow-hidden bg-gray-50 shadow-sm">
-            <img
-              src={data.preview_image}
-              alt={data.title}
-              loading="eager"
-              decoding="async"
-              className="w-full h-full object-cover"
-            />
-          </figure>
-        )}
-
-        <div
-          dangerouslySetInnerHTML={{ __html: cleanContent }}
-          className="prose prose-base md:prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-main-theme prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-blockquote:border-l-4 prose-blockquote:border-main-theme prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:italic"
+        <article
+          className="
+            prose prose-neutral dark:prose-invert max-w-none
+            prose-p:text-gray-800 dark:prose-p:text-gray-200
+            prose-headings:font-bold
+            prose-img:w-full prose-img:h-auto prose-img:object-cover prose-img:rounded-xl prose-img:my-8
+            prose-li:marker:text-main-theme
+          "
+          dangerouslySetInnerHTML={{
+            __html: getSanitizedContent(data.content),
+          }}
         />
       </article>
     </>
