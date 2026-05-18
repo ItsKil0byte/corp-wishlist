@@ -20,7 +20,7 @@ export default function HeroCentered({
       )}
 
       {buttonText && buttonLink && (
-        <Button className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-6 px-10 rounded-lg text-lg shadow-sm transition-all hover:scale-105 active:scale-95">
+        <Button className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-12 px-24 text-2xl rounded-lg shadow-sm transition-all hover:scale-105 active:scale-95">
           <a href={buttonLink}>{buttonText}</a>
         </Button>
       )}
