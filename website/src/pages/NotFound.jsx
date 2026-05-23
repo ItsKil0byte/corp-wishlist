@@ -1,41 +1,45 @@
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function NotFound() {
-  const navigate = useNavigate();
-
   return (
     <>
-      <SEO title="Страница не найдена" />
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 py-12">
-        <div className="space-y-6 max-w-md relative">
-          <h1 className="text-8xl leading-none font-black text-main-theme select-none tracking-tight">
+      <SEO
+        title="Страница не найдена | GiftoYou"
+        description="К сожалению, такой страницы не существует."
+      />
+      <div className="min-h-[70vh] max-w-[1440px] mx-auto flex flex-col items-center justify-center text-center px-4 py-24">
+        <div className="relative mb-12" data-reveal>
+          <div className="text-[10rem] md:text-[14rem] font-black text-main-theme/10 leading-none select-none">
             404
-          </h1>
-          <h2 className="text-2xl font-black tet-gray-900">
-            Кажется, вы попали куда-то не туда
-          </h2>
-          <p className="text-gray-600 leading-relaxed font-medium">
-            Страница, которую вы ищете, была удалена или переименована.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button
-              onClick={() => navigate(-1)}
-              className="bg-main-theme-lite hover:bg-main-theme-lite/70 text-main-theme font-bold gap-2 h-12 px-8 rounded-lg transition-all hover:scale-105"
-            >
-              <ArrowLeft className="size-5" /> Назад
-            </Button>
-            <Button
-              asChild
-              className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold gap-2 h-12 px-8 rounded-lg transition-all hover:scale-105"
-            >
-              <Link to="/">
-                <Home className="size-5" /> Вернуться на главную
-              </Link>
-            </Button>
           </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+             <div className="size-24 md:size-32 bg-white rounded-3xl flex items-center justify-center shadow-2xl border border-gray-50 rotate-6">
+                <Home className="size-12 md:size-16 text-main-theme" />
+             </div>
+          </div>
+        </div>
+        
+        <div className="space-y-6 max-w-2xl" data-reveal data-reveal-delay="1">
+          <h1 className="text-5xl md:text-6xl font-black text-gray-900 tracking-tight">
+            Упс! Страница потерялась
+          </h1>
+          <p className="text-xl text-gray-500 font-medium leading-relaxed">
+            Кажется, мы не можем найти то, что вы ищете. Возможно, ссылка устарела или была введена с ошибкой.
+          </p>
+        </div>
+
+        <div className="mt-16" data-reveal data-reveal-delay="2">
+          <Button
+            asChild
+            className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-black py-10 px-16 rounded-xl text-xl shadow-2xl transition-all hover:scale-105 active:scale-95 btn-glow"
+          >
+            <Link to="/" className="flex items-center gap-3">
+              <ArrowLeft className="size-6" /> Вернуться на главную
+            </Link>
+          </Button>
         </div>
       </div>
     </>
