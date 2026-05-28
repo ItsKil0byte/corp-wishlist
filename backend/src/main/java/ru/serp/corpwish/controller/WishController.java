@@ -46,7 +46,7 @@ public class WishController {
             @PathVariable Long wishId
     ) {
         WishDto wish = wishService.getWish(
-                requester.getUserId(),
+                requester.getId(),
                 wishId
         );
 
@@ -74,7 +74,7 @@ public class WishController {
             @RequestBody CreateWishRequest wishRequest
     ) {
         WishDto wish = wishService.updateWish(
-                owner.getUserId(),
+                owner.getId(),
                 wishId,
                 wishRequest
         );
@@ -88,7 +88,7 @@ public class WishController {
             @PathVariable Long wishId
     ) {
         wishService.deleteWish(
-                owner.getUserId(),
+                owner.getId(),
                 wishId
         );
         return ResponseEntity.noContent().build();

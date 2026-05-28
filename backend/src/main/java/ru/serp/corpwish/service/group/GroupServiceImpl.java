@@ -42,7 +42,7 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not update group - group not found"));
 
-        if(!group.getOwner().getUserId().equals(userId)){
+        if(!group.getOwner().getId().equals(userId)){
             throw new RuntimeException("Can not update group - user is not an owner");
         }
 
@@ -61,9 +61,9 @@ public class GroupServiceImpl implements GroupService {
         List<Group> allGroups = groupRepository.findAll();
 
         return allGroups.stream()
-                .filter(group -> group.getOwner().getUserId().equals(userId) ||
+                .filter(group -> group.getOwner().getId().equals(userId) ||
                         group.getMembers().stream()
-                                .anyMatch(member -> member.getUserId().equals(userId))
+                                .anyMatch(member -> member.getId().equals(userId))
                 )
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -77,9 +77,9 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not get group - group not found"));
 
-        boolean isOwner = group.getOwner().getUserId().equals(userId);
+        boolean isOwner = group.getOwner().getId().equals(userId);
         boolean isMember = group.getMembers().stream()
-                .anyMatch(member -> member.getUserId().equals(userId));
+                .anyMatch(member -> member.getId().equals(userId));
 
         if(!isOwner && !isMember){
             throw new RuntimeException("Access denied to this group");
@@ -96,7 +96,7 @@ public class GroupServiceImpl implements GroupService {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not delete group - group not found"));
 
-        if(!group.getOwner().getUserId().equals(ownerId)){
+        if(!group.getOwner().getId().equals(ownerId)){
             throw new RuntimeException("Can not delete group - user is not an owner");
         }
 
@@ -108,18 +108,18 @@ public class GroupServiceImpl implements GroupService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not leave group - user not found"));
 
-        if(!user.getUserId().equals(requesterId)){
+        if(!user.getId().equals(requesterId)){
             throw new RuntimeException("Can not join group - User is not a requester");
         }
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not leave group - group not found"));
 
-        if(group.getOwner().getUserId().equals(userId)){
+        if(group.getOwner().getId().equals(userId)){
             throw new RuntimeException("Owner can not leave his group"); //Пока так, пусть он может только удалять
         }
 
-        group.getMembers().removeIf(member -> member.getUserId().equals(userId));
+        group.getMembers().removeIf(member -> member.getId().equals(userId));
 
         groupRepository.save(group);
 
@@ -131,14 +131,14 @@ public class GroupServiceImpl implements GroupService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Can not join group - user not found"));
 
-        if(!user.getUserId().equals(requesterId)){
+        if(!user.getId().equals(requesterId)){
             throw new RuntimeException("Can not join group - User is not a requester");
         }
 
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Can not join group - group not found"));
 
-        if(group.getMembers().stream().anyMatch(member -> member.getUserId().equals(userId))){
+        if(group.getMembers().stream().anyMatch(member -> member.getId().equals(userId))){
             throw new RuntimeException("Can nor join group - this user already in this group");
         }
 
@@ -166,7 +166,7 @@ public class GroupServiceImpl implements GroupService {
     private UserInfo convertToUserInfo(User user){
         UserInfo userInfo = new UserInfo();
 
-        userInfo.setUserId(user.getUserId());
+        userInfo.setUserId(user.getId());
         userInfo.setUsername(user.getUsername());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
