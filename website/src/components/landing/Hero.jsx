@@ -9,13 +9,14 @@ export default function Hero() {
         data-reveal
       >
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.15] md:leading-[1.1] max-w-5xl tracking-tight">
-          <span className="gradient-text">GiftoYou</span> — бесплатный сервис,
-          помогающий выбирать подарки быстро и просто!
+          Больше никаких «что тебе подарить?». Твой идеальный вишлист
+          <br /> <span className="gradient-text">в одной ссылке</span>.
         </h1>
 
         <p className="text-lg md:text-xl text-gray-600 font-medium max-w-3xl leading-relaxed">
-          Создавайте вишлисты, делитесь идеями и организуйте коллективные
-          подарки в одном месте. Больше никаких лишних чатов и ненужных вещей.
+          Создавайте вишлисты, которыми приятно делиться. GiftoYou помогает
+          друзьям и коллегам выбирать именно то, что вы хотите. Бесплатно и без
+          лишнего шума.
         </p>
 
         <Button

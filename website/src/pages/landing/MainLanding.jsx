@@ -1,5 +1,7 @@
 import Features from "@/components/landing/Features";
 import Hero from "@/components/landing/Hero";
+import Stats from "@/components/landing/Stats";
+import FAQSection from "@/components/landing/FAQSection";
 import LandingLayout from "@/layouts/LandingLayout";
 import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/lib/constants";
@@ -17,7 +19,9 @@ export default function MainLanding() {
     >
       <div className="w-full flex flex-col pb-24">
         <Hero />
+        <Stats />
         <Features />
+        <FAQSection />
 
         <Section
           spacing="large"

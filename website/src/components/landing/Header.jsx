@@ -50,13 +50,21 @@ export default function Header() {
               </Link>
             </nav>
 
-            {/* Кнопка входа */}
-            <Button
-              asChild
-              className="order-2 md:order-3 bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-6 px-8 md:px-12 md:py-8 rounded-xl text-sm md:text-lg shadow-sm transition-all hover:scale-105 active:scale-95 btn-glow"
-            >
-              <a href={APP_URL}>Войти</a>
-            </Button>
+            {/* Кнопки действий */}
+            <div className="flex items-center gap-4 md:gap-6 order-2 md:order-3">
+              <a
+                href={APP_URL}
+                className="text-sm md:text-base font-bold text-gray-500 hover:text-main-theme transition-colors cursor-pointer"
+              >
+                Войти
+              </a>
+              <Button
+                asChild
+                className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-6 px-8 md:px-10 md:py-7 rounded-xl text-sm md:text-base shadow-sm transition-all hover:scale-105 active:scale-95 btn-glow"
+              >
+                <a href={APP_URL}>Начать бесплатно</a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
