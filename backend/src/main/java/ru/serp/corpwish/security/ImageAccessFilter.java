@@ -61,7 +61,7 @@ public class ImageAccessFilter extends OncePerRequestFilter {
             else if (linksRepository.existsByEntityIdAndTypeAndActiveAndExpireAfter(wishlistId, LinkType.WISHLIST_SHARE, true)) {
                 hasAccess = true;
             }
-            else if (groupRepository.existsByOwnerIdAndMemberId(ownerId, currentUser.getUserId())) {
+            else if (groupRepository.existsCommonGroup(ownerId, currentUser.getUserId())) {
                 hasAccess = true;
             }
 
