@@ -75,13 +75,13 @@ export default function IdeasLanding() {
                 data-reveal
                 data-reveal-delay={i}
               >
-                <div className="size-16 rounded-2xl bg-gray-50 flex items-center justify-center shadow-inner">
+                <div className="size-16 flex items-center justify-center">
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-black text-gray-900">
+                <h3 className="text-2xl font-black text-gray-900 dark:text-white">
                   {item.title}
                 </h3>
-                <p className="text-gray-500 font-medium text-lg leading-relaxed">
+                <p className="text-gray-500 font-medium text-lg leading-relaxed dark:text-gray-300">
                   {item.desc}
                 </p>
               </div>
@@ -92,7 +92,7 @@ export default function IdeasLanding() {
         {/* Интерактивный коллаж проблем */}
         <Section spacing="medium" className="space-y-12" data-reveal>
           <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
               Можно выбирать подарки «по старинке»...
             </h2>
           </div>
@@ -115,10 +115,10 @@ export default function IdeasLanding() {
             data-reveal
           >
             <div className="w-full lg:w-1/2 space-y-8">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
                 Избавьтесь от головоломки
               </h2>
-              <p className="text-xl text-gray-500 font-medium leading-relaxed">
+              <p className="text-xl text-gray-500 font-medium leading-relaxed dark:text-gray-300">
                 Забудьте о роли детектива. Получите четкий список желаний, где
                 каждая позиция — именно то, что нужно. Ссылки, фото и описание
                 уже внутри.
@@ -141,7 +141,7 @@ export default function IdeasLanding() {
           <Button
             onClick={handleCopyLink}
             variant="outline"
-            className="border-2 border-main-theme/20 text-gray-900 font-black py-10 px-10 rounded-2xl text-xl shadow-xl transition-all hover:bg-main-theme/10 active:scale-95 w-full sm:w-auto flex items-center justify-center gap-3 overflow-hidden relative"
+            className="border-2 border-main-theme/20 text-gray-900 dark:text-white font-black py-10 px-10 rounded-2xl text-xl shadow-xl transition-all hover:bg-main-theme/10 active:scale-95 w-full sm:w-auto flex items-center justify-center gap-3 overflow-hidden relative"
           >
             <div
               className={`flex items-center gap-3 transition-all duration-300 ${copied ? "opacity-0 -translate-y-8" : "opacity-100 translate-y-0"}`}

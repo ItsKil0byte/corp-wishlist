@@ -69,12 +69,20 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-bg-hover: rgba(255, 255, 255, 1);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-strong-bg: #ffffff;
+    --glass-strong-border: rgba(4, 201, 168, 0.1);
+    --body-bg: #f8fafc;
+    --body-overlay: rgba(255, 255, 255, 0.4);
 }
 
 body {
     margin: 0;
     min-height: 100vh;
-    background-color: #f8fafc;
+    background-color: var(--body-bg);
     background-image: radial-gradient(
         circle at 2px 2px,
         rgba(4, 201, 168, 0.04) 1px,
@@ -82,6 +90,10 @@ body {
     );
     background-size: 32px 32px;
     position: relative;
+    color: var(--foreground);
+    transition:
+        background-color 0.5s ease,
+        color 0.5s ease;
 }
 
 @media (min-width: 768px) {
@@ -95,11 +107,12 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--body-overlay);
     backdrop-filter: blur(60px) saturate(140%);
     -webkit-backdrop-filter: blur(60px) saturate(140%);
     z-index: -1;
     pointer-events: none;
+    transition: background 0.5s ease;
 }
 
 @media (min-width: 768px) {
@@ -201,6 +214,14 @@ body::after {
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+
+    --glass-bg: rgba(17, 24, 39, 0.8);
+    --glass-bg-hover: rgba(17, 24, 39, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-strong-bg: #111827;
+    --glass-strong-border: rgba(4, 201, 168, 0.2);
+    --body-bg: #030712;
+    --body-overlay: rgba(3, 7, 18, 0.6);
 }
 
 @layer base {
@@ -308,10 +329,10 @@ body::after {
 
 /* ===== Стили эффектов матового стекла (Glassmorphism) ===== */
 .glass {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--glass-border);
     box-shadow:
         0 10px 15px -3px rgba(0, 0, 0, 0.04),
         0 4px 6px -4px rgba(0, 0, 0, 0.04);
@@ -321,7 +342,7 @@ body::after {
 @media (hover: hover) {
     .glass:hover {
         transform: translateY(-4px);
-        background: rgba(255, 255, 255, 1);
+        background: var(--glass-bg-hover);
         box-shadow:
             0 25px 50px -12px rgba(0, 0, 0, 0.1),
             0 0 0 1px rgba(4, 201, 168, 0.1);
@@ -329,11 +350,11 @@ body::after {
 }
 
 .glass-strong {
-    background: #ffffff;
-    border: 1px solid rgba(4, 201, 168, 0.1);
+    background: var(--glass-strong-bg);
+    border: 1px solid var(--glass-strong-border);
     box-shadow:
         0 20px 40px -15px rgba(0, 0, 0, 0.1),
-        0 0 0 1px rgba(255, 255, 255, 1) inset;
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -347,10 +368,10 @@ body::after {
 }
 
 .glass-subtle {
-    background: rgba(255, 255, 255, 0.75);
+    background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--glass-border);
 }
 
 /* ===== Стили кнопок с неоновым свечением ===== */
@@ -447,13 +468,13 @@ body::after {
 
 /* ===== Стили обрамления ("стеклянная" рамка) ===== */
 .glass-frame {
-    background: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 1);
+    background: var(--glass-strong-bg);
+    border: 1px solid var(--glass-border);
     padding: 8px;
     border-radius: 1.5rem;
     box-shadow:
         0 15px 30px -10px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 1);
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -463,7 +484,7 @@ body::after {
         border-radius: 2rem;
         box-shadow:
             0 30px 60px -12px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 1);
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 }
 

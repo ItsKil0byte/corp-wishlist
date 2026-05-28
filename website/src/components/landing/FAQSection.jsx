@@ -33,7 +33,7 @@ export default function FAQSection() {
     <Section className="flex flex-col items-center gap-12" data-reveal>
       <div className="text-center">
         <GradientTitle as="h2" title="Часто задаваемые вопросы" />
-        <p className="text-gray-600 mt-4 font-medium">
+        <p className="text-gray-600 dark:text-gray-400 mt-4 font-medium">
           Все, что вы хотели знать о GiftoYou
         </p>
       </div>
@@ -46,10 +46,10 @@ export default function FAQSection() {
               value={`item-${index}`}
               className={index === faqs.length - 1 ? "border-b-0" : ""}
             >
-              <AccordionTrigger className="text-base md:text-lg font-bold py-6">
+              <AccordionTrigger className="text-base md:text-lg font-bold py-6 dark:text-gray-100">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-base">
+              <AccordionContent className="text-base dark:text-gray-400">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

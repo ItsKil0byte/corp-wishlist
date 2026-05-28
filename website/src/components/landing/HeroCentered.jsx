@@ -12,12 +12,12 @@ export default function HeroCentered({
       className="flex flex-col items-center text-center gap-10 pt-16 md:pt-24 px-4"
       data-reveal
     >
-      <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] max-w-5xl tracking-tight">
+      <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 dark:text-white leading-[1.1] max-w-5xl tracking-tight">
         {title}
       </h1>
 
       {subtitle && (
-        <p className="text-xl md:text-2xl font-medium max-w-3xl text-gray-600 leading-relaxed">
+        <p className="text-xl md:text-2xl font-medium max-w-3xl text-gray-600 dark:text-gray-400 leading-relaxed">
           {subtitle}
         </p>
       )}
@@ -30,7 +30,11 @@ export default function HeroCentered({
 
       {image && (
         <div className="w-full max-w-6xl mt-12 glass-frame !p-3 shadow-2xl">
-          <img src={image} alt="Image" className="w-full h-auto rounded-2xl shadow-xl" />
+          <img
+            src={image}
+            alt="Image"
+            className="w-full h-auto rounded-2xl shadow-xl"
+          />
         </div>
       )}
     </section>

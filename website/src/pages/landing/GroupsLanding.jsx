@@ -58,7 +58,7 @@ export default function GroupsLanding() {
               <div className="size-16 rounded-2xl flex items-center justify-center mb-2">
                 {item.icon}
               </div>
-              <h3 className="text-2xl font-black text-gray-900">
+              <h3 className="text-2xl font-black text-gray-900 dark:text-white">
                 {item.title}
               </h3>
               <p className="text-gray-500 font-medium leading-relaxed">
@@ -80,7 +80,7 @@ export default function GroupsLanding() {
               <AppImage src="/mockups/for-groups/wishlist.png" alt="Wishlist" />
             </div>
             <div className="w-full lg:w-2/5 space-y-6">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
                 Выбор из реального вишлиста
               </h2>
               <p className="text-xl text-gray-500 font-medium leading-relaxed">
@@ -98,7 +98,7 @@ export default function GroupsLanding() {
               <AppImage src="/mockups/for-groups/group.png" alt="Group" />
             </div>
             <div className="w-full lg:w-2/5 space-y-6 lg:text-right">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
                 Вся команда в одном месте
               </h2>
               <p className="text-xl text-gray-500 font-medium leading-relaxed">

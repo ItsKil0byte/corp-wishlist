@@ -84,10 +84,10 @@ export default function Features() {
   return (
     <section className="flex flex-col items-center gap-10 md:gap-16 py-12 md:py-20">
       <div className="text-center space-y-3 md:space-y-4 px-4" data-reveal>
-        <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-tight">
+        <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
           Знакомо? Мы это исправили
         </h2>
-        <p className="text-gray-500 text-base md:text-xl font-medium max-w-2xl mx-auto">
+        <p className="text-gray-500 dark:text-gray-400 text-base md:text-xl font-medium max-w-2xl mx-auto">
           GiftoYou решает вечные проблемы с выбором и организацией подарков
         </p>
       </div>
@@ -111,12 +111,12 @@ export default function Features() {
                 <div className="size-16 flex items-center justify-center shrink-0 group-hover:scale-110 transition-all duration-500">
                   {card.icon}
                 </div>
-                <h3 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight group-hover:text-main-theme transition-colors">
+                <h3 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-gray-100 leading-tight group-hover:text-main-theme transition-colors">
                   {card.title}
                 </h3>
               </div>
 
-              <p className="text-gray-600 text-base md:text-lg leading-relaxed font-medium mb-8 md:mb-10">
+              <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed font-medium mb-8 md:mb-10">
                 {card.pain}
               </p>
 

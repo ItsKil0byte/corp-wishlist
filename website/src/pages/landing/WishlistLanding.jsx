@@ -73,7 +73,7 @@ export default function WishlistLanding() {
               <div className="size-16 rounded-2xl flex items-center justify-center">
                 {item.icon}
               </div>
-              <h3 className="text-2xl font-black text-gray-900">
+              <h3 className="text-2xl font-black text-gray-900 dark:text-white">
                 {item.title}
               </h3>
               <p className="text-gray-500 font-medium text-lg leading-relaxed">
@@ -92,7 +92,7 @@ export default function WishlistLanding() {
             data-reveal
           >
             <div className="w-full lg:w-3/5 space-y-8">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
                 Прощайте, заметки!
               </h2>
               <p className="text-xl text-gray-500 font-medium leading-relaxed">
@@ -113,7 +113,7 @@ export default function WishlistLanding() {
             data-reveal
           >
             <div className="w-full lg:w-3/5 space-y-8 lg:text-right">
-              <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
                 Удобная форма
               </h2>
               <p className="text-xl text-gray-500 font-medium leading-relaxed lg:ml-auto lg:max-w-xl">
@@ -135,7 +135,7 @@ export default function WishlistLanding() {
           className="flex flex-col items-center text-center gap-12"
           data-reveal
         >
-          <h2 className="text-4xl md:text-6xl font-black text-gray-900 max-w-5xl leading-tight tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white max-w-5xl leading-tight tracking-tight">
             Без рекламы, без платных подписок.
             <br />
             <span className="text-main-theme">Только ваши желания.</span>

@@ -67,32 +67,32 @@ export default function BlogList() {
 
           <div className="w-full flex flex-col sm:flex-row justify-between items-end gap-6">
             <div className="space-y-2">
-              <h1 className="text-5xl md:text-6xl font-black text-gray-900 tracking-tight">
+              <h1 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight">
                 Блог
               </h1>
-              <p className="text-gray-500 font-medium text-lg">
+              <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">
                 Полезные советы и идеи для идеальных праздников
               </p>
             </div>
 
             {data && !loading && (
-              <div className="flex items-center gap-4 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm">
+              <div className="flex items-center gap-4 bg-white dark:bg-gray-900 p-2 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm">
                 <Button
                   variant="ghost"
                   disabled={page <= 0}
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  className="text-main-theme font-bold gap-2 h-11 px-4 rounded-xl disabled:opacity-30"
+                  className="text-main-theme font-bold gap-2 h-11 px-4 rounded-xl disabled:opacity-30 hover:bg-main-theme/10"
                 >
                   <ArrowLeft className="size-4" /> Назад
                 </Button>
-                <span className="text-sm font-black text-gray-900 px-2 min-w-[4rem] text-center">
+                <span className="text-sm font-black text-gray-900 dark:text-gray-100 px-2 min-w-[4rem] text-center">
                   {page + 1}
                 </span>
                 <Button
                   variant="ghost"
                   disabled={data.length < 6}
                   onClick={() => setPage((p) => p + 1)}
-                  className="text-main-theme font-bold gap-2 h-11 px-4 rounded-xl disabled:opacity-30"
+                  className="text-main-theme font-bold gap-2 h-11 px-4 rounded-xl disabled:opacity-30 hover:bg-main-theme/10"
                 >
                   Далее <ArrowRight className="size-4" />
                 </Button>
@@ -113,15 +113,15 @@ export default function BlogList() {
                 data-reveal
                 data-reveal-delay={index % 3}
               >
-                <Card className="h-full flex flex-col rounded-[2.5rem] bg-white border-gray-100 shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-3 overflow-hidden border-none">
+                <Card className="h-full flex flex-col rounded-[2.5rem] bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-3 overflow-hidden border-none">
                   {post.preview_image && (
                     <div className="p-4">
-                      <div className="aspect-[16/10] w-full overflow-hidden rounded-[1.8rem] bg-gray-50 relative">
+                      <div className="aspect-[16/10] w-full overflow-hidden rounded-[1.8rem] bg-gray-50 dark:bg-gray-800 relative">
                         <img
                           src={`${API_URL}${post.preview_image}`}
                           alt={post.title}
                           loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
@@ -134,10 +134,10 @@ export default function BlogList() {
                         {formatDate(post.published_at)}
                       </time>
                     </div>
-                    <h3 className="line-clamp-2 text-2xl font-black text-gray-900 group-hover:text-main-theme transition-colors leading-tight mb-4">
+                    <h3 className="line-clamp-2 text-2xl font-black text-gray-900 dark:text-white group-hover:text-main-theme transition-colors leading-tight mb-4">
                       {post.title}
                     </h3>
-                    <p className="text-gray-500 line-clamp-3 text-base leading-relaxed font-medium mb-6">
+                    <p className="text-gray-500 dark:text-gray-400 line-clamp-3 text-base leading-relaxed font-medium mb-6">
                       {post.preview_content ||
                         stripHtml(post.content, 120) ||
                         "Описание отсутствует."}

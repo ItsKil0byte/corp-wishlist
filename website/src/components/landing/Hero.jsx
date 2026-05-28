@@ -1,19 +1,21 @@
 import { APP_URL } from "@/lib/constants";
 import { Button } from "../ui/button";
+import FloatingDecor from "./FloatingDecor";
 
 export default function Hero() {
   return (
-    <section className="flex flex-col items-center text-center gap-10 md:gap-12 pt-12 md:pt-24 px-4">
+    <section className="flex flex-col items-center text-center gap-10 md:gap-12 pt-12 md:pt-24 px-4 relative">
+      <FloatingDecor />
       <div
-        className="w-full flex flex-col items-center gap-8 md:gap-10"
+        className="w-full flex flex-col items-center gap-8 md:gap-10 relative z-10"
         data-reveal
       >
-        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.15] md:leading-[1.1] max-w-5xl tracking-tight">
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 dark:text-white leading-[1.15] md:leading-[1.1] max-w-5xl tracking-tight">
           Больше никаких «что тебе подарить?». Твой идеальный вишлист
           <br /> <span className="gradient-text">в одной ссылке</span>.
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-600 font-medium max-w-3xl leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium max-w-3xl leading-relaxed">
           Создавайте вишлисты, которыми приятно делиться. GiftoYou помогает
           друзьям и коллегам выбирать именно то, что вы хотите. Бесплатно и без
           лишнего шума.

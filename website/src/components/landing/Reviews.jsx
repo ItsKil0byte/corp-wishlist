@@ -24,10 +24,13 @@ const reviews = [
  */
 export default function Reviews() {
   return (
-    <Section className="flex flex-col items-center gap-12 md:gap-16" data-reveal>
+    <Section
+      className="flex flex-col items-center gap-12 md:gap-16"
+      data-reveal
+    >
       <div className="text-center space-y-4">
-        <GradientTitle as="h2" size="large" title="Что говорят пользователи" />
-        <p className="text-gray-500 text-lg font-medium">
+        <GradientTitle as="h2" title="Что говорят пользователи" />
+        <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
           Помогаем дарить радость и экономить время
         </p>
       </div>
@@ -50,17 +53,23 @@ export default function Reviews() {
               </svg>
             </div>
 
-            <p className="text-gray-700 text-lg md:text-xl font-medium leading-relaxed italic relative z-10">
+            <p className="text-gray-700 dark:text-gray-300 text-lg md:text-xl font-medium leading-relaxed italic relative z-10">
               «{review.text}»
             </p>
 
             <div className="flex items-center gap-4 mt-auto">
-              <div className={`size-12 rounded-full flex items-center justify-center font-bold text-lg ${review.color}`}>
+              <div
+                className={`size-12 rounded-full flex items-center justify-center font-bold text-lg ${review.color}`}
+              >
                 {review.initial}
               </div>
               <div>
-                <h4 className="font-black text-gray-900">{review.author}</h4>
-                <p className="text-gray-500 text-sm font-medium">{review.role}</p>
+                <h4 className="font-black text-gray-900 dark:text-white">
+                  {review.author}
+                </h4>
+                <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                  {review.role}
+                </p>
               </div>
             </div>
           </div>

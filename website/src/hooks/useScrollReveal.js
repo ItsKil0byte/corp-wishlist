@@ -35,8 +35,18 @@ export default function useScrollReveal({
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add("revealed");
-              observer.unobserve(entry.target);
+              const el = entry.target;
+              const delay = el.getAttribute("data-reveal-delay") || "0";
+
+              // Применяем задержку, если она указана
+              setTimeout(
+                () => {
+                  el.classList.add("revealed");
+                },
+                parseInt(delay) * 150,
+              ); // 150ms за шаг задержки
+
+              observer.unobserve(el);
             }
           });
         },

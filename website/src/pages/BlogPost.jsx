@@ -85,7 +85,7 @@ export default function BlogPost() {
                 {formatDate(data.published_at)}
               </time>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white leading-[1.1] tracking-tight">
               {data.title}
             </h1>
             <div className="h-1.5 w-24 bg-main-theme rounded-full" />
@@ -94,12 +94,12 @@ export default function BlogPost() {
           <div
             className="
               prose prose-neutral prose-lg lg:prose-xl dark:prose-invert max-w-none
-              prose-p:text-gray-700 prose-p:leading-relaxed prose-p:font-medium
-              prose-headings:font-black prose-headings:tracking-tight prose-headings:text-gray-900
+              prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:font-medium
+              prose-headings:font-black prose-headings:tracking-tight prose-headings:text-gray-900 dark:prose-headings:text-white
               prose-img:w-full prose-img:h-auto prose-img:object-cover prose-img:rounded-[2.5rem] prose-img:shadow-2xl prose-img:my-16
               prose-li:marker:text-main-theme prose-li:font-medium
               prose-a:text-main-theme prose-a:no-underline hover:prose-a:underline
-              prose-hr:border-gray-100 prose-hr:my-16
+              prose-hr:border-gray-100 dark:prose-hr:border-gray-800 prose-hr:my-16
             "
             data-reveal
             data-reveal-delay="2"

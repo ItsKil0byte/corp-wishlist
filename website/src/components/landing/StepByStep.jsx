@@ -5,7 +5,7 @@ export default function StepByStep({ title = "Как это работает?", 
   return (
     <section className="w-full max-w-[1440px] mx-auto py-16 md:py-24 px-4 md:px-12 space-y-16 md:space-y-20">
       <div className="text-center space-y-3 md:space-y-4" data-reveal>
-        <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight leading-tight">
+        <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
           {title}
         </h2>
         <div className="h-1.5 w-20 md:w-24 bg-main-theme mx-auto rounded-full" />
@@ -53,12 +53,12 @@ export default function StepByStep({ title = "Как это работает?", 
                 <div className="h-px flex-1 bg-gradient-to-r from-main-theme/20 to-transparent hidden lg:block" />
               </div>
 
-              <h3 className="text-2xl md:text-4xl font-black text-gray-900 leading-tight">
+              <h3 className="text-2xl md:text-4xl font-black text-gray-900 dark:text-gray-100 leading-tight">
                 {step.title}
               </h3>
 
               {step.description && (
-                <p className="text-base md:text-xl text-gray-500 font-medium leading-relaxed max-w-xl lg:mx-0">
+                <p className="text-base md:text-xl text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-xl lg:mx-0">
                   {step.description}
                 </p>
               )}

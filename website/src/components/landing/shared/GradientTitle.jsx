@@ -16,7 +16,7 @@ export default function GradientTitle({
   return (
     <div className={`space-y-4 ${className}`}>
       <Heading
-        className={`${sizes[size]} font-black text-gray-900 tracking-tight leading-[1.1]`}
+        className={`${sizes[size]} font-black text-gray-900 dark:text-white tracking-tight leading-[1.1]`}
       >
         {title}
         {gradientPart && (
@@ -24,7 +24,7 @@ export default function GradientTitle({
         )}
       </Heading>
       {subtitle && (
-        <p className="text-lg md:text-xl text-gray-500 font-medium max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-500 dark:text-gray-300 font-medium max-w-3xl mx-auto leading-relaxed">
           {subtitle}
         </p>
       )}
