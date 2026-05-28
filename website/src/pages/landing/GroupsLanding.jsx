@@ -2,11 +2,10 @@ import HeroCentered from "@/components/landing/HeroCentered";
 import StepByStep from "@/components/landing/StepByStep";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
+import { APP_URL } from "@/lib/constants";
 import { Users, Layout, Heart } from "lucide-react";
 
 export default function GroupsLanding() {
-  const APP_URL = import.meta.env.VITE_APP_URL || "https://app.corpwishlist.ru";
-
   return (
     <>
       <SEO
@@ -22,7 +21,7 @@ export default function GroupsLanding() {
           buttonLink={APP_URL}
         />
 
-        {/* Feature Highlights */}
+        {/* Основные преимущества */}
         <section className="max-w-360 mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
@@ -62,7 +61,7 @@ export default function GroupsLanding() {
 
         <div className="gradient-divider" />
 
-        {/* Visual Content Blocks */}
+        {/* Визуальные блоки контента */}
         <section className="max-w-[1440px] mx-auto px-6 md:px-12 space-y-32">
           <div
             className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"

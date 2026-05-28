@@ -1,6 +1,7 @@
 import PostSkeleton from "@/components/PostSkeleton";
 import { SEO } from "@/components/SEO";
 import usePost from "@/hooks/useBlog";
+import { formatDate, stripHtml } from "@/lib/utils";
 import DOMPurify from "dompurify";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
@@ -9,25 +10,14 @@ export default function BlogPost() {
   const { slug } = useParams();
   const { data, loading, error } = usePost(slug);
 
-  const getDescription = (html) => {
-    if (!html) return "";
-    return html.replace(/<[^>]*>/g, "").slice(0, 160).trim();
-  };
-
-  const getFormatDate = (date) => {
-    return new Intl.DateTimeFormat("ru-RU", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).format(new Date(date));
-  };
-
   if (loading) return <PostSkeleton />;
 
   if (error || !data) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-center space-y-6">
-        <h2 className="text-4xl font-black text-gray-900 tracking-tight">Статья не найдена</h2>
+        <h2 className="text-4xl font-black text-gray-900 tracking-tight">
+          Статья не найдена
+        </h2>
         <p className="text-gray-500 max-w-md font-medium">
           {error || "Возможно, материал был удалён или ссылка неверна."}
         </p>
@@ -43,8 +33,28 @@ export default function BlogPost() {
   const getSanitizedContent = (html) => {
     return DOMPurify.sanitize(html, {
       ALLOWED_TAGS: [
-        "b", "i", "em", "strong", "a", "p", "h1", "h2", "h3", "h4", "h5", "h6",
-        "ul", "ol", "li", "img", "br", "span", "div", "figure", "figcaption", "hr",
+        "b",
+        "i",
+        "em",
+        "strong",
+        "a",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "ul",
+        "ol",
+        "li",
+        "img",
+        "br",
+        "span",
+        "div",
+        "figure",
+        "figcaption",
+        "hr",
       ],
       ALLOWED_ATTR: ["href", "src", "alt", "title", "class", "style", "target"],
     });
@@ -54,7 +64,7 @@ export default function BlogPost() {
     <>
       <SEO
         title={`${data.title} | Блог GiftoYou`}
-        description={getDescription(data.content)}
+        description={stripHtml(data.content, 160)}
         image={data.preview_image}
         url={window.location.href}
       />
@@ -64,14 +74,15 @@ export default function BlogPost() {
             to="/blog"
             className="group inline-flex items-center gap-2 text-sm text-gray-400 hover:text-main-theme transition-all font-bold"
           >
-            <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" /> Вернуться к блогу
+            <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />{" "}
+            Вернуться к блогу
           </Link>
 
           <header className="space-y-8" data-reveal>
             <div className="flex items-center gap-3 text-xs text-main-theme font-black uppercase tracking-[0.2em]">
               <Calendar className="size-4" />
               <time dateTime={data.published_at}>
-                {getFormatDate(data.published_at)}
+                {formatDate(data.published_at)}
               </time>
             </div>
             <h1 className="text-5xl md:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight">

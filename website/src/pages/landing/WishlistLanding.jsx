@@ -1,10 +1,9 @@
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
+import { APP_URL } from "@/lib/constants";
 import { CheckCircle2, ListChecks, Share2 } from "lucide-react";
 
 export default function WishlistLanding() {
-  const APP_URL = import.meta.env.VITE_APP_URL || "https://app.corpwishlist.ru";
-
   return (
     <>
       <SEO
@@ -13,7 +12,7 @@ export default function WishlistLanding() {
       />
 
       <main className="flex flex-col gap-24 pb-32 pt-16 md:pt-24">
-        {/* Hero Section */}
+        {/* Главный блок */}
         <section
           className="flex flex-col items-center text-center gap-12 px-4"
           data-reveal
@@ -41,7 +40,7 @@ export default function WishlistLanding() {
           </Button>
         </section>
 
-        {/* Feature Cards Section */}
+        {/* Карточки преимуществ */}
         <section className="max-w-[1440px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
@@ -81,7 +80,7 @@ export default function WishlistLanding() {
 
         <div className="gradient-divider" />
 
-        {/* Content Showcase */}
+        {/* Демонстрация контента */}
         <section className="max-w-[1440px] mx-auto px-6 md:px-12 space-y-32">
           <div
             className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
@@ -130,7 +129,7 @@ export default function WishlistLanding() {
 
         <div className="gradient-divider" />
 
-        {/* Final CTA */}
+        {/* Финальный призыв к действию */}
         <section
           className="flex flex-col items-center text-center gap-12 px-4 py-24"
           data-reveal

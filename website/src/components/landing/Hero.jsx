@@ -1,8 +1,7 @@
+import { APP_URL } from "@/lib/constants";
 import { Button } from "../ui/button";
 
 export default function Hero() {
-  const appUrl = import.meta.env.VITE_APP_URL || "localhost:3000";
-
   return (
     <section className="flex flex-col items-center text-center gap-10 md:gap-12 pt-12 md:pt-24 px-4">
       <div
@@ -23,7 +22,7 @@ export default function Hero() {
           asChild
           className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-8 md:py-10 px-10 md:px-16 rounded-2xl text-lg md:text-xl shadow-xl transition-all hover:scale-105 active:scale-95 btn-glow w-full sm:w-auto"
         >
-          <a href={appUrl}>Выбрать идеальный подарок</a>
+          <a href={APP_URL}>Выбрать идеальный подарок</a>
         </Button>
       </div>
 
