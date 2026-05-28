@@ -50,18 +50,18 @@ public class ImageAccessFilter extends OncePerRequestFilter {
         Optional<Wish> wishOpt = wishRepository.findByImageFileName(filename);
         if (wishOpt.isPresent()) {
             Wish wish = wishOpt.get();
-            Long ownerId = wish.getWishlist().getOwner().getUserId();
+            Long ownerId = wish.getWishlist().getOwner().getId();
             Long wishlistId = wish.getWishlist().getId();
 
             boolean hasAccess = false;
 
-            if (ownerId.equals(currentUser.getUserId())) {
+            if (ownerId.equals(currentUser.getId())) {
                 hasAccess = true;
             }
             else if (linksRepository.existsByEntityIdAndTypeAndActiveAndExpireAfter(wishlistId, LinkType.WISHLIST_SHARE, true)) {
                 hasAccess = true;
             }
-            else if (groupRepository.existsCommonGroup(ownerId, currentUser.getUserId())) {
+            else if (groupRepository.existsCommonGroup(ownerId, currentUser.getId())) {
                 hasAccess = true;
             }
 

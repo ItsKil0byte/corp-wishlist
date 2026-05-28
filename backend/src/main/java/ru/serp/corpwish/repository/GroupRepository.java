@@ -8,8 +8,8 @@ import ru.serp.corpwish.entity.Group;
 public interface GroupRepository extends JpaRepository<Group, Long> {
     @Query("""
             SELECT COUNT(g) > 0 FROM Group g
-            WHERE (g.owner.userId = :firstUserId OR :firstUserId IN (SELECT m.userId FROM g.members m))
-              AND (g.owner.userId = :secondUserId OR :secondUserId IN (SELECT m.userId FROM g.members m))
+            WHERE (g.owner.id = :firstUserId OR :firstUserId IN (SELECT m.id FROM g.members m))
+              AND (g.owner.id = :secondUserId OR :secondUserId IN (SELECT m.id FROM g.members m))
             """)
     boolean existsCommonGroup(
             @Param("firstUserId") Long firstUserId,
