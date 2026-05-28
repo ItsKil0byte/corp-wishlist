@@ -14,7 +14,11 @@ const Accordion = AccordionPrimitive.Root;
 const AccordionItem = React.forwardRef(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn("border-b border-gray-100", className)}
+    className={cn(
+      "rounded-3xl transition-all duration-300 overflow-hidden",
+      "data-[state=open]:shadow-2xl data-[state=open]:shadow-main-theme/10",
+      className,
+    )}
     {...props}
   />
 ));
@@ -26,32 +30,35 @@ const AccordionTrigger = React.forwardRef(
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
-          "flex flex-1 items-center justify-between py-4 text-left text-sm font-medium transition-all hover:text-main-theme [&[data-state=open]>svg]:rotate-180",
+          "flex flex-1 items-center justify-between py-6 text-left transition-all duration-300 outline-none group",
+          "hover:text-main-theme",
           className,
         )}
         {...props}
       >
         {children}
-        <ChevronDown className="h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200" />
+        <div className="size-8 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center transition-transform duration-300 group-data-[state=open]:rotate-180 group-data-[state=open]:bg-main-theme/10">
+          <ChevronDown className="h-5 w-5 text-gray-400 group-hover:text-main-theme transition-colors" />
+        </div>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   ),
 );
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+AccordionTrigger.displayName = "AccordionTrigger";
 
 const AccordionContent = React.forwardRef(
   ({ className, children, ...props }, ref) => (
     <AccordionPrimitive.Content
       ref={ref}
-      className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <div className={cn("pb-4 pt-0 text-gray-500 leading-relaxed", className)}>
+      <div className={cn("pb-8 pt-0 leading-relaxed font-medium", className)}>
         {children}
       </div>
     </AccordionPrimitive.Content>
   ),
 );
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+AccordionContent.displayName = "AccordionContent";
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
