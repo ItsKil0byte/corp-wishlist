@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import ru.serp.corpwish.entity.Wish;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
@@ -20,4 +21,12 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
     List<Wish> findNextWishes(
             @Param("wishlistId") Long wishlistId, @Param("cursor") Long cursor, Pageable pageable
     );
+
+    @Query("""
+    SELECT w FROM Wish w 
+    JOIN FETCH w.wishlist wl 
+    JOIN FETCH wl.owner 
+    WHERE :filename MEMBER OF w.imageFileNames
+    """)
+    Optional<Wish> findByImageFileName(@Param("filename") String filename);
 }
