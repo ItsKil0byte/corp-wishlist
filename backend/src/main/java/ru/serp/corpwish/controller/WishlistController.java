@@ -28,7 +28,7 @@ public class WishlistController {
     ) {
         List<WishlistDto> wishlistsDto = wishlistService
                 .getWishlists(
-                        owner.getUserId(),
+                        owner.getId(),
                         cursor,
                         PageRequest.of(0, limit)
                 );
@@ -59,7 +59,7 @@ public class WishlistController {
             @PathVariable Long wishlistId
     ) {
         WishlistDto wishlistDto = wishlistService
-                .getWishlist(requester.getUserId(), wishlistId);
+                .getWishlist(requester.getId(), wishlistId);
 
         return ResponseEntity
                 .ok(wishlistDto);
@@ -71,7 +71,7 @@ public class WishlistController {
             @RequestBody CreateWishlistRequest request
     ) {
         WishlistDto wishlistDto = wishlistService
-                .createWishlist(owner.getUserId(), request);
+                .createWishlist(owner.getId(), request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -85,7 +85,7 @@ public class WishlistController {
             @RequestBody CreateWishlistRequest request
     ) {
         WishlistDto wishlistDto = wishlistService
-                .updateWishlist(owner.getUserId(), wishlistId, request);
+                .updateWishlist(owner.getId(), wishlistId, request);
 
         return ResponseEntity
                 .ok(wishlistDto);
@@ -96,7 +96,7 @@ public class WishlistController {
             @AuthenticationPrincipal User owner,
             @PathVariable Long wishlistId
     ) {
-        wishlistService.deleteWishlist(owner.getUserId(), wishlistId);
+        wishlistService.deleteWishlist(owner.getId(), wishlistId);
         return ResponseEntity.noContent().build();
     }
 }
