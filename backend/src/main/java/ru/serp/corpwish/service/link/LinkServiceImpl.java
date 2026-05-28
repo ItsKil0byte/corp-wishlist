@@ -71,7 +71,7 @@ public class LinkServiceImpl implements LinkService {
             throw new RuntimeException("No user provided to join");
         }
 
-        return groupService.joinGroup(link.getEntityId(), user.getUserId(), user.getUserId());
+        return groupService.joinGroup(link.getEntityId(), user.getId(), user.getId());
     }
 
     @Override
@@ -130,7 +130,7 @@ public class LinkServiceImpl implements LinkService {
                 .title(group.getName())
                 .users(group.getMembers().stream()
                         .map(user -> new UserInfo(
-                                user.getUserId(),
+                                user.getId(),
                                 user.getUsername(),
                                 user.getPhoto_url(),
                                 user.getFirstName(),

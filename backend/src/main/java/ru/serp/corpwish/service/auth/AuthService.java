@@ -32,9 +32,9 @@ public class AuthService {
         }
 
         User newUser = createNewWebUser(user);
-        initNewUser(newUser.getUserId());
+        initNewUser(newUser.getId());
 
-        return jwtService.generateToken(newUser.getUserId());
+        return jwtService.generateToken(newUser.getId());
     }
 
     public String loginWithWeb(WebLoginRequest userInfo) {
@@ -45,7 +45,7 @@ public class AuthService {
             throw new RuntimeException("Пароли не совпадают");
         }
 
-        return jwtService.generateToken(user.getUserId());
+        return jwtService.generateToken(user.getId());
     }
 
     private User createNewWebUser(WebRegisterRequest user) {

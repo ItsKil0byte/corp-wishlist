@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     private UserInfo convertToUserInfo(User user){
         UserInfo userInfo = new UserInfo();
 
-        userInfo.setUserId(user.getUserId());
+        userInfo.setUserId(user.getId());
         userInfo.setUsername(user.getLogin());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());

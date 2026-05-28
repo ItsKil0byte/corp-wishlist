@@ -59,7 +59,7 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
-        if (!wishlist.getOwner().getUserId().equals(ownerId)) {
+        if (!wishlist.getOwner().getId().equals(ownerId)) {
             throw new RuntimeException("Only owner can update wishlist");
         }
 
@@ -76,7 +76,7 @@ public class WishlistServiceImpl implements WishlistService {
         Wishlist wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new RuntimeException("Wishlist not found"));
 
-        if (!wishlist.getOwner().getUserId().equals(ownerId)) {
+        if (!wishlist.getOwner().getId().equals(ownerId)) {
             throw new RuntimeException("Only owner delete this wishlist");
         }
 
@@ -88,7 +88,7 @@ public class WishlistServiceImpl implements WishlistService {
 
         wishlistDto.setId(wishlist.getId());
         wishlistDto.setName(wishlist.getName());
-        wishlistDto.setOwnerId(wishlist.getOwner().getUserId());
+        wishlistDto.setOwnerId(wishlist.getOwner().getId());
         wishlistDto.setColor(wishlist.getColor());
         wishlistDto.setIcon(wishlist.getIcon());
         wishlistDto.setWishes(
