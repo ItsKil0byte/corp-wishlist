@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+/**
+ * Хук для отправки событий в Яндекс.Метрику при смене маршрута
+ * @param {number|string} id - ID счетчика Яндекс.Метрики
+ */
 export default function useMetrika(id) {
   const { pathname } = useLocation();
 
