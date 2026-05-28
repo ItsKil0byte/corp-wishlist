@@ -2,7 +2,13 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { APP_URL } from "@/lib/constants";
 import { CheckCircle2, ListChecks, Share2 } from "lucide-react";
+import Section from "@/components/landing/shared/Section";
+import GradientTitle from "@/components/landing/shared/GradientTitle";
+import AppImage from "@/components/landing/shared/AppImage";
 
+/**
+ * Страница создания вишлиста
+ */
 export default function WishlistLanding() {
   return (
     <>
@@ -11,37 +17,35 @@ export default function WishlistLanding() {
         description="Как создать качественный вишлист и поделиться им с друзьями, коллегами или родными? GiftoYou приходит на помощь!"
       />
 
-      <main className="flex flex-col gap-24 pb-32 pt-16 md:pt-24">
+      <main className="pb-32">
         {/* Главный блок */}
-        <section
-          className="flex flex-col items-center text-center gap-12 px-4"
-          data-reveal
-        >
-          <h1 className="text-5xl md:text-6xl font-black text-gray-900 leading-[1.1] max-w-5xl tracking-tight">
-            Как создать качественный вишлист и поделиться им?
-            <span className="gradient-text mt-4 block">
-              GiftoYou спешит на помощь!
-            </span>
-          </h1>
+        <Section spacing="large" className="text-center space-y-12" data-reveal>
+          <GradientTitle
+            as="h1"
+            size="hero"
+            title="Как создать качественный вишлист и поделиться им?"
+            gradientPart="GiftoYou спешит на помощь!"
+          />
 
-          <div className="w-full max-w-6xl glass-frame !p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)]">
-            <img
-              src="/mockups/create-wishlist/main.png"
-              alt="Main Image"
-              className="w-full h-auto rounded-[2rem]"
-            />
-          </div>
+          <AppImage
+            src="/mockups/create-wishlist/main.png"
+            alt="Main Image"
+            className="w-full max-w-6xl mx-auto"
+          />
 
           <Button
             asChild
-            className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-black py-10 px-20 rounded-2xl text-2xl shadow-2xl transition-all hover:scale-105 active:scale-95 mt-4 btn-glow"
+            className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-black py-10 px-20 rounded-2xl text-2xl shadow-2xl transition-all hover:scale-105 active:scale-95 btn-glow"
           >
             <a href={APP_URL}>Создать вишлист</a>
           </Button>
-        </section>
+        </Section>
 
         {/* Карточки преимуществ */}
-        <section className="max-w-[1440px] mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Section
+          spacing="medium"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
           {[
             {
               icon: <ListChecks className="size-16 text-main-theme" />,
@@ -76,12 +80,12 @@ export default function WishlistLanding() {
               </p>
             </div>
           ))}
-        </section>
+        </Section>
 
         <div className="gradient-divider" />
 
         {/* Демонстрация контента */}
-        <section className="max-w-[1440px] mx-auto px-6 md:px-12 space-y-32">
+        <Section spacing="large" className="space-y-32">
           <div
             className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
             data-reveal
@@ -95,11 +99,10 @@ export default function WishlistLanding() {
                 Теперь все ваши желания структурированы и всегда под рукой.
               </p>
             </div>
-            <div className="w-full lg:w-2/5 glass-frame !p-3 shadow-2xl">
-              <img
+            <div className="w-full lg:w-2/5">
+              <AppImage
                 src="/mockups/create-wishlist/wishlists.png"
                 alt="Wishlists"
-                className="rounded-2xl w-full"
               />
             </div>
           </div>
@@ -117,21 +120,18 @@ export default function WishlistLanding() {
                 чтобы друзья точно знали, какую модель или цвет вы хотите.
               </p>
             </div>
-            <div className="w-full lg:w-2/5 glass-frame !p-3 shadow-2xl">
-              <img
-                src="/mockups/create-wishlist/modal.jpg"
-                alt="Modal"
-                className="rounded-2xl w-full"
-              />
+            <div className="w-full lg:w-2/5">
+              <AppImage src="/mockups/create-wishlist/modal.jpg" alt="Modal" />
             </div>
           </div>
-        </section>
+        </Section>
 
         <div className="gradient-divider" />
 
         {/* Финальный призыв к действию */}
-        <section
-          className="flex flex-col items-center text-center gap-12 px-4 py-24"
+        <Section
+          spacing="large"
+          className="flex flex-col items-center text-center gap-12"
           data-reveal
         >
           <h2 className="text-4xl md:text-6xl font-black text-gray-900 max-w-5xl leading-tight tracking-tight">
@@ -145,7 +145,7 @@ export default function WishlistLanding() {
           >
             <a href={APP_URL}>Создать идеальный вишлист</a>
           </Button>
-        </section>
+        </Section>
       </main>
     </>
   );

@@ -92,16 +92,16 @@ export default function Features() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-[1440px] mx-auto px-4 md:px-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-360 mx-auto px-4 md:px-12">
         {cards.map((card, index) => (
           <Link
             key={index}
             to={card.link}
-            className="group relative flex flex-col p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] bg-white border border-gray-100 shadow-xl transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl hover:border-main-theme/20 overflow-hidden"
+            className="group relative flex flex-col p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] glass-strong shadow-xl transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl hover:border-main-theme/20 overflow-hidden"
             data-reveal
             data-reveal-delay={index + 1}
           >
-            {/* Subtle Gradient Background */}
+            {/* Мягкий градиентный фон */}
             <div
               className={`absolute inset-0 bg-linear-to-tl ${card.link === "/what-to-send" ? "from-main-theme/10" : card.link === "/create-wishlist" ? "from-blue-400/10" : "from-teal-400/10"} via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
             />

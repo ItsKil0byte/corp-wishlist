@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
 import { APP_URL } from "@/lib/constants";
 import { Users, Layout, Heart } from "lucide-react";
+import Section from "@/components/landing/shared/Section";
+import AppImage from "@/components/landing/shared/AppImage";
 
+/**
+ * Лендинг для коллективных подарков
+ */
 export default function GroupsLanding() {
   return (
     <>
@@ -13,7 +18,7 @@ export default function GroupsLanding() {
         description="Организуйте выбор подарка в коллективе без лишних чатов и гаданий на кофейной гуще. Попробуйте GiftoYou!"
       />
 
-      <main className="flex flex-col gap-24 pb-32">
+      <main className="flex flex-col pb-32">
         <HeroCentered
           title="Как организовать выбор подарков в коллективе?"
           subtitle=" GiftoYou помогает командам находить идеальные подарки без бесконечных обсуждений."
@@ -22,7 +27,10 @@ export default function GroupsLanding() {
         />
 
         {/* Основные преимущества */}
-        <section className="max-w-360 mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Section
+          spacing="medium"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
           {[
             {
               icon: <Users className="size-16 text-main-theme" />,
@@ -57,22 +65,18 @@ export default function GroupsLanding() {
               </p>
             </div>
           ))}
-        </section>
+        </Section>
 
         <div className="gradient-divider" />
 
         {/* Визуальные блоки контента */}
-        <section className="max-w-[1440px] mx-auto px-6 md:px-12 space-y-32">
+        <Section spacing="large" className="space-y-32">
           <div
             className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24"
             data-reveal
           >
-            <div className="w-full lg:w-3/5 glass-frame !p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] hover:shadow-main-theme/10 transition-shadow duration-700">
-              <img
-                src="/mockups/for-groups/wishlist.png"
-                alt="Wishlist"
-                className="rounded-2xl w-full"
-              />
+            <div className="w-full lg:w-3/5">
+              <AppImage src="/mockups/for-groups/wishlist.png" alt="Wishlist" />
             </div>
             <div className="w-full lg:w-2/5 space-y-6">
               <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
@@ -89,12 +93,8 @@ export default function GroupsLanding() {
             className="flex flex-col lg:flex-row-reverse items-center gap-16 lg:gap-24"
             data-reveal
           >
-            <div className="w-full lg:w-3/5 glass-frame !p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] hover:shadow-blue-400/10 transition-shadow duration-700">
-              <img
-                src="/mockups/for-groups/group.png"
-                alt="Group"
-                className="rounded-2xl w-full"
-              />
+            <div className="w-full lg:w-3/5">
+              <AppImage src="/mockups/for-groups/group.png" alt="Group" />
             </div>
             <div className="w-full lg:w-2/5 space-y-6 lg:text-right">
               <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
@@ -106,7 +106,7 @@ export default function GroupsLanding() {
               </p>
             </div>
           </div>
-        </section>
+        </Section>
 
         <div className="gradient-divider" />
 
@@ -139,14 +139,14 @@ export default function GroupsLanding() {
           ]}
         />
 
-        <div className="flex justify-center px-4" data-reveal>
+        <Section spacing="medium" className="flex justify-center" data-reveal>
           <Button
             asChild
             className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-black py-12 px-24 rounded-2xl text-3xl shadow-2xl transition-all hover:scale-105 active:scale-95 btn-glow"
           >
             <a href={APP_URL}>Создать группу</a>
           </Button>
-        </div>
+        </Section>
       </main>
     </>
   );
