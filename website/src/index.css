@@ -367,14 +367,14 @@ body::after {
 }
 
 /* ===== Gradient Divider ===== */
-.gradient-border-line {
+@utility gradient-border-line {
   background: linear-gradient(
     90deg,
     transparent 0%,
     rgba(4, 201, 168, 0.4) 30%,
     rgba(56, 189, 248, 0.4) 70%,
     transparent 100%
-  );
+  )
 }
 
 .gradient-divider {
