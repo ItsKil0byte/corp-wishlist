@@ -1,4 +1,5 @@
 import Features from "@/components/landing/Features";
+import Reviews from "@/components/landing/Reviews";
 import Hero from "@/components/landing/Hero";
 import Stats from "@/components/landing/Stats";
 import FAQSection from "@/components/landing/FAQSection";
@@ -21,6 +22,7 @@ export default function MainLanding() {
         <Hero />
         <Stats />
         <Features />
+        <Reviews />
         <FAQSection />
 
         <Section

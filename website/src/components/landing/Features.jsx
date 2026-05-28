@@ -97,7 +97,7 @@ export default function Features() {
           <Link
             key={index}
             to={card.link}
-            className="group relative flex flex-col p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] glass-strong shadow-xl transition-all duration-500 hover:-translate-y-4 hover:shadow-2xl hover:border-main-theme/20 overflow-hidden"
+            className="group relative flex flex-col p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] glass-strong shadow-xl transition-all duration-500 hover:-translate-y-4 hover:scale-[1.02] hover:shadow-2xl hover:border-main-theme/50 overflow-hidden"
             data-reveal
             data-reveal-delay={index + 1}
           >
