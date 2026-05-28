@@ -5,6 +5,7 @@ import { CheckCircle2, ListChecks, Share2 } from "lucide-react";
 import Section from "@/components/landing/shared/Section";
 import GradientTitle from "@/components/landing/shared/GradientTitle";
 import AppImage from "@/components/landing/shared/AppImage";
+import NextLanding from "@/components/landing/NextLanding";
 
 /**
  * Страница создания вишлиста
@@ -13,7 +14,7 @@ export default function WishlistLanding() {
   return (
     <>
       <SEO
-        title="Создать вишлист | GiftoYou"
+        title="Создать вишлист онлайн — быстро и бесплатно"
         description="Как создать качественный вишлист и поделиться им с друзьями, коллегами или родными? GiftoYou приходит на помощь!"
       />
 
@@ -146,6 +147,13 @@ export default function WishlistLanding() {
             <a href={APP_URL}>Создать идеальный вишлист</a>
           </Button>
         </Section>
+
+        <NextLanding
+          title="Не знаете, что подарить?"
+          description="Посмотрите наш каталог идей и подборок, которые помогут выбрать лучший подарок для любого повода."
+          buttonText="Посмотреть идеи"
+          link="/what-to-send"
+        />
       </main>
     </>
   );

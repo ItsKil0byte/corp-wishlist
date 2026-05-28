@@ -6,6 +6,7 @@ import { APP_URL } from "@/lib/constants";
 import { Users, Layout, Heart } from "lucide-react";
 import Section from "@/components/landing/shared/Section";
 import AppImage from "@/components/landing/shared/AppImage";
+import NextLanding from "@/components/landing/NextLanding";
 
 /**
  * Лендинг для коллективных подарков
@@ -14,7 +15,7 @@ export default function GroupsLanding() {
   return (
     <>
       <SEO
-        title="Выбор подарков в коллективе | GiftoYou"
+        title="Коллективные подарки без лишних чатов"
         description="Организуйте выбор подарка в коллективе без лишних чатов и гаданий на кофейной гуще. Попробуйте GiftoYou!"
       />
 
@@ -147,6 +148,13 @@ export default function GroupsLanding() {
             <a href={APP_URL}>Создать группу</a>
           </Button>
         </Section>
+
+        <NextLanding
+          title="Хотите создать личный список?"
+          description="GiftoYou идеально подходит и для персональных вишлистов. Начните собирать свои желания прямо сейчас."
+          buttonText="Создать вишлист"
+          link="/create-wishlist"
+        />
       </main>
     </>
   );

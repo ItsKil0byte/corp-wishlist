@@ -1,20 +1,25 @@
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import { Copy } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import Section from "@/components/landing/shared/Section";
 import AppImage from "@/components/landing/shared/AppImage";
 import GradientTitle from "@/components/landing/shared/GradientTitle";
 import { APP_URL } from "@/lib/constants";
 import PainCollage from "@/components/landing/PainCollage";
 import { Gift, MousePointer2, Share2 } from "lucide-react";
+import { useState } from "react";
+import NextLanding from "@/components/landing/NextLanding";
 
 /**
  * Страница с идеями подарков
  */
 export default function IdeasLanding() {
+  const [copied, setCopied] = useState(false);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
     toast.success("Ссылка скопирована!", {
       style: {
         borderRadius: "12px",
@@ -23,12 +28,13 @@ export default function IdeasLanding() {
         fontWeight: "bold",
       },
     });
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <>
       <SEO
-        title="Что подарить? Идеи подарков | GiftoYou"
+        title="Что подарить? Идеи подарков для коллег и друзей"
         description="Праздник близится, а что дарить — непонятно? GiftoYou спешит на помощь!"
       />
 
@@ -135,9 +141,20 @@ export default function IdeasLanding() {
           <Button
             onClick={handleCopyLink}
             variant="outline"
-            className="border-2 border-main-theme/20 text-gray-900 font-black py-10 px-10 rounded-2xl text-xl shadow-xl transition-all hover:bg-main-theme/10 active:scale-95 w-full sm:w-auto flex items-center justify-center gap-3"
+            className="border-2 border-main-theme/20 text-gray-900 font-black py-10 px-10 rounded-2xl text-xl shadow-xl transition-all hover:bg-main-theme/10 active:scale-95 w-full sm:w-auto flex items-center justify-center gap-3 overflow-hidden relative"
           >
-            <Copy className="size-6" /> Скопировать ссылку
+            <div
+              className={`flex items-center gap-3 transition-all duration-300 ${copied ? "opacity-0 -translate-y-8" : "opacity-100 translate-y-0"}`}
+            >
+              <Copy className="size-6" />
+              <span>Скопировать ссылку</span>
+            </div>
+            <div
+              className={`flex items-center gap-3 transition-all duration-300 absolute inset-0 justify-center ${copied ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            >
+              <Check className="size-6 text-main-theme" />
+              <span className="text-main-theme">Ссылка у вас!</span>
+            </div>
           </Button>
 
           <Button
@@ -147,6 +164,13 @@ export default function IdeasLanding() {
             <a href={APP_URL}>Создать вишлист</a>
           </Button>
         </Section>
+
+        <NextLanding
+          title="Всё еще не создали вишлист?"
+          description="Помогите друзьям не ошибиться с выбором. Создайте свой личный список желаний за 30 секунд."
+          buttonText="Начать сейчас"
+          link="/create-wishlist"
+        />
       </main>
     </>
   );
