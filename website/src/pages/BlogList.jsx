@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 export default function BlogList() {
   const [page, setPage] = useState(0);
-  const { data, loading, error } = useList(page, 6);
+  const { data, loading, error } = useList(page, 6, "BLOG");
 
   if (error) {
     return (
@@ -109,6 +109,7 @@ export default function BlogList() {
               <Link
                 key={post.id}
                 to={`/blog/${post.slug}`}
+                state={{ from: "/blog" }}
                 className="group h-full"
                 data-reveal
                 data-reveal-delay={index % 3}

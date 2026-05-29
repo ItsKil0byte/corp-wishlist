@@ -4,11 +4,16 @@ import usePost from "@/hooks/useBlog";
 import { formatDate, stripHtml } from "@/lib/utils";
 import DOMPurify from "dompurify";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 export default function BlogPost() {
   const { slug } = useParams();
+  const location = useLocation();
   const { data, loading, error } = usePost(slug);
+
+  const from = location.state?.from;
+  const backLink = from || "/blog";
+  const backText = from === "/ideas" ? "Назад к идеям" : "Назад в блог";
 
   if (loading) return <PostSkeleton />;
 
@@ -21,9 +26,9 @@ export default function BlogPost() {
         <p className="text-gray-500 max-w-md font-medium">
           {error || "Возможно, материал был удалён или ссылка неверна."}
         </p>
-        <Link to="/blog">
+        <Link to={backLink}>
           <button className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-4 px-8 rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2">
-            <ArrowLeft className="size-5" /> Вернуться в блог
+            <ArrowLeft className="size-5" /> {backText}
           </button>
         </Link>
       </div>
@@ -71,11 +76,11 @@ export default function BlogPost() {
       <article className="max-w-[1440px] mx-auto py-12 px-4 md:px-8 pb-24">
         <div className="max-w-4xl mx-auto space-y-12">
           <Link
-            to="/blog"
+            to={backLink}
             className="group inline-flex items-center gap-2 text-sm text-gray-400 hover:text-main-theme transition-all font-bold"
           >
             <ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />{" "}
-            Вернуться к блогу
+            {backText}
           </Link>
 
           <header className="space-y-8" data-reveal>
