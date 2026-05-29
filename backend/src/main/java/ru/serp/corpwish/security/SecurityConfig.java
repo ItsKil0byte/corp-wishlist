@@ -29,6 +29,8 @@ public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
 
+    private final ImageAccessFilter imageAccessFilter;
+
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
 
@@ -92,6 +94,10 @@ public class SecurityConfig {
             .addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class
+            )
+            .addFilterBefore(
+                    imageAccessFilter,
+                    UsernamePasswordAuthenticationFilter.class
             );
         return http.build();
     }

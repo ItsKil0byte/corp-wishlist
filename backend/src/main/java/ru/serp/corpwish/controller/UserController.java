@@ -19,7 +19,7 @@ public class UserController {
     public ResponseEntity<UserInfo> getUserInfo (
             @AuthenticationPrincipal User user
     ) {
-        UserInfo userInfo = userService.getUserInfo(user.getUserId());
+        UserInfo userInfo = userService.getUserInfo(user.getId());
 
         return ResponseEntity.ok(userInfo);
     }
@@ -42,7 +42,7 @@ public class UserController {
             @AuthenticationPrincipal User user,
             @RequestBody UserInfo newUserInfo
     ) {
-        UserInfo userInfo = userService.updateUserInfo(user.getUserId(), newUserInfo);
+        UserInfo userInfo = userService.updateUserInfo(user.getId(), newUserInfo);
 
         return ResponseEntity.ok(userInfo);
     }
