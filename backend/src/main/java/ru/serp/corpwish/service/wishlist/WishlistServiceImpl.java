@@ -41,7 +41,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto createWishlist(Long ownerId, CreateWishlistRequest request) {
-        User owner = userRepository.findByUserId(ownerId)
+        User owner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Wishlist wishlist = new Wishlist();

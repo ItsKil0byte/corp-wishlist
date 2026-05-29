@@ -21,7 +21,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto createGroup(Long userId, CreateGroupRequest groupData) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not create group - User not found"));
 
         Group group = new Group();
@@ -55,7 +55,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupDto> getGroups(Long userId) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get groups - User not found"));
 
         List<Group> allGroups = groupRepository.findAll();
@@ -71,7 +71,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto getGroup(Long groupId, Long userId) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get group - User not found"));
 
         Group group = groupRepository.findById(groupId)
@@ -90,7 +90,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteGroup(Long groupId, Long ownerId) {
-        User user = userRepository.findByUserId(ownerId)
+        User user = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not delete group - owner not found"));
 
         Group group = groupRepository.findById(groupId)
@@ -105,7 +105,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto leaveGroup(Long groupId, Long userId, Long requesterId) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not leave group - user not found"));
 
         if(!user.getId().equals(requesterId)){
@@ -128,7 +128,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDto joinGroup(Long groupId, Long userId, Long requesterId) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not join group - user not found"));
 
         if(!user.getId().equals(requesterId)){

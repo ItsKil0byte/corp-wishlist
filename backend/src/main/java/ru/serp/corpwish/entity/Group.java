@@ -26,7 +26,7 @@ public class Group {
     private String icon;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", referencedColumnName = "userId")
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     @ManyToMany
