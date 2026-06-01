@@ -5,6 +5,7 @@ import { formatDate, stripHtml } from "@/lib/utils";
 import DOMPurify from "dompurify";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { API_URL } from "@/lib/constants";
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -36,7 +37,12 @@ export default function BlogPost() {
   }
 
   const getSanitizedContent = (html) => {
-    return DOMPurify.sanitize(html, {
+    const fixedHtml = html.replace(
+      /src="\/uploads\//g,
+      `src="${API_URL}/uploads/`,
+    );
+
+    return DOMPurify.sanitize(fixedHtml, {
       ALLOWED_TAGS: [
         "b",
         "i",

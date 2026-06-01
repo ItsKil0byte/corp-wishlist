@@ -132,7 +132,7 @@ export default function Header() {
                 asChild
                 className="bg-main-theme hover:bg-main-theme/90 text-gray-900 font-bold py-6 px-8 rounded-xl text-base shadow-sm transition-all hover:scale-105 active:scale-95 btn-glow"
               >
-                <a href={APP_URL}>Начать бесплатно</a>
+                <a href={APP_URL}>Войти</a>
               </Button>
             </div>
           </div>

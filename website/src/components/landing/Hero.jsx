@@ -12,7 +12,7 @@ export default function Hero() {
       >
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 dark:text-white leading-[1.15] md:leading-[1.1] max-w-5xl tracking-tight">
           Больше никаких «что тебе подарить?». Твой идеальный вишлист
-          <br /> <span className="gradient-text">в одной ссылке</span>.
+          <br /> <span className="gradient-text">в одной ссылке</span>
         </h1>
 
         <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium max-w-3xl leading-relaxed">
@@ -50,7 +50,7 @@ export default function Hero() {
           <div className="md:absolute -right-12 -bottom-12 w-[280px] h-[560px] bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl z-20 hidden lg:block overflow-hidden hover:scale-105 transition-transform duration-500">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-2xl z-30" />
             <img
-              src="/mockups/for-groups/wishlist.png"
+              src="/mockups/phone-mock.png"
               alt="Mobile App"
               className="w-full h-full object-cover"
             />

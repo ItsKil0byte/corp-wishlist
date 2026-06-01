@@ -11,53 +11,68 @@ import { useLocation } from "react-router-dom";
  */
 export default function useScrollReveal({
   rootMargin = "0px 0px -60px 0px",
-  threshold = 0.1,
+  threshold = 0.01,
 } = {}) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Небольшая задержка, чтобы DOM успел обновиться после смены маршрута
-    const timeoutId = setTimeout(() => {
-      const elements = document.querySelectorAll("[data-reveal]");
-      if (!elements.length) return;
+    // Учитываем предпочтения пользователя по ограничению анимаций
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-      // Учитываем предпочтения пользователя по ограничению анимаций
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
 
-      if (prefersReducedMotion) {
-        elements.forEach((el) => el.classList.add("revealed"));
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const el = entry.target;
-              const delay = el.getAttribute("data-reveal-delay") || "0";
-
-              // Применяем задержку, если она указана
-              setTimeout(
-                () => {
-                  el.classList.add("revealed");
-                },
-                parseInt(delay) * 150,
-              ); // 150ms за шаг задержки
-
+            if (prefersReducedMotion) {
+              el.classList.add("revealed");
               observer.unobserve(el);
+              return;
             }
-          });
-        },
-        { rootMargin, threshold },
+
+            const delay = el.getAttribute("data-reveal-delay") || "0";
+
+            setTimeout(
+              () => {
+                el.classList.add("revealed");
+              },
+              parseInt(delay) * 150,
+            );
+
+            observer.unobserve(el);
+          }
+        });
+      },
+      { rootMargin, threshold },
+    );
+
+    const observeElements = () => {
+      const elements = document.querySelectorAll(
+        "[data-reveal]:not(.revealed)",
       );
-
       elements.forEach((el) => observer.observe(el));
+    };
 
-      return () => observer.disconnect();
-    }, 100);
+    // Начальный запуск с небольшой задержкой для плавности
+    const timeoutId = setTimeout(observeElements, 100);
 
-    return () => clearTimeout(timeoutId);
+    // Следим за изменениями DOM для динамически подгружаемого контента (например, посты в блоге)
+    const mutationObserver = new MutationObserver(() => {
+      observeElements();
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, [pathname, rootMargin, threshold]);
 }
