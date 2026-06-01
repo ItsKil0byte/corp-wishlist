@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByLogin(String login);
     boolean existsByLogin(String login);
-    Optional<User> findByUserId(Long userId);
+    Optional<User> findById(Long id);
     @Query("""
         SELECT u FROM User u 
         WHERE u.photo_url = :filename

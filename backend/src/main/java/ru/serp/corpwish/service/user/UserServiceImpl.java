@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String userIDStr) throws UsernameNotFoundException {
         Long userID = Long.parseLong(userIDStr);
-        User user = userRepository.findByUserId(userID)
+        User user = userRepository.findById(userID)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с id " + userIDStr + " не найден."));
 
         //Возможно добавление AccountExpired() и подобных в будущем
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo getUserInfo(Long userId) {
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not get user info - no such user"));
 
         return convertToUserInfo(user);
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo updateUserInfo(Long ownerId, UserInfo userInfo) {
-        User user = userRepository.findByUserId(ownerId)
+        User user = userRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Can not update user info - no such user"));
 
         User newUserInfo = updateUser(user, userInfo);

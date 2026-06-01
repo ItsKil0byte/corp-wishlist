@@ -16,31 +16,61 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
 
+    /**
+     * Получение всех постов с возможностью фильтрации по категории
+     */
     @Override
-    public Page<BlogPostDto> getAllPosts(int page, int limit) {
-        Pageable pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "publishedAt"));
-        Page<BlogPost> postsPage = blogPostRepository.findAllByOrderByPublishedAtDesc(pageable);
+    public Page<BlogPostDto> getAllPosts(int page, int limit, String category) {
+        Pageable pageable = PageRequest.of(
+            page,
+            limit,
+            Sort.by(Sort.Direction.DESC, "publishedAt")
+        );
+        Page<BlogPost> postsPage;
+
+        if (category != null && !category.isEmpty()) {
+            // Фильтрация по категории, если она указана
+            postsPage =
+                blogPostRepository.findAllByCategoryOrderByPublishedAtDesc(
+                    category,
+                    pageable
+                );
+        } else {
+            // Иначе возвращаем все посты
+            postsPage = blogPostRepository.findAllByOrderByPublishedAtDesc(
+                pageable
+            );
+        }
 
         return postsPage.map(this::convertBlogPostToDto);
     }
 
     @Override
     public BlogPostDto getPostBySlug(String slug) {
-        BlogPost post = blogPostRepository.findBySlug(slug)
-                .orElseThrow(() -> new RuntimeException("Can not get post by slug, no such post with this slug"));
+        BlogPost post = blogPostRepository
+            .findBySlug(slug)
+            .orElseThrow(() ->
+                new RuntimeException(
+                    "Can not get post by slug, no such post with this slug"
+                )
+            );
 
         return convertBlogPostToDto(post);
     }
 
-    private BlogPostDto convertBlogPostToDto(BlogPost post){
+    /**
+     * Преобразование сущности BlogPost в DTO
+     */
+    private BlogPostDto convertBlogPostToDto(BlogPost post) {
         return new BlogPostDto(
-                post.getId(),
-                post.getSlug(),
-                post.getTitle(),
-                post.getPreviewImage(),
-                post.getPreviewContent(),
-                post.getContent(),
-                post.getPublishedAt()
+            post.getId(),
+            post.getSlug(),
+            post.getTitle(),
+            post.getPreviewImage(),
+            post.getPreviewContent(),
+            post.getContent(),
+            post.getCategory(),
+            post.getPublishedAt()
         );
     }
 }

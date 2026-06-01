@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
 export function SEO({ title, description, image, url }) {
-  // TODO: Обговорить с Полиной что тут должно быть.
   const pageTitle = title
     ? `${title} | GiftToYou`
     : "GiftToYou - бесплатный сервис для выбора подарков";

@@ -1,7 +1,7 @@
 import { BlogService } from "@/services/BlogService";
 import { useEffect, useState } from "react";
 
-export function useList(page = 0, limit = 10) {
+export function useList(page = 0, limit = 10, category = "") {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ export function useList(page = 0, limit = 10) {
 
     setLoading(true);
 
-    BlogService.getBlogList(page, limit)
+    BlogService.getBlogList(page, limit, category)
       .then((response) => {
         if (isMounted) {
           setData(response);
@@ -30,7 +30,7 @@ export function useList(page = 0, limit = 10) {
         isMounted = false;
         setLoading(false);
       });
-  }, [page, limit]);
+  }, [page, limit, category]);
 
   return { data, loading, error };
 }
