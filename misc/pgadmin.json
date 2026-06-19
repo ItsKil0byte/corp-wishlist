@@ -1,0 +1,14 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "corp-wish",
+            "Group": "Servers",
+            "Host": "postgres",
+            "Port": 5432,
+            "Username": "postgres",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "wishlist",
+            "Comment": "Автоматически добавленный сервер"
+        }
+    }
+}

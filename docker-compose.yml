@@ -1,0 +1,113 @@
+services:
+    postgres:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - "${POSTGRES_PORT}:5432"
+        volumes:
+            - data:/var/lib/postgresql/data
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}",
+                ]
+            interval: 5s
+            timeout: 3s
+            retries: 5
+        restart: unless-stopped
+
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+            args:
+                VITE_API_URL: ${API_URL}
+        ports:
+            - "3000:80"
+        restart: unless-stopped
+
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        env_file:
+            - .env
+        environment:
+            SPRING_PROFILES_ACTIVE: postgres
+            UPLOAD_DIR: ${UPLOAD_DIR}
+        volumes:
+            - wishlist-images:/data/uploads
+        depends_on:
+            postgres:
+                condition: service_healthy
+        ports:
+            - "8080:8080"
+        restart: unless-stopped
+
+    website:
+        build:
+            context: ./website
+            dockerfile: Dockerfile
+            args:
+                VITE_API_URL: ${API_URL}
+                VITE_APP_URL: ${APP_URL}
+        ports:
+            - "8081:80"
+        restart: unless-stopped
+        depends_on:
+            - backend
+
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+        ports:
+            - "5050:80"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - ./misc/pgadmin.json:/pgadmin4/servers.json
+        restart: unless-stopped
+
+    cloudpub:
+        image: cloudpub/cloudpub:latest
+        network_mode: host
+        environment:
+            TOKEN: ${CLOUDPUB_TOKEN}
+            HTTP: 8080, 3000
+        command: run
+        restart: unless-stopped
+        volumes:
+            - cloudpub-config:/home/cloudpub
+        depends_on:
+            - frontend
+            - backend
+
+    prometheus:
+        image: prom/prometheus:latest
+        volumes:
+            - ./misc/prometheus.yml:/etc/prometheus/prometheus.yml
+        ports:
+            - "9090:9090"
+        depends_on:
+            - backend
+        restart: unless-stopped
+
+    grafana:
+        image: grafana/grafana:latest
+        ports:
+            - "3001:3000"
+        depends_on:
+            - prometheus
+        restart: unless-stopped
+
+volumes:
+    data:
+    cloudpub-config:
+    wishlist-images:
